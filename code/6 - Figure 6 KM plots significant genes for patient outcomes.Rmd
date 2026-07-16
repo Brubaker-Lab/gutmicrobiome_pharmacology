@@ -1,0 +1,285 @@
+---
+title: "Figure 6 significant genes"
+output: html_document
+date: "2025-09-09"
+---
+
+# load packages and files
+
+```{r}
+library(tidyverse)
+library(survival)
+library(survminer)
+
+gmr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum FDR categorized 4-1-2026.csv")
+
+reg_z <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib gene pertubation with FDR.csv")
+
+top_mimics <- read.csv("~/Documents/gutmicrobiome_pharmacology/top_mimics_regorafenib_metabolites_4-2-2026.csv")
+top_opposites <- read.csv("~/Documents/gutmicrobiome_pharmacology/top_opposites_regorafenib_metabolites_4-2-2026.csv")
+```
+
+# filter for genes with significance + consistent direction
+
+```{r}
+# function to process one metabolite
+process_metabolite <- function(met_name, gmr_sig, reg_z) {
+  gmr_sig %>%
+    filter(y == met_name) %>%
+    left_join(reg_z, by = "x") %>%
+    na.omit() %>%
+    dplyr::select(x, y, rho1, p, q_x, q_y, pval, FDR) %>% 
+    filter(p < 0.05, FDR < 0.05)
+}
+
+mimics_metabs    <- read.csv("~/Documents/gutmicrobiome_pharmacology/mimics_metabs.csv")
+opposites_metabs <- read.csv("~/Documents/gutmicrobiome_pharmacology/opposites_metabs.csv")
+
+overlap_mimics <- mimics_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>% unique() %>% na.omit()
+
+overlap_opposites <- opposites_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>% unique() %>% na.omit()
+
+mimics_results <- map(overlap_mimics, ~process_metabolite(.x, gmr_sig, reg_z)) %>%
+  bind_rows() %>%
+  mutate(group = "mimic")
+
+opposites_results <- map(overlap_opposites, ~process_metabolite(.x, gmr_sig, reg_z)) %>%
+  bind_rows() %>%
+  mutate(group = "opposite")
+```
+
+# data from cBioPortal - Colorectal Adenocarcinoma (TCGA, PanCancer Atlas)
+
+```{r}
+#clinical data
+clin <- read.delim("~/Documents/gutmicrobiome_pharmacology/coadread_tcga_pan_can_atlas_2018/data_clinical_patient.txt", 
+                   comment.char = "#")
+
+#mrna expression z-scores
+expr <- read.delim(
+  "~/Documents/gutmicrobiome_pharmacology/coadread_tcga_pan_can_atlas_2018/data_mrna_seq_v2_rsem_zscores_ref_all_samples.txt",
+  check.names = FALSE
+)
+```
+
+### clean expr
+
+```{r}
+expr$Hugo_Symbol <- ifelse(expr$Hugo_Symbol == "" | is.na(expr$Hugo_Symbol), 
+                           expr$Entrez_Gene_Id, 
+                           expr$Hugo_Symbol)
+
+expr_median <- expr %>%
+  rowwise() %>%
+  mutate(
+    row_median = median(c_across(!any_of(c("Hugo_Symbol", "Entrez_Gene_Id"))), na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# Keep the row with the highest median per Hugo_Symbol
+expr_unique <- expr_median %>%
+  group_by(Hugo_Symbol) %>%
+  slice_max(row_median, n = 1) %>%
+  ungroup() %>%
+  dplyr::select(-row_median)  # remove helper column
+
+expr_unique_matrix <- expr_unique %>%
+  column_to_rownames("Hugo_Symbol") %>%
+  dplyr::select(-Entrez_Gene_Id)
+
+# Trim expression sample IDs to match clinical PATIENT_IDs
+colnames(expr_unique_matrix) <- sub("-01$", "", colnames(expr_unique_matrix))
+```
+
+## standardize survival variables
+
+```{r}
+clin$OS_months <- as.numeric(clin$OS_MONTHS)
+clin$OS_status <- as.numeric(sub(":.*", "", clin$OS_STATUS))
+```
+
+## confirm sample IDs match
+
+```{r}
+common_ids <- intersect(colnames(expr_unique_matrix), clin$PATIENT_ID)
+
+clin2 <- clin[match(common_ids, clin$PATIENT_ID), ]
+expr2 <- expr_unique_matrix[, common_ids]
+```
+
+# setting up KM plots
+
+```{r}
+shared_genes <- intersect(mimics_results$x, opposites_results$x)
+
+cat("Genes excluded due to mixed mimic/opposite associations:", length(shared_genes), "\n")
+print(shared_genes)
+
+mimics_results_clean    <- mimics_results %>% filter(!x %in% shared_genes)
+opposites_results_clean <- opposites_results %>% filter(!x %in% shared_genes)
+```
+
+## split gene lists b/w mimics and opposites
+
+```{r}
+mimic_genes    <- unique(mimics_results_clean$x)    # 15 genes
+opposite_genes <- unique(opposites_results_clean$x) # 7 genes
+
+cat("Mimic genes after exclusion:", length(mimic_genes), "\n")
+cat("Opposite genes after exclusion:", length(opposite_genes), "\n")
+```
+
+## KM function to return p values and hazard ratios per gene
+
+```{r}
+analyze_gene <- function(gene, expr_data, clin_data, outdir = "KM_plots") {
+  if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
+  
+  # get expression values for this gene
+  if (!(gene %in% rownames(expr_data))) return(NULL)
+  gene_expr <- as.numeric(expr_data[gene, ])
+  
+  # align clinical data
+  df <- clin_data
+  df$expr <- gene_expr
+  
+  # split by median
+  df$group <- factor(ifelse(df$expr > median(df$expr, na.rm = TRUE), "High", "Low"), 
+                     levels = c("Low", "High"))
+  
+  # Kaplan–Meier fit
+  fit <- survfit(Surv(OS_months, OS_status) ~ group, data = df)
+  
+  # Cox model
+  cox_fit <- coxph(Surv(OS_months, OS_status) ~ group, data = df)
+  cox_sum <- summary(cox_fit)
+  
+  hr <- cox_sum$coefficients[,"exp(coef)"]
+  pval <- cox_sum$coefficients[,"Pr(>|z|)"]
+  
+  # KM plot with HR and p-value
+  g <- ggsurvplot(
+    fit, data = df,
+    risk.table    = TRUE,
+    pval          = TRUE,
+    conf.int      = FALSE,
+    title         = "",
+    legend.title  = "Expression",
+    legend.labs   = c("Low", "High"),
+    font.main     = 14,
+    font.x        = 14,
+    font.y        = 14,
+    font.tickslab = 12,
+    font.legend   = 12,
+    risk.table.fontsize = 4,
+    xlab     = "Time (months)",    # <-- add this
+    ylab     = "Overall survival", # <-- optional but cleaner than default
+    subtitle = paste0(gene, "  |  HR = ", round(hr, 2),
+                      "  |  p = ", signif(pval, 3))
+  )
+  
+  # save plot
+  ggsave(filename = file.path(outdir, paste0(gene, "_KM.png")),
+         plot = g$plot, width = 6, height = 5, dpi = 300)
+  
+  return(data.frame(Gene = gene, HR = hr, Pval = pval))
+}
+```
+
+## loop mimics
+
+```{r}
+mimics_summary <- do.call(rbind, lapply(mimic_genes, function(g) {
+  analyze_gene(g, expr2, clin2, outdir = "~/Documents/gutmicrobiome_pharmacology/KM_plots_mimics")
+})) %>% arrange(Pval)
+```
+
+## loop opposites
+
+```{r}
+opposites_summary <- do.call(rbind, lapply(opposite_genes, function(g) {
+  analyze_gene(g, expr2, clin2, outdir = "~/Documents/gutmicrobiome_pharmacology/KM_plots_opposites")
+})) %>% arrange(Pval)
+```
+
+# save summary KM csvs
+
+```{r}
+write.csv(mimics_summary, "~/Documents/gutmicrobiome_pharmacology/mimics_KM_summary_4-3-2026.csv", row.names = FALSE)
+write.csv(opposites_summary, "~/Documents/gutmicrobiome_pharmacology/opposites_KM_summary_4-3-2026.csv", row.names = FALSE)
+```
+
+# unique metabolites
+
+```{r}
+mimic_unique <- unique(mimics_results_clean$y)       
+opposite_unique <- unique(opposites_results_clean$y) 
+
+length(mimic_unique)    # 14
+length(opposite_unique) # 5
+```
+
+# just HIST1H2AC
+
+```{r}
+# load packages
+library(tidyverse)
+library(survival)
+library(survminer)
+library(svglite)
+
+# generate HIST1H2AC plot specifically
+df_hist <- clin2
+df_hist$expr  <- as.numeric(expr2["HIST1H2AC", ])
+df_hist$group <- factor(ifelse(df_hist$expr > median(df_hist$expr, na.rm = TRUE), 
+                                "High", "Low"),
+                         levels = c("Low", "High"))
+
+fit_hist     <- survfit(Surv(OS_months, OS_status) ~ group, data = df_hist)
+cox_hist     <- coxph(Surv(OS_months, OS_status) ~ group, data = df_hist)
+cox_sum_hist <- summary(cox_hist)
+hr_hist      <- cox_sum_hist$coefficients[, "exp(coef)"]
+pval_hist    <- cox_sum_hist$coefficients[, "Pr(>|z|)"]
+
+g_hist <- ggsurvplot(
+  fit_hist, data = df_hist,
+  risk.table          = TRUE,
+  pval                = TRUE,
+  conf.int            = FALSE,
+  title               = "",
+  legend.title        = "Expression",
+  legend.labs         = c("Low", "High"),
+  font.main           = 14,
+  font.x              = 14,
+  font.y              = 14,
+  font.tickslab       = 12,
+  font.legend         = 12,
+  risk.table.fontsize = 4,
+  xlab                = "Time (months)",
+  ylab                = "Overall survival",
+  subtitle            = paste0("HIST1H2AC  |  HR = ", round(hr_hist, 2),
+                               "  |  p = ", signif(pval_hist, 3))
+)
+
+# save TIFF
+tiff("~/Documents/gutmicrobiome_pharmacology/figure6_HIST1H2AC_KM.tiff",
+     width = 6, height = 7, units = "in", res = 300)
+print(g_hist)
+dev.off()
+
+# save PDF
+pdf("~/Documents/gutmicrobiome_pharmacology/figure6_HIST1H2AC_KM.pdf",
+    width = 6, height = 7)
+print(g_hist)
+dev.off()
+
+# save SVG
+svglite::svglite("~/Documents/gutmicrobiome_pharmacology/figure6_HIST1H2AC_KM.svg",
+                  width = 6, height = 7)
+print(g_hist)
+dev.off()
+```

@@ -1,0 +1,673 @@
+---
+title: "Figure 2 scatterplots of gene vs metab and metab vs regorafenib correlations"
+output: html_document
+date: "2025-07-04"
+---
+
+# Loading packages
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(scales)
+library(svglite)
+library(ggrastr)
+library(ggrepel)
+```
+
+## theme across figures
+
+```{r}
+paper_theme <- theme_minimal() +
+  theme(
+    axis.title = element_text(size = 14),
+    axis.text  = element_text(size = 12),
+    legend.title = element_text(size = 14),
+    legend.text  = element_text(size = 12)
+  )
+```
+
+# load gene and metab files
+
+```{r}
+gmr_corr <- read.csv("~/Documents/gutmicrobiome_pharmacology/correlation gene and metab rectum adult updated 3-26-2026.csv")
+
+gmr_corr1 <- gmr_corr |>
+  dplyr::select(x, y, rho, p, q_x, q_y)
+```
+
+## cf diagnosis
+
+```{r}
+gmrd_pcorr <- read.csv("~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf diagnosis adult updated 3-26-2026.csv")
+
+gmrd_pcorr1 <- gmrd_pcorr |>
+  dplyr::select(x, y, rho, p, q_x, q_y)
+```
+
+## cf sex
+
+```{r}
+gmrs_pcorr <- read.csv("~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf sex adult updated 3-26-2026.csv")
+
+gmrs_pcorr1 <- gmrs_pcorr |>
+  dplyr::select(x, y, rho, p, q_x, q_y)
+```
+
+## adding in rhos to compare
+
+```{r}
+gmr_rho1 <- gmr_corr1 %>% 
+  dplyr::rename(rho1 = rho)
+gmrd_rho2 <- gmrd_pcorr1 %>% 
+  dplyr::rename(rho2 = rho)
+gmrs_rho3 <- gmrs_pcorr1 %>%
+  dplyr::rename(rho3 = rho)
+
+join_gmr_diag <- full_join(gmr_rho1, gmrd_rho2, by = c("x", "y"))
+
+join_gmr_sex <- full_join(gmr_rho1, gmrs_rho3, by = c("x", "y"))
+```
+
+## isolating significant rhos (i.e. q < 0.05)
+
+```{r}
+fjoin_gmr_diag <- join_gmr_diag %>%
+  dplyr::select(x, y, rho1, p.x, rho2, p.y, q_x.y, q_y.y) %>%  # keep q_x and q_y from partial
+  dplyr::rename(q_x = q_x.y,    # FDR gene from partial spearman (diagnosis)
+                q_y = q_y.y,    # FDR metab from partial spearman (diagnosis)
+                p1 = p.x,       # p from raw spearman
+                p2 = p.y)       # p from partial spearman
+
+fjoin_gmr_sex <- join_gmr_sex %>%
+  dplyr::select(x, y, rho1, p.x, rho3, p.y, q_x.y, q_y.y) %>%  # keep q_x and q_y from partial
+  dplyr::rename(q_x = q_x.y,    # FDR gene from partial spearman (sex)
+                q_y = q_y.y,    # FDR metab from partial spearman (sex)
+                p1 = p.x,       # p from raw spearman
+                p3 = p.y)       # p from partial spearman
+```
+
+## creating significance column 
+
+```{r}
+r1 <- gmr_rho1 %>%
+  mutate(FDR_gene_sig = case_when(
+    q_x < 0.05 ~ "Gene Significant",
+    q_x >= 0.05 ~ "Gene Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  ))
+
+d1 <- fjoin_gmr_diag %>%
+  mutate(FDR_gene_sig = case_when(
+    q_x < 0.05 ~ "Gene Significant",
+    q_x >= 0.05 ~ "Gene Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  ))
+
+s1 <- fjoin_gmr_sex %>%
+  mutate(FDR_gene_sig = case_when(
+    q_x < 0.05 ~ "Gene Significant",
+    q_x >= 0.05 ~ "Gene Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  ))
+```
+
+### saving files
+
+```{r}
+write_csv(r1, "~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum FDR categorized 4-1-2026.csv")
+write_csv(d1, "~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum diag FDR categorized 4-1-2026.csv")
+write_csv(s1, "~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum sex FDR categorized 4-1-2026.csv")
+```
+
+### load files
+
+```{r}
+# load packages
+library(tidyverse)
+library(scales)
+library(svglite)
+library(ggrastr)
+
+# paper theme
+paper_theme <- theme_minimal() +
+  theme(
+    axis.title       = element_text(size = 20),
+    axis.text        = element_text(size = 16),
+    legend.title     = element_text(size = 20),
+    legend.text      = element_text(size = 16),
+    aspect.ratio     = 1
+  )
+
+# load files
+s1 <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum sex FDR categorized 4-1-2026.csv")
+d1 <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum diag FDR categorized 4-1-2026.csv")
+r1 <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum FDR categorized 4-1-2026.csv")
+```
+
+# Figure 2a: scatterplot sex
+
+```{r}
+p <- ggplot(s1, aes(x = rho1, y = rho3, color = FDR_metab_sig)) +
+  rasterise(geom_point(size = 0.1), dpi = 300) +  # points are raster
+  geom_hline(yintercept = 0, color = "black", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "black", linewidth = 0.3) +
+  labs(
+    x = "Spearman Correlation",
+    y = "Partial Spearman Correlation controlling for Sex",
+    color = "Significance"
+  ) +
+  scale_color_manual(values = c(
+    "Metabolite Significant" = "#D55E00",
+    "Metabolite Not Significant" = "#BBBBBB"
+  )) +
+  scale_x_continuous(labels = scales::label_number()) +
+  paper_theme
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2a_sex.svg",
+       plot = p,
+       device = svglite::svglite, 
+       width = 8, height = 6,
+       units = "in")
+```
+
+```{r}
+p <- ggplot() +
+  rasterise(
+    geom_point(data = s1 %>% filter(FDR_metab_sig == "Metabolite Not Significant"),
+               aes(x = rho1, y = rho3, color = "Metabolite Not Significant"),
+               size = 0.1),
+    dpi = 300
+  ) +
+  rasterise(
+    geom_point(data = s1 %>% filter(FDR_metab_sig == "Metabolite Significant"),
+               aes(x = rho1, y = rho3, color = "Metabolite Significant"),
+               size = 0.3),
+    dpi = 300
+  ) +
+  geom_hline(yintercept = 0, color = "black", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "black", linewidth = 0.3) +
+  labs(
+    x     = "Spearman Correlation",
+    y     = str_wrap("Partial Spearman Correlation controlling for Sex", width = 30),
+    color = "Significance"
+  ) +
+  scale_color_manual(values = c(
+    "Metabolite Significant"     = "#D55E00",
+    "Metabolite Not Significant" = "#CCCCCC"
+  )) +
+  paper_theme
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2a_sex.svg",
+       plot = p,
+       device = svglite::svglite,
+       width = 8, height = 6,
+       units = "in")
+
+# save TIFF
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2a_sex.tiff",
+       plot = p, device = "tiff",
+       width = 8, height = 6, units = "in", dpi = 300)
+
+# save PDF
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2a_sex.pdf",
+       plot = p, device = "pdf",
+       width = 8, height = 6, units = "in")
+```
+
+# Figure 2b: scatterplot diagnosis
+
+```{r}
+p2 <- ggplot(d1, aes(x = rho1, y = rho2, color = FDR_metab_sig)) +
+  rasterise(geom_point(size = 0.1), dpi = 300) +
+  geom_hline(yintercept = 0, color = "black", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "black", linewidth = 0.3) +
+  labs(
+    x = "Spearman Correlation",
+    y = "Partial Spearman Correlation controlling for Disease Status",
+    color = "Significance"
+  ) +
+  scale_color_manual(values = c(
+    "Metabolite Significant" = "#D55E00",
+    "Metabolite Not Significant" = "#BBBBBB"
+  )) +
+  scale_x_continuous(labels = scales::label_number()) +
+  paper_theme
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2b_diagnosis.svg",
+       plot = p2,
+       device = svglite::svglite, 
+       width = 8, height = 6,
+       units = "in")
+```
+
+```{r}
+p2 <- ggplot() +
+  rasterise(
+    geom_point(data = d1 %>% filter(FDR_metab_sig == "Metabolite Not Significant"),
+               aes(x = rho1, y = rho2, color = "Metabolite Not Significant"),
+               size = 0.1),
+    dpi = 300
+  ) +
+  rasterise(
+    geom_point(data = d1 %>% filter(FDR_metab_sig == "Metabolite Significant"),
+               aes(x = rho1, y = rho2, color = "Metabolite Significant"),
+               size = 0.3),
+    dpi = 300
+  ) +
+  geom_hline(yintercept = 0, color = "black", linewidth = 0.3) +
+  geom_vline(xintercept = 0, color = "black", linewidth = 0.3) +
+  labs(
+    x     = "Spearman Correlation",
+    y     = str_wrap("Partial Spearman Correlation controlling for Disease Status", width = 30),
+    color = "Significance"
+  ) +
+  scale_color_manual(values = c(
+    "Metabolite Significant"     = "#D55E00",
+    "Metabolite Not Significant" = "#CCCCCC"
+  )) +
+  paper_theme
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2b_diagnosis.svg",
+       plot = p2,
+       device = svglite::svglite,
+       width = 8, height = 6,
+       units = "in")
+
+# save TIFF
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2b_diagnosis.tiff",
+       plot = p2, device = "tiff",
+       width = 8, height = 6, units = "in", dpi = 300)
+
+# save PDF
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2b_diagnosis.pdf",
+       plot = p2, device = "pdf",
+       width = 8, height = 6, units = "in")
+```
+
+# loading drug and metab files
+
+```{r}
+d <- read.csv("~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum cf diagnosis adult updated 3-26-2026.csv")
+s <- read.csv("~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum cf sex adult updated 3-26-2026.csv")
+r <- read.csv("~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum full adult updated 3-26-2026.csv")
+```
+
+# isolating for regorafenib
+
+```{r}
+rr <- r %>%
+  filter(x == "regorafenib")
+
+rd <- d %>%
+  filter(x == "regorafenib")
+
+rs <- s %>%
+  filter(x == "regorafenib")
+```
+
+## adding in rhos to compare
+
+```{r}
+rr_rho1 <- rr %>% 
+  dplyr::rename(rho1 = rho)
+rd_rho2 <- rd %>% 
+  dplyr::rename(rho2 = rho)
+rs_rho3 <- rs %>%
+  dplyr::rename(rho3 = rho)
+
+join_rd <- full_join(rr_rho1, rd_rho2, by = c("x", "y"))
+
+join_rs <- full_join(rr_rho1, rs_rho3, by = c("x", "y"))
+
+join_rd1 <- join_rd %>%
+  dplyr::select(x, y, rho1, p.x, rho2, p.y, q_x.y, q_y.y) %>%
+  dplyr::rename(q_x = `q_x.y`,
+                q_y = `q_y.y`)
+join_rs1 <- join_rs %>%
+  dplyr::select(x, y, rho1, p.x, rho3, p.y, q_x.y, q_y.y) %>%
+  dplyr::rename(q_x = `q_x.y`,
+                q_y = `q_y.y`)
+
+rr1 <- rr %>%
+  dplyr::select(x, y, rho, p, q_x, q_y)
+```
+
+# adding significance categories
+
+```{r}
+rr_sig <- rr1 %>%
+  mutate(FDR_drug_sig = case_when(
+    q_x < 0.05 ~ "Drug Significant",
+    q_x >= 0.05 ~ "Drug Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  )) %>%
+  mutate(combined_significance = paste(FDR_drug_sig, FDR_metab_sig, sep = " & "))
+
+rd_sig <- join_rd1 %>%
+  mutate(FDR_drug_sig = case_when(
+    q_x < 0.05 ~ "Drug Significant",
+    q_x >= 0.05 ~ "Drug Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  )) %>%
+  mutate(combined_significance = paste(FDR_drug_sig, FDR_metab_sig, sep = " & "))
+
+rs_sig <- join_rs1 %>%
+  mutate(FDR_drug_sig = case_when(
+    q_x < 0.05 ~ "Drug Significant",
+    q_x >= 0.05 ~ "Drug Not Significant"
+  )) %>%
+  mutate(FDR_metab_sig = case_when(
+    q_y < 0.05 ~ "Metabolite Significant",
+    q_y >= 0.05 ~ "Metabolite Not Significant"
+  )) %>%
+  mutate(combined_significance = paste(FDR_drug_sig, FDR_metab_sig, sep = " & "))
+```
+
+### saving files
+
+```{r}
+write_csv(rr_sig, "~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum FDR significance categorized 4-1-2026.csv")
+
+write_csv(rd_sig, "~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum diag FDR significance categorized 4-1-2026.csv")
+
+write_csv(rs_sig, "~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum sex FDR significance categorized 4-1-2026.csv")
+```
+
+# set up for labeling
+
+```{r}
+top_labels_d <- rd_sig %>%
+  filter(combined_significance == "Drug Significant & Metabolite Significant" & abs(rho1) > 0.16 & abs(rho2) > 0.16) %>%
+  arrange(rho1, rho2) %>%
+  slice_head(n = 15)
+
+top_labels_s <- rs_sig %>%
+  filter(combined_significance == "Drug Significant & Metabolite Significant" & abs(rho1) > 0.16 & abs(rho3) > 0.16) %>%
+  arrange(rho1, rho3) %>%
+  slice_head(n = 15)
+
+# Split y column into metabolite name and method/ID
+top_labels_s_clean <- top_labels_s %>%
+  mutate(
+    metabolite = sub("_.*", "", y),          # everything before first underscore
+    method_id  = sub("^[^_]*_", "", y)       # everything after first underscore
+  )
+
+top_labels_d_clean <- top_labels_d %>%
+  mutate(
+    metabolite = sub("_.*", "", y),
+    method_id  = sub("^[^_]*_", "", y)
+  )
+
+# Reference table
+ref_table <- top_labels_s_clean %>%
+  dplyr::select(y, metabolite, method_id) %>%
+  mutate(source = "sex") %>%
+  bind_rows(
+    top_labels_d_clean %>%
+      dplyr::select(y, metabolite, method_id) %>%
+      mutate(source = "diagnosis")
+  ) %>%
+  distinct()
+
+write_csv(ref_table, "~/Documents/gutmicrobiome_pharmacology/metabolite_label_reference.csv")
+```
+
+# Figure 2c: scatterplot sex
+
+```{r}
+xr <- range(rs_sig$rho1, na.rm = TRUE)
+yr <- range(rs_sig$rho3, na.rm = TRUE)
+pad <- 0.02
+xlims <- c(xr[1] - pad, xr[2] + pad)
+ylims <- c(yr[1] - pad, yr[2] + pad)
+
+segment.size = 0.4
+
+ggplot(rs_sig, aes(x = rho1, y = rho3, color = combined_significance)) +
+  geom_point(size = 1) +
+  geom_label_repel(
+    data = top_labels_s_clean,
+    aes(label = metabolite),
+    color = "black",
+    fill = "white",
+    size = 3.5,
+    box.padding = 0.2,
+    point.padding = 0.2,
+    segment.color = "gray60",
+    segment.linewidth = 0.4,
+    label.size = 0.25,
+    label.r = unit(0.1, "lines"),
+    force = 50,
+    max.overlaps = Inf,
+    min.segment.length = 0,
+    seed = 42              # reproducible label placement
+  ) +
+  geom_hline(yintercept = 0, color = "gray70", linewidth = 0.5) +  # fixed
+  geom_vline(xintercept = 0, color = "gray70", linewidth = 0.5) +  # fixed
+  coord_cartesian(xlim = xlims, ylim = ylims, expand = FALSE) +
+  scale_color_manual(values = c(
+    "Drug Significant & Metabolite Significant" = "#D55E00",
+    "Drug Not Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Not Significant & Metabolite Significant" = "#BBBBBB"
+  )) +
+  labs(
+    x = "Spearman Correlation",
+    y = "Partial Spearman Correlation controlling for Sex",
+    color = "Significance"
+  ) +
+  paper_theme +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks = element_line(color = "black")
+  )
+```
+
+# Figure 2d: scatterplot diagnosis
+
+```{r}
+ggplot(rd_sig, aes(x = rho1, y = rho2, color = combined_significance)) +
+  geom_point(size = 1) +
+  geom_label_repel(
+    data = top_labels_d_clean,        # updated to clean version
+    aes(label = metabolite),          # just metabolite name
+    color = "black",
+    fill = "white",
+    size = 3.5,                       # updated
+    box.padding = 0.2,                # updated
+    point.padding = 0.2,              # updated
+    segment.color = "gray60",
+    segment.linewidth = 0.4,          # fixed deprecation
+    label.size = 0.25,
+    label.r = unit(0.1, "lines"),
+    force = 50,                       # updated
+    max.overlaps = Inf,
+    min.segment.length = 0,           # added
+    seed = 42                         # added
+  ) +
+  geom_hline(yintercept = 0, color = "gray70", linewidth = 0.5) +  # updated
+  geom_vline(xintercept = 0, color = "gray70", linewidth = 0.5) +  # updated
+  coord_cartesian(xlim = xlims, ylim = ylims, expand = FALSE) +
+  scale_color_manual(values = c(
+    "Drug Significant & Metabolite Significant" = "#D55E00",
+    "Drug Not Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Not Significant & Metabolite Significant" = "#BBBBBB"
+  )) +
+  labs(
+    x = "Spearman Correlation",
+    y = "Partial Spearman Correlation controlling for Disease Status",  # updated
+    color = "Significance"
+  ) +
+  paper_theme +                       # updated
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks = element_line(color = "black")
+  )
+```
+
+```{r}
+# load files
+rs_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum sex FDR significance categorized 4-1-2026.csv")
+rd_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum diag FDR significance categorized 4-1-2026.csv")
+rr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum FDR significance categorized 4-1-2026.csv")
+```
+
+```{r}
+# label setup
+top_labels_d <- rd_sig %>%
+  filter(combined_significance == "Drug Significant & Metabolite Significant" & 
+           abs(rho1) > 0.16 & abs(rho2) > 0.16) %>%
+  arrange(rho1, rho2) %>%
+  slice_head(n = 15)
+
+top_labels_s <- rs_sig %>%
+  filter(combined_significance == "Drug Significant & Metabolite Significant" & 
+           abs(rho1) > 0.16 & abs(rho3) > 0.16) %>%
+  arrange(rho1, rho3) %>%
+  slice_head(n = 15)
+
+top_labels_s_clean <- top_labels_s %>%
+  mutate(
+    metabolite = sub("_.*", "", y),
+    method_id  = sub("^[^_]*_", "", y)
+  )
+
+top_labels_d_clean <- top_labels_d %>%
+  mutate(
+    metabolite = sub("_.*", "", y),
+    method_id  = sub("^[^_]*_", "", y)
+  )
+```
+
+```{r}
+# Figure 2c: scatterplot sex
+xr_s <- range(rs_sig$rho1, na.rm = TRUE)
+yr_s <- range(rs_sig$rho3, na.rm = TRUE)
+pad  <- 0.02
+xlims_s <- c(xr_s[1] - pad, xr_s[2] + pad)
+ylims_s <- c(yr_s[1] - pad, yr_s[2] + pad)
+
+p3 <- ggplot(rs_sig, aes(x = rho1, y = rho3, color = combined_significance)) +
+  geom_point(size = 1) +
+  geom_label_repel(
+    data = top_labels_s_clean,
+    aes(label = metabolite),
+    color = "black", fill = "white",
+    size = 4.5, box.padding = 0.2, point.padding = 0.2,
+    segment.color = "gray60", segment.linewidth = 0.4,
+    label.size = 0.25, label.r = unit(0.1, "lines"),
+    force = 50, max.overlaps = Inf,
+    min.segment.length = 0, seed = 42
+  ) +
+  geom_hline(yintercept = 0, color = "gray70", linewidth = 0.5) +
+  geom_vline(xintercept = 0, color = "gray70", linewidth = 0.5) +
+  coord_cartesian(xlim = xlims_s, ylim = ylims_s, expand = FALSE) +
+  scale_color_manual(values = c(
+    "Drug Significant & Metabolite Significant"         = "#D55E00",
+    "Drug Not Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Significant & Metabolite Not Significant"     = "#BBBBBB",
+    "Drug Not Significant & Metabolite Significant"     = "#BBBBBB"
+  )) +
+  labs(
+    x     = "Spearman Correlation",
+    y     = str_wrap("Partial Spearman Correlation controlling for Sex", width = 30),
+    color = "Significance"
+  ) +
+  paper_theme +
+  theme(
+    panel.grid       = element_blank(),
+    panel.border     = element_blank(),
+    plot.background  = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks       = element_line(color = "black")
+  )
+
+# save
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2c_sex.svg",
+       plot = p3, device = svglite::svglite,
+       width = 12, height = 8, units = "in")
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2c_sex.tiff",
+       plot = p3, device = "tiff",
+       width = 8, height = 6, units = "in", dpi = 300)
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2c_sex.pdf",
+       plot = p3, device = "pdf",
+       width = 8, height = 6, units = "in")
+```
+
+```{r}
+# Figure 2d: scatterplot diagnosis — separate axis limits from rd_sig
+xr_d <- range(rd_sig$rho1, na.rm = TRUE)
+yr_d <- range(rd_sig$rho2, na.rm = TRUE)
+xlims_d <- c(xr_d[1] - pad, xr_d[2] + pad)
+ylims_d <- c(yr_d[1] - pad, yr_d[2] + pad)
+
+p4 <- ggplot(rd_sig, aes(x = rho1, y = rho2, color = combined_significance)) +
+  geom_point(size = 1) +
+  geom_label_repel(
+    data = top_labels_d_clean,
+    aes(label = metabolite),
+    color = "black", fill = "white",
+    size = 4.5, box.padding = 0.2, point.padding = 0.2,
+    segment.color = "gray60", segment.linewidth = 0.4,
+    label.size = 0.25, label.r = unit(0.1, "lines"),
+    force = 50, max.overlaps = Inf,
+    min.segment.length = 0, seed = 42
+  ) +
+  geom_hline(yintercept = 0, color = "gray70", linewidth = 0.5) +
+  geom_vline(xintercept = 0, color = "gray70", linewidth = 0.5) +
+  coord_cartesian(xlim = xlims_d, ylim = ylims_d, expand = FALSE) +  # diagnosis limits
+  scale_color_manual(values = c(
+    "Drug Significant & Metabolite Significant"         = "#D55E00",
+    "Drug Not Significant & Metabolite Not Significant" = "#BBBBBB",
+    "Drug Significant & Metabolite Not Significant"     = "#BBBBBB",
+    "Drug Not Significant & Metabolite Significant"     = "#BBBBBB"
+  )) +
+  labs(
+    x     = "Spearman Correlation",
+    y     = str_wrap("Partial Spearman Correlation controlling for Disease Status", width = 30),
+    color = "Significance"
+  ) +
+  paper_theme +
+  theme(
+    panel.grid       = element_blank(),
+    panel.border     = element_blank(),
+    plot.background  = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks       = element_line(color = "black")
+  )
+
+# save
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2d_diagnosis.svg",
+       plot = p4, device = svglite::svglite,
+       width = 12, height = 8, units = "in")
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2d_diagnosis.tiff",
+       plot = p4, device = "tiff",
+       width = 8, height = 6, units = "in", dpi = 300)
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure2d_diagnosis.pdf",
+       plot = p4, device = "pdf",
+       width = 8, height = 6, units = "in")
+```

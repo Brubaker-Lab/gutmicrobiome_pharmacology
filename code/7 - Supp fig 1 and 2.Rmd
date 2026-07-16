@@ -1,0 +1,553 @@
+---
+title: "6 - Supp Fig 1 and 2"
+output: html_document
+date: "2025-10-01"
+---
+
+# load packages and files
+
+```{r}
+library(tidyverse)
+library(ComplexUpset)
+library(svglite)
+
+fgsea_mimics <- read.csv("~/Documents/gutmicrobiome_pharmacology/fgsea_top_mimics_regorafenib_metabolites-4-2-2026.csv")
+fgsea_opposites <- read.csv("~/Documents/gutmicrobiome_pharmacology/fgsea_top_opposites_regorafenib_metabolites-4-2-2026.csv")
+
+format_metab_name <- function(x) {
+  ifelse(is.na(x), NA,
+    paste0(sub("_.*", "", x), " (", sub("^[^_]*_", "", x), ")")
+  )
+}
+
+# paper theme
+paper_theme <- theme_minimal() +
+  theme(
+    axis.title       = element_text(size = 16),
+    axis.text        = element_text(size = 14),
+    legend.title     = element_text(size = 16),
+    legend.text      = element_text(size = 14)
+  )
+```
+
+# setting up for plots
+
+```{r}
+# clean pathway names
+clean_pathway <- function(x) gsub(" - Homo sapiens \\(human\\)", "", x)
+
+# filter significant, add direction, clean pathway + metabolite names
+fgsea_mimics_sig <- fgsea_mimics %>%
+  filter(padj < 0.05) %>%
+  mutate(
+    direction = ifelse(NES > 0, "Positive", "Negative"),
+    pathway   = clean_pathway(pathway),
+    #metabolite = format_metab_name(metabolite)
+  )
+
+fgsea_opposites_sig <- fgsea_opposites %>%
+  filter(padj < 0.05) %>%
+  mutate(
+    direction  = ifelse(NES > 0, "Positive", "Negative"),
+    pathway    = clean_pathway(pathway),
+    #metabolite = format_metab_name(metabolite)
+  )
+
+# Create binary long table for upset plots
+fgsea_mimics_bin <- fgsea_mimics_sig %>%
+  dplyr::select(pathway, metabolite) %>%
+  mutate(sig = 1) %>%
+  pivot_wider(
+    names_from = metabolite,
+    values_from = sig,
+    values_fill = 0
+  )
+
+fgsea_opposites_bin <- fgsea_opposites_sig %>%
+  dplyr::select(pathway, metabolite) %>%
+  mutate(sig = 1) %>%
+  pivot_wider(
+    names_from = metabolite,
+    values_from = sig,
+    values_fill = 0
+  )
+```
+
+# Fig S1a - upset plot
+
+```{r}
+# mimics
+ComplexUpset::upset(
+  fgsea_mimics_bin,
+  intersect = colnames(fgsea_mimics_bin)[-1],
+  min_size  = 1,
+  base_annotations = list(
+    'Intersection size' = intersection_size(
+      counts = TRUE,
+      fill   = "steelblue",
+      text   = list(size = 4)
+    )
+  )
+) & theme(axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14))
+```
+
+# Fig S2a - upset plot
+
+```{r}
+# opposites
+ComplexUpset::upset(
+  fgsea_opposites_bin,
+  intersect = colnames(fgsea_opposites_bin)[-1],
+  min_size  = 1,
+  base_annotations = list(
+    'Intersection size' = intersection_size(
+      counts = TRUE,
+      fill   = "steelblue",
+      text   = list(size = 4)
+    ) + scale_y_continuous(breaks = scales::breaks_pretty())  # whole numbers
+  ),
+  themes = upset_modify_themes(list(
+    'overall_sizes' = theme(axis.text = element_text(size = 12)),
+    'intersections_matrix' = theme(axis.text = element_text(size = 12))
+  ))
+)
+```
+
+# supplementary tables — intersection pathway mapping (new code)
+
+```{r}
+mimics_metabolite_cols    <- colnames(fgsea_mimics_bin)[-1]
+opposites_metabolite_cols <- colnames(fgsea_opposites_bin)[-1]
+
+make_intersection_table <- function(bin_df, metabolite_cols, outfile) {
+  bin_df %>%
+    rowwise() %>%
+    mutate(
+      intersection = paste(which(c_across(all_of(metabolite_cols)) == 1), collapse = "-"),
+      metabolites_in_intersection = paste(metabolite_cols[which(c_across(all_of(metabolite_cols)) == 1)], collapse = ", ")
+    ) %>%
+    ungroup() %>%
+    group_by(intersection, metabolites_in_intersection) %>%
+    summarise(
+      num_pathways = n(),
+      pathways     = paste(unique(pathway), collapse = "; "),
+      .groups      = "drop"
+    ) %>%
+    mutate(
+      num_metabolites_in_intersection = str_count(intersection, "-") + 1,
+      overlap_type = ifelse(num_metabolites_in_intersection > 1, "Shared", "Single")
+    ) %>%
+    arrange(desc(num_pathways)) %>%
+    write.csv(outfile, row.names = FALSE)
+}
+
+make_intersection_table(
+  fgsea_mimics_bin, mimics_metabolite_cols,
+  "~/Documents/gutmicrobiome_pharmacology/supp_fig1a_intersection_pathway_names.csv"
+)
+
+make_intersection_table(
+  fgsea_opposites_bin, opposites_metabolite_cols,
+  "~/Documents/gutmicrobiome_pharmacology/supp_fig2a_intersection_pathway_names.csv"
+)
+```
+
+# separate stacked bar charts
+
+## compute counts by direction for top bars
+
+```{r}
+compute_counts_upset_order <- function(bin_df, long_df) {
+  metabolites <- bin_df %>% dplyr::select(where(is.numeric)) %>% colnames()
+  bin_df <- bin_df %>%
+    rowwise() %>%
+    mutate(intersection = paste(which(c_across(all_of(metabolites)) == 1), collapse = "-")) %>%
+    ungroup()
+  direction_map <- long_df %>% dplyr::select(pathway, direction) %>% distinct()
+  counts <- bin_df %>%
+    left_join(direction_map, by = "pathway") %>%
+    group_by(intersection, direction) %>%
+    summarise(count = n_distinct(pathway), .groups = "drop")
+  intersection_order <- counts %>%
+    group_by(intersection) %>%
+    summarise(total = sum(count)) %>%
+    arrange(desc(total)) %>%
+    pull(intersection)
+  counts %>% mutate(intersection = factor(intersection, levels = intersection_order))
+}
+
+mimics_counts    <- compute_counts_upset_order(fgsea_mimics_bin,    fgsea_mimics_sig)
+opposites_counts <- compute_counts_upset_order(fgsea_opposites_bin, fgsea_opposites_sig)
+```
+
+# Supp Fig 1b & 2b: plot stacked bar chart for top bars
+
+## mimics
+
+```{r}
+ggplot(mimics_counts, aes(x = intersection, y = count, fill = direction)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = c("Positive" = "#D82632", "Negative" = "#2166AC")) +
+  labs(
+    x    = "Intersection (metabolites numbered as in upset plot)",
+    y    = "Number of pathways",
+    fill = "NES direction"
+  ) +
+  paper_theme +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 11))
+```
+
+## opposites
+
+```{r}
+ggplot(opposites_counts, aes(x = intersection, y = count, fill = direction)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = c("Positive" = "#D82632", "Negative" = "#2166AC")) +
+  scale_y_continuous(breaks = scales::breaks_pretty()) +   # whole numbers only
+  labs(
+    x    = "Intersection (metabolites numbered as in upset plot)",
+    y    = "Number of pathways",
+    fill = "NES direction"
+  ) +
+  paper_theme +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 11))
+```
+
+## legend csv
+
+```{r}
+make_legend_csv <- function(counts_df, bin_df, metabolite_cols, outfile) {
+  intersection_map <- bin_df %>%
+    rowwise() %>%
+    mutate(
+      intersection = paste(which(c_across(all_of(metabolite_cols)) == 1), collapse = "-"),
+      metabolites_in_intersection = paste(metabolite_cols[which(c_across(all_of(metabolite_cols)) == 1)], collapse = ", ")
+    ) %>%
+    ungroup() %>%
+    dplyr::select(intersection, metabolites_in_intersection) %>%
+    distinct()
+
+  counts_df %>%
+    dplyr::select(intersection, direction, count) %>%
+    distinct() %>%
+    left_join(intersection_map, by = "intersection") %>%
+    arrange(intersection, direction) %>%
+    write.csv(outfile, row.names = FALSE)
+}
+
+make_legend_csv(mimics_counts,    fgsea_mimics_bin,    mimics_metabolite_cols,
+                "~/Documents/gutmicrobiome_pharmacology/supp_fig1b_mimics_top_bar_legend.csv")
+make_legend_csv(opposites_counts, fgsea_opposites_bin, opposites_metabolite_cols,
+                "~/Documents/gutmicrobiome_pharmacology/supp_fig2b_opposites_top_bar_legend.csv")
+```
+
+# Supp Fig 1c & 2c: plot stacked bar chart for side bars (per metabolite)
+
+```{r}
+make_side_bar <- function(sig_df) {
+  sig_df %>%
+    group_by(metabolite, direction) %>%
+    summarise(count = n(), .groups = "drop") %>%
+    group_by(metabolite) %>%
+    mutate(total = sum(count)) %>%
+    ungroup() %>%
+    mutate(metabolite = factor(metabolite, levels = rev(unique(metabolite[order(-total)]))))
+}
+
+side_mimics_counts    <- make_side_bar(fgsea_mimics_sig)
+side_opposites_counts <- make_side_bar(fgsea_opposites_sig)
+```
+
+## plot — mimics
+
+```{r}
+ggplot(side_mimics_counts, aes(x = metabolite, y = count, fill = direction)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = c("Positive" = "#D82632", "Negative" = "#2166AC")) +
+  labs(x = "Metabolite", y = "Number of pathways", fill = "NES direction") +
+  paper_theme +
+  theme(axis.text.y = element_text(size = 12)) +
+  coord_flip() +
+  scale_y_reverse()
+```
+
+## plot — opposites
+
+```{r}
+ggplot(side_opposites_counts, aes(x = metabolite, y = count, fill = direction)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = c("Positive" = "#D82632", "Negative" = "#2166AC")) +
+  labs(x = "Metabolite", y = "Number of pathways", fill = "NES direction") +
+  paper_theme +
+  theme(axis.text.y = element_text(size = 12)) +
+  coord_flip() +
+  scale_y_reverse()
+```
+
+## save reference tables
+
+```{r}
+write.csv(side_mimics_counts,
+          "~/Documents/gutmicrobiome_pharmacology/supp_fig1c_side_bar_table.csv", row.names = FALSE)
+write.csv(side_opposites_counts,
+          "~/Documents/gutmicrobiome_pharmacology/supp_fig2c_side_bar_table.csv", row.names = FALSE)
+```
+
+# update 4-8-2026
+
+## dot plot
+
+```{r}
+fgsea_mimics    <- read.csv("~/Documents/gutmicrobiome_pharmacology/fgsea_top_mimics_regorafenib_metabolites-4-2-2026.csv")
+fgsea_opposites <- read.csv("~/Documents/gutmicrobiome_pharmacology/fgsea_top_opposites_regorafenib_metabolites-4-2-2026.csv")
+
+fgsea_mimics_sig <- fgsea_mimics %>%
+  filter(padj < 0.05) %>%
+  mutate(
+    direction = ifelse(NES > 0, "Positive", "Negative"),
+    pathway   = clean_pathway(pathway)
+  )
+
+fgsea_opposites_sig <- fgsea_opposites %>%
+  filter(padj < 0.05) %>%
+  mutate(
+    direction = ifelse(NES > 0, "Positive", "Negative"),
+    pathway   = clean_pathway(pathway)
+  )
+
+fgsea_mimics_sig_strict    <- fgsea_mimics_sig %>% filter(padj < 0.01)
+fgsea_opposites_sig_strict <- fgsea_opposites_sig %>% filter(padj < 0.01)
+```
+
+## for re-running
+
+```{r}
+fgsea_mimics_sig_strict    <- read.csv("~/Documents/gutmicrobiome_pharmacology/sfig1a_dotplot_fgsea.csv")
+fgsea_opposites_sig_strict <- read.csv("~/Documents/gutmicrobiome_pharmacology/sfig2a_dotplot_fgsea.csv")
+
+#head(unique(fgsea_mimics_sig_strict$metabolite))
+
+# Supp Fig 1 - mimics dot plot (padj < 0.01)
+p_supp1 <- ggplot(fgsea_mimics_sig_strict, aes(x = metabolite, y = pathway,
+                              size = -log10(padj),
+                              color = NES)) +
+  geom_point() +
+  scale_color_gradient2(
+    low      = "#2166AC",
+    mid      = "white",
+    high     = "#D55E00",
+    midpoint = 0
+  ) +
+  labs(
+    x     = "Metabolite",
+    y     = "Pathway",
+    size  = "-log10(FDR)",
+    color = "NES"
+  ) +
+  paper_theme +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y = element_text(size = 13)
+  )
+
+# Supp Fig 2 - opposites dot plot (padj < 0.01)
+p_supp2 <- ggplot(fgsea_opposites_sig_strict, aes(x = metabolite, y = pathway,
+                                 size = -log10(padj),
+                                 color = NES)) +
+  geom_point() +
+  scale_color_gradient2(
+    low      = "#2166AC",
+    mid      = "white",
+    high     = "#D55E00",
+    midpoint = 0
+  ) +
+  labs(
+    x     = "Metabolite",
+    y     = "Pathway",
+    size  = "-log10(FDR)",
+    color = "NES"
+  ) +
+  paper_theme +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y = element_text(size = 13)
+  )
+
+# --- Supp Fig 1: mimics ---
+n_path_s1  <- length(unique(fgsea_mimics_sig_strict$pathway))
+n_metab_s1 <- length(unique(fgsea_mimics_sig_strict$metabolite))
+max_label_chars_s1 <- max(nchar(unique(fgsea_mimics_sig_strict$metabolite)), na.rm = TRUE)
+label_margin_s1    <- max_label_chars_s1 * 0.04  # ~0.04in per character at 45 degrees
+width_s1 <- 9.8
+height_s1 <- 8
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig1_mimics_dotplot.svg",
+       plot = p_supp1, device = svglite::svglite,
+       width = width_s1, height = height_s1, units = "in")
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig1_mimics_dotplot.pdf",
+       plot = p_supp1, device = "pdf",
+       width = width_s1, height = height_s1, units = "in")
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig1_mimics_dotplot.tiff",
+       plot = p_supp1, device = "tiff",
+       width = width_s1, height = height_s1, units = "in", dpi = 300)
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig1_mimics_dotplot.png",
+       plot = p_supp1, device = "png",
+       width = width_s1, height = height_s1, units = "in", dpi = 300)
+
+# --- Supp Fig 2: opposites ---
+n_path_s2  <- length(unique(fgsea_opposites_sig_strict$pathway))
+n_metab_s2 <- length(unique(fgsea_opposites_sig_strict$metabolite))
+width_s2   <- 6.5
+height_s2  <- max(5,  1.5 + n_path_s2  * 0.3)
+
+max_label_chars_s2 <- max(nchar(unique(fgsea_opposites_sig_strict$metabolite)), na.rm = TRUE)
+label_margin_s2    <- max_label_chars_s2 * 0.04
+
+height_s2 <- max(5, 1.5 + n_path_s2 * 0.3 + label_margin_s2)
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig2_opposites_dotplot.svg",
+       plot = p_supp2, device = svglite::svglite,
+       width = width_s2, height = height_s2, units = "in")
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig2_opposites_dotplot.pdf",
+       plot = p_supp2, device = "pdf",
+       width = width_s2, height = height_s2, units = "in")
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig2_opposites_dotplot.tiff",
+       plot = p_supp2, device = "tiff",
+       width = width_s2, height = height_s2, units = "in", dpi = 300)
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/suppfig2_opposites_dotplot.png",
+       plot = p_supp2, device = "png",
+       width = width_s2, height = height_s2, units = "in", dpi = 300)
+```
+
+```{r}
+fgsea_mimics_sig_strict %>%
+  mutate(leadingEdge = sapply(leadingEdge, paste, collapse = ", ")) %>%
+  write.csv("~/Documents/gutmicrobiome_pharmacology/sfig1a_dotplot_fgsea.csv",
+            row.names = FALSE)
+
+fgsea_opposites_sig_strict %>%
+  mutate(leadingEdge = sapply(leadingEdge, paste, collapse = ", ")) %>%
+  write.csv("~/Documents/gutmicrobiome_pharmacology/sfig2a_dotplot_fgsea.csv",
+            row.names = FALSE)
+```
+
+# update supplementary table 1
+
+## mimics 
+
+```{r}
+# fix double-formatted names when reading in
+fix_double_format <- function(x) {
+  # "metabolite (method (id))" -> "metabolite (method_id)"
+  gsub("\\(([^)]+) \\(([^)]+)\\)\\)", "(\\1_\\2)", x)
+}
+
+supp_table1_long <- read.csv("~/Documents/gutmicrobiome_pharmacology/supp_fig1a_intersection_pathway_names.csv") %>%
+  mutate(metabolites_in_intersection = fix_double_format(metabolites_in_intersection)) %>%
+  # expand pathways to one per row first
+  separate_rows(pathways, sep = "; ") %>%
+  mutate(pathways = clean_pathway(pathways)) %>%
+  dplyr::rename(
+    "Pathway"               = pathways,
+    "Metabolites"           = metabolites_in_intersection,
+    "Number of metabolites" = num_metabolites_in_intersection,
+    "Overlap type"          = overlap_type
+  ) %>%
+  dplyr::select(
+    "Pathway",
+    "Number of metabolites",
+    "Metabolites",
+    "Overlap type"
+  ) %>%
+  arrange(desc(`Number of metabolites`), Pathway)
+
+write.csv(supp_table1_long,
+          "~/Documents/gutmicrobiome_pharmacology/Supplementary_Table1a_mimics_pathways.csv",
+          row.names = FALSE)
+
+# check dimensions
+nrow(supp_table1_long)
+head(supp_table1_long %>% dplyr::select(Pathway, `Number of metabolites`))
+```
+
+## opposites
+
+```{r}
+supp_table2_long <- read.csv("~/Documents/gutmicrobiome_pharmacology/supp_fig2a_intersection_pathway_names.csv") %>%
+  mutate(metabolites_in_intersection = fix_double_format(metabolites_in_intersection)) %>%
+  separate_rows(pathways, sep = "; ") %>%
+  mutate(pathways = clean_pathway(pathways)) %>%
+  dplyr::rename(
+    "Pathway"               = pathways,
+    "Metabolites"           = metabolites_in_intersection,
+    "Number of metabolites" = num_metabolites_in_intersection,
+    "Overlap type"          = overlap_type
+  ) %>%
+  dplyr::select(
+    "Pathway",
+    "Number of metabolites",
+    "Metabolites",
+    "Overlap type"
+  ) %>%
+  arrange(desc(`Number of metabolites`), Pathway)
+
+write.csv(supp_table2_long,
+          "~/Documents/gutmicrobiome_pharmacology/Supplementary_Table1b_opposites_pathways.csv",
+          row.names = FALSE)
+
+nrow(supp_table2_long)
+head(supp_table2_long %>% dplyr::select(Pathway, `Number of metabolites`))
+```
+
+# update supplementary table 2
+
+```{r}
+shared_pathway_directions <- fgsea_mimics_sig %>%
+  filter(pathway %in% shared_pathways) %>%
+  group_by(pathway) %>%
+  summarise(
+    mean_NES_concordant      = round(mean(NES), 3),
+    n_metabolites_concordant = n()
+  ) %>%
+  inner_join(                          # changed from left_join to inner_join
+    fgsea_opposites_sig %>%
+      filter(pathway %in% shared_pathways) %>%
+      group_by(pathway) %>%
+      summarise(
+        mean_NES_discordant      = round(mean(NES), 3),
+        n_metabolites_discordant = n()
+      ),
+    by = "pathway"
+  ) %>%
+  mutate(
+    direction_concordant = ifelse(mean_NES_concordant > 0, "Positive", "Negative"),
+    direction_discordant = ifelse(mean_NES_discordant > 0, "Positive", "Negative"),
+    opposite_directions  = direction_concordant != direction_discordant
+  ) %>%
+  arrange(desc(abs(mean_NES_concordant))) %>%
+  dplyr::rename(
+    "Pathway"                    = pathway,
+    "Mean NES (concordant)"      = mean_NES_concordant,
+    "Mean NES (discordant)"      = mean_NES_discordant,
+    "N metabolites (concordant)" = n_metabolites_concordant,
+    "N metabolites (discordant)" = n_metabolites_discordant,
+    "NES direction (concordant)" = direction_concordant,
+    "NES direction (discordant)" = direction_discordant,
+    "Opposite directions"        = opposite_directions
+  )
+
+cat("Total shared pathways:", nrow(shared_pathway_directions), "\n")
+cat("Pathways with opposite directions:", 
+    sum(shared_pathway_directions$`Opposite directions`), "\n")
+
+write.csv(shared_pathway_directions,
+          "~/Documents/gutmicrobiome_pharmacology/Supplementary_Table2_shared_pathway_directions.csv",
+          row.names = FALSE)
+```

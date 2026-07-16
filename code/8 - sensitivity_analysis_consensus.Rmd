@@ -1,0 +1,646 @@
+---
+title: "3 - Sensitivity Analysis: Consensus Signatures"
+output: html_document
+date: "2026-06-16"
+---
+
+```{r}
+################################################################################
+# Notebook 3: Sensitivity Analysis — Consensus vs Baseline Transcriptomic
+#             Signatures for Metabolite–Drug Similarity
+#
+# Logic:
+#   Original analysis (Notebooks 1 & 2):
+#     - Gene–metabolite correlations from a SINGLE timepoint
+#       (Rectum, inflamed, Screening Colonoscopy for RNAseq;
+#        Stool Collection #1 for metabolomics)
+#     - Drug–metabolite similarity derived from those single-timepoint rhos
+#
+#   Consensus analysis (this notebook):
+#     - Gene–metabolite correlations from BLUP consensus signatures
+#       (all longitudinal visits, mixed-effects model per subject)
+#     - Drug–metabolite similarity re-derived from consensus rhos
+#     - Sensitivity figures compare rankings between the two approaches
+#
+# Inputs required (update paths as needed):
+#   CONSENSUS (from Notebook 0):
+#     results/consensus/consensus_transcriptomics_blup.csv  — genes x subjects
+#     results/consensus/consensus_metabolomics_blup.csv     — metabolites x subjects
+#   ORIGINAL OUTPUTS (from Notebooks 1 & 2):
+#     correlation gene and metab rectum adult updated 3-26-2026.csv
+#     correlation drug and metab rectum full adult updated 3-26-2026.csv
+#   LINCS DRUG DATA (same as Notebook 2):
+#     lincs_drug_gene_data_mean  (parquet)
+#   METABOLITE LOOKUP:
+#     metabolite_labels_updated_RL.csv
+#
+# Outputs:
+#   sensitivity_gmr_consensus.csv        — gene x metab consensus correlations
+#   sensitivity_dmr_consensus.csv        — drug x metab consensus similarity scores
+#   sensitivity_comparison_table.csv     — per-metabolite rank comparison
+#   Fig_S1a_rank_correlation.pdf         — Spearman rank scatter (baseline vs consensus)
+#   Fig_S1b_top_overlap.pdf              — Venn/UpSet: top 10/25/50 mimic overlap
+#   Fig_S1c_purdue_heatmap.pdf           — Purdue metabolites across both analyses
+#   Fig_S1d_score_scatter.pdf            — mimic score scatter (baseline vs consensus)
+################################################################################
+```
+
+# ── 0. Packages ────────────────────────────────────────────────────────────────
+
+```{r setup}
+library(tidyverse)
+library(data.table)
+library(tibble)
+library(Hmisc)
+library(arrow)
+library(ggplot2)
+library(ggrepel)
+library(pheatmap)
+library(RColorBrewer)
+library(UpSetR)
+```
+
+# ── 1. Configuration ───────────────────────────────────────────────────────────
+
+```{r config}
+cfg <- list(
+
+  # --- Consensus signature files (output of Notebook 0) ---
+  consensus_tx_path    = "~/Documents/gutmicrobiome_immunity/results/consensus/consensus_transcriptomics_blup.csv",
+  consensus_metab_path = "~/Documents/gutmicrobiome_immunity/results/consensus/consensus_metabolomics_blup.csv",
+
+  # --- Original correlation files (output of Notebooks 1 & 2) ---
+  orig_gmr_path = "~/Documents/gutmicrobiome_pharmacology/correlation gene and metab rectum adult updated 3-26-2026.csv",
+  orig_dmr_path = "~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum full adult updated 3-26-2026.csv",
+
+  # --- LINCS drug data (same as Notebook 2) ---
+  lincs_path    = "~/Documents/gutmicrobiome_pharmacology/lincs_drug_gene_data_mean",
+
+  # --- Metabolite lookup ---
+  metab_lookup_path = "~/Documents/gutmicrobiome_pharmacology/metabolite_labels_updated_RL.csv",
+
+  # --- Drug of interest ---
+  drug_of_interest = "regorafenib",   # must match LINCS drug name (case-insensitive)
+
+  # --- Purdue-tested metabolites ---
+  # Named vector: human-readable name → UTI_ID (as they appear in the 'y' column
+  # of correlation outputs, i.e. "MetaboliteName_CompoundID")
+  purdue_metabolites = c(
+    "isodeoxycholic acid"         = "C18n_QI6769",
+    "guanosine"                   = "HILn_QI66",
+    "pyrocatechol"                = "HILn_QI103",
+    "inosine (HILn)"              = "HILn_QI76",
+    "inosine (HILp)"              = "HILp_QI7107",
+    "4-guanidinobutanoic acid"    = "HILp_QI1750",
+    "beta-guanidinopropionic acid"= "HILp_TF26"
+  ),
+
+  # --- Output paths ---
+  out_dir = "~/Documents/gutmicrobiome_pharmacology/sensitivity_analysis/",
+
+  # --- Correlation chunk size ---
+  chunk_size = 2000
+)
+
+dir.create(cfg$out_dir, recursive = TRUE, showWarnings = FALSE)
+```
+
+# ── 2. Load consensus signatures ──────────────────────────────────────────────
+
+```{r load_consensus}
+message("Loading consensus signatures...")
+
+# Both files: rows = features, col 1 = 'feature', remaining cols = subject IDs
+cons_tx    <- read_csv(cfg$consensus_tx_path,    show_col_types = FALSE)
+cons_metab <- read_csv(cfg$consensus_metab_path, show_col_types = FALSE)
+
+message(sprintf("  Consensus transcriptomics: %d genes x %d subjects",
+                nrow(cons_tx), ncol(cons_tx) - 1))
+message(sprintf("  Consensus metabolomics:    %d metabolites x %d subjects",
+                nrow(cons_metab), ncol(cons_metab) - 1))
+
+# Convert to matrices (features as rownames)
+tx_mat <- cons_tx    %>% column_to_rownames("feature") %>% as.matrix()
+me_mat <- cons_metab %>% column_to_rownames("feature") %>% as.matrix()
+
+# Common subjects across both modalities
+common_subjects <- intersect(colnames(tx_mat), colnames(me_mat))
+message(sprintf("  Common subjects (tx ∩ metab): %d", length(common_subjects)))
+
+tx_mat <- tx_mat[, common_subjects, drop = FALSE]
+me_mat <- me_mat[, common_subjects, drop = FALSE]
+
+# Transpose: subjects as rows (needed for rcorr — observations x features)
+tx_t <- t(tx_mat)   # subjects x genes
+me_t <- t(me_mat)   # subjects x metabolites
+```
+
+# ── 3. Gene–metabolite correlation (consensus) ─────────────────────────────────
+
+Mirrors Notebook 1 "correlate" chunk exactly, using consensus matrices.
+Subjects are observations; genes and metabolites are variables.
+Spearman = rank-transform then pearson via rcorr.
+
+```{r gmr_consensus}
+message("Computing gene–metabolite correlations (consensus)...")
+
+genes_ranked <- apply(tx_t, 2, rank)
+metab_ranked <- apply(me_t, 2, rank)
+
+combined <- cbind(genes_ranked, metab_ranked)
+rc <- Hmisc::rcorr(combined, type = "pearson")
+
+n_genes <- ncol(genes_ranked)
+n_metab <- ncol(metab_ranked)
+
+rho_mat <- rc$r[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+p_mat   <- rc$P[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+n_mat   <- rc$n[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+
+gmr_cons <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho") %>%
+  left_join(
+    as.data.frame(p_mat) %>%
+      mutate(x = rownames(p_mat)) %>%
+      pivot_longer(-x, names_to = "y", values_to = "p"),
+    by = c("x", "y")
+  ) %>%
+  left_join(
+    as.data.frame(n_mat) %>%
+      mutate(x = rownames(n_mat)) %>%
+      pivot_longer(-x, names_to = "y", values_to = "n"),
+    by = c("x", "y")
+  ) %>%
+  mutate(message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  group_by(x) %>% mutate(q_x = p.adjust(p, method = "BH")) %>% ungroup() %>%
+  group_by(y) %>% mutate(q_y = p.adjust(p, method = "BH")) %>% ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+
+write_csv(gmr_cons, file.path(cfg$out_dir, "sensitivity_gmr_consensus.csv"))
+message(sprintf("  Done: %d gene–metabolite pairs", nrow(gmr_cons)))
+```
+
+```{r}
+# Remove 100% NA genes before proceeding to Section 4
+genes_to_keep <- na_by_gene %>% filter(pct_na < 1) %>% pull(x)
+gmr_cons <- gmr_cons %>% filter(x %in% genes_to_keep)
+
+message(sprintf("After removing zero-variance genes: %d genes, %d pairs",
+                n_distinct(gmr_cons$x), nrow(gmr_cons)))
+# Expect: ~12,224 genes, ~7.97M pairs
+```
+
+```{r}
+gmr_cons_wide <- gmr_cons_wide_test
+```
+
+# ── 4. Drug–metabolite correlation (consensus) ────────────────────────────────
+
+Uses the same LINCS drug data as Notebook 2.
+Gene-level rho vectors (from consensus GMR) replace the single-timepoint ones.
+Drug columns and metabolite columns are correlated across genes as observations.
+
+```{r dmr_consensus}
+message("Loading LINCS drug data...")
+lincs <- arrow::read_parquet(cfg$lincs_path)
+lincs <- data.frame(lincs, row.names = 1)   # genes x drugs
+
+# Pivot consensus GMR to wide matrix: genes x metabolites
+gmr_cons_wide <- gmr_cons %>%
+  dplyr::select(x, y, rho) %>%
+  pivot_wider(names_from = y, values_from = rho) %>%
+  column_to_rownames("x")
+
+# Intersect on common genes
+common_genes <- intersect(rownames(lincs), rownames(gmr_cons_wide))
+message(sprintf("  Common genes (LINCS ∩ consensus GMR): %d", length(common_genes)))
+
+drug_mat  <- as.matrix(lincs[common_genes, ])
+metab_mat_wide <- as.matrix(gmr_cons_wide[common_genes, ])
+
+# Rank transform
+drug_ranked_c  <- apply(drug_mat,       2, rank)
+metab_ranked_c <- apply(metab_mat_wide, 2, rank)
+
+# Chunked correlation (mirrors Notebook 2)
+message("Computing drug–metabolite correlations (consensus, chunked)...")
+
+n_drugs <- ncol(drug_ranked_c)
+chunks  <- split(1:n_drugs, ceiling(seq_along(1:n_drugs) / cfg$chunk_size))
+message(sprintf("  Total chunks: %d", length(chunks)))
+
+output_file_c <- file.path(cfg$out_dir, "sensitivity_dmr_consensus_RAW.csv")
+write_csv(
+  data.frame(x=character(), y=character(), rho=numeric(),
+             p=numeric(), n=numeric(), message=character()),
+  output_file_c
+)
+
+for (i in seq_along(chunks)) {
+  if (i %% 10 == 0) cat(sprintf("  Chunk %d / %d\n", i, length(chunks)))
+
+  drug_chunk    <- drug_ranked_c[, chunks[[i]], drop = FALSE]
+  combined_chunk <- cbind(drug_chunk, metab_ranked_c)
+  rc_c <- Hmisc::rcorr(combined_chunk, type = "pearson")
+
+  nc_d <- ncol(drug_chunk)
+  nc_m <- ncol(metab_ranked_c)
+
+  chunk_result <- as.data.frame(rc_c$r[1:nc_d, (nc_d+1):(nc_d+nc_m), drop=FALSE]) %>%
+    mutate(x = rownames(rc_c$r[1:nc_d, , drop=FALSE])[1:nc_d]) %>%
+    pivot_longer(-x, names_to = "y", values_to = "rho") %>%
+    left_join(
+      as.data.frame(rc_c$P[1:nc_d, (nc_d+1):(nc_d+nc_m), drop=FALSE]) %>%
+        mutate(x = rownames(rc_c$r[1:nc_d, , drop=FALSE])[1:nc_d]) %>%
+        pivot_longer(-x, names_to = "y", values_to = "p"),
+      by = c("x","y")
+    ) %>%
+    left_join(
+      as.data.frame(rc_c$n[1:nc_d, (nc_d+1):(nc_d+nc_m), drop=FALSE]) %>%
+        mutate(x = rownames(rc_c$r[1:nc_d, , drop=FALSE])[1:nc_d]) %>%
+        pivot_longer(-x, names_to = "y", values_to = "n"),
+      by = c("x","y")
+    ) %>%
+    mutate(message = ifelse(is.na(rho), "insufficient data", "ok"))
+
+  write_csv(chunk_result, output_file_c, append = TRUE)
+  rm(drug_chunk, combined_chunk, rc_c, chunk_result); gc()
+}
+
+message("Applying FDR correction...")
+dmr_cons <- read_csv(output_file_c, show_col_types = FALSE) %>%
+  group_by(x) %>% mutate(q_x = p.adjust(p, method = "BH")) %>% ungroup() %>%
+  group_by(y) %>% mutate(q_y = p.adjust(p, method = "BH")) %>% ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+
+write_csv(dmr_cons, file.path(cfg$out_dir, "sensitivity_dmr_consensus.csv"))
+message(sprintf("  Done: %d drug–metabolite pairs", nrow(dmr_cons)))
+```
+
+# ── 5. Extract regorafenib mimic scores ───────────────────────────────────────
+
+For each analysis (baseline and consensus), the regorafenib "mimic score" for
+a metabolite is defined as its Spearman correlation with regorafenib's
+gene-expression profile (i.e. the rho from the drug x metabolite correlation,
+where x = regorafenib).
+Positive rho → metabolite mimics regorafenib.
+Negative rho → metabolite opposes regorafenib.
+
+```{r extract_rego}
+message("Extracting regorafenib mimic scores...")
+
+# Load original drug–metabolite correlations
+dmr_orig <- read_csv(cfg$orig_dmr_path, show_col_types = FALSE)
+
+# Find regorafenib in drug column (x) — case-insensitive
+rego_name_orig <- dmr_orig %>%
+  filter(str_detect(tolower(x), "regorafenib")) %>%
+  pull(x) %>% unique()
+message(sprintf("  Regorafenib label in original: %s", paste(rego_name_orig, collapse=", ")))
+
+rego_name_cons <- dmr_cons %>%
+  filter(str_detect(tolower(x), "regorafenib")) %>%
+  pull(x) %>% unique()
+message(sprintf("  Regorafenib label in consensus: %s", paste(rego_name_cons, collapse=", ")))
+
+# Pull mimic scores (rho with regorafenib for every metabolite)
+rego_orig <- dmr_orig %>%
+  filter(x %in% rego_name_orig) %>%
+  dplyr::select(y, rho_orig = rho, p_orig = p, q_orig = q)
+
+rego_cons <- dmr_cons %>%
+  filter(x %in% rego_name_cons) %>%
+  dplyr::select(y, rho_cons = rho, p_cons = p, q_cons = q)
+
+# Merge on metabolite (y)
+rego_compare <- rego_orig %>%
+  inner_join(rego_cons, by = "y") %>%
+  # Rank within each analysis (higher rho = better mimic = lower rank number)
+  mutate(
+    rank_orig = rank(-rho_orig, ties.method = "average"),
+    rank_cons = rank(-rho_cons, ties.method = "average"),
+    n_total   = n(),
+    pctile_orig = rank_orig / n_total * 100,
+    pctile_cons = rank_cons / n_total * 100
+  )
+
+# Flag Purdue metabolites
+# Build lookup: the 'y' column in correlation files = "MetaboliteName_CompoundID"
+# We need to match on the UTI_ID part (after the last underscore)
+# or on exact string matches if naming is consistent
+
+purdue_ids   <- cfg$purdue_metabolites           # names = readable, values = UTI_ID
+purdue_labels <- names(purdue_ids)
+
+rego_compare <- rego_compare %>%
+  mutate(
+    purdue_id = case_when(
+      str_detect(y, "C18n_QI6769")  ~ "isodeoxycholic acid",
+      str_detect(y, "HILn_QI66")    ~ "guanosine",
+      str_detect(y, "HILn_QI103")   ~ "pyrocatechol",
+      str_detect(y, "HILn_QI76")    ~ "inosine (HILn)",
+      str_detect(y, "HILp_QI7107")  ~ "inosine (HILp)",
+      str_detect(y, "HILp_QI1750")  ~ "4-guanidinobutanoic acid",
+      str_detect(y, "HILp_TF26")    ~ "beta-guanidinopropionic acid",
+      TRUE ~ NA_character_
+    ),
+    is_purdue = !is.na(purdue_id)
+  )
+
+write_csv(rego_compare, file.path(cfg$out_dir, "sensitivity_comparison_table.csv"))
+message(sprintf("  Comparison table: %d metabolites, %d Purdue metabolites found",
+                nrow(rego_compare), sum(rego_compare$is_purdue)))
+```
+
+# ── 6. Sensitivity analysis figures ───────────────────────────────────────────
+
+## Fig S1a — Rank correlation scatter: baseline vs consensus mimic scores
+
+```{r fig_s1a}
+rho_overall <- cor(rego_compare$rank_orig, rego_compare$rank_cons,
+                   method = "spearman", use = "complete.obs")
+message(sprintf("  Overall rank correlation (baseline vs consensus): ρ = %.3f", rho_overall))
+
+# Labels for Purdue-tested metabolites only, with clean names
+purdue_labels <- rego_compare %>%
+  filter(is_purdue) %>%
+  mutate(clean_label = case_when(
+    str_detect(y, "C18n_QI6769")  ~ "isodeoxycholic acid",
+    str_detect(y, "HILn_QI66")    ~ "guanosine",
+    str_detect(y, "HILn_QI103")   ~ "pyrocatechol",
+    str_detect(y, "HILn_QI76")    ~ "inosine (HILn)",
+    str_detect(y, "HILp_QI7107")  ~ "inosine (HILp)",
+    str_detect(y, "HILp_QI1750")  ~ "4-guanidinobutanoic acid",
+    str_detect(y, "HILp_TF26")    ~ "beta-guanidinopropionic acid",
+    TRUE ~ purdue_id
+  ))
+
+p_s1a <- ggplot(rego_compare, aes(x = rho_orig, y = rho_cons)) +
+  geom_point(data = filter(rego_compare, !is_purdue),
+             colour = "grey85", alpha = 0.5, size = 1.0) +
+  geom_point(data = filter(rego_compare, is_purdue),
+             colour = "#d7191c", size = 3.5) +
+  geom_abline(slope = 1, intercept = 0,
+              linetype = "dashed", colour = "grey50") +
+  geom_smooth(method = "lm", se = TRUE,
+              colour = "#2c7bb6", linewidth = 0.8) +
+  geom_label_repel(
+    data = purdue_labels,
+    aes(label = clean_label),
+    size = 3.2, max.overlaps = 20,
+    box.padding = 0.3, point.padding = 0.3,
+    segment.colour = "grey50", segment.size = 0.4,
+    fill = alpha("white", 0.8), label.size = NA
+  ) +
+  # Moved down and right, darker colour
+  annotate("text",
+           x = -0.18, y = 0.175,
+           label = sprintf("Spearman~rho == %.3f", rho_overall),
+           parse = TRUE,
+           hjust = 0, vjust = 1,
+           size = 4, colour = "#1a5276",
+           fontface = "plain") +
+  labs(
+    title    = NULL,
+    subtitle = NULL,
+    x        = "Mimic score (baseline)",
+    y        = "Mimic score (longitudinal consensus)"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(legend.position = "top")
+
+ggsave(file.path(cfg$out_dir, "Fig_S1a_score_scatter.pdf"),
+       p_s1a, width = 7, height = 6)
+p_s1a
+```
+
+## Fig S1b — Rank correlation: rank in baseline vs rank in consensus
+
+```{r fig_s1b}
+p_s1b <- ggplot(rego_compare, aes(x = rank_orig, y = rank_cons)) +
+  geom_point(aes(colour = is_purdue), alpha = 0.35, size = 1.2) +
+  geom_point(data = filter(rego_compare, is_purdue),
+             aes(colour = is_purdue), size = 3) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey50") +
+  geom_label_repel(
+    data = filter(rego_compare, is_purdue),
+    aes(label = purdue_id),
+    size = 2.8, max.overlaps = 20, box.padding = 0.4,
+    segment.colour = "grey60"
+  ) +
+  scale_colour_manual(values = c("FALSE" = "grey70", "TRUE" = "#d7191c"),
+                      labels = c("FALSE" = "Other", "TRUE" = "Purdue-tested"),
+                      name = NULL) +
+  annotate("text", x = Inf, y = -Inf,
+           label = sprintf("Spearman ρ = %.3f", rho_overall),
+           hjust = 1.1, vjust = -0.5, size = 4, colour = "#2c7bb6") +
+  labs(
+    title    = "Metabolite rank stability: baseline vs consensus",
+    subtitle = "Rank 1 = strongest regorafenib mimic",
+    x        = "Rank (baseline)",
+    y        = "Rank (consensus)"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(legend.position = "top")
+
+ggsave(file.path(cfg$out_dir, "Fig_S1b_rank_correlation.pdf"),
+       p_s1b, width = 7, height = 6)
+p_s1b
+```
+
+## Fig S1c — Top metabolite overlap (top 10 / 25 / 50)
+
+```{r fig_s1c}
+# Build named sets for each threshold and analysis
+make_top_set <- function(df, rank_col, n) {
+  df %>% filter(.data[[rank_col]] <= n) %>% pull(y)
+}
+
+thresholds <- c(10, 25, 50)
+set_list <- list()
+for (n in thresholds) {
+  set_list[[paste0("Baseline top ", n)]]  <- make_top_set(rego_compare, "rank_orig", n)
+  set_list[[paste0("Consensus top ", n)]] <- make_top_set(rego_compare, "rank_cons", n)
+}
+
+# Overlap table (Jaccard and intersection counts)
+overlap_tbl <- map_dfr(thresholds, function(n) {
+  a <- set_list[[paste0("Baseline top ",  n)]]
+  b <- set_list[[paste0("Consensus top ", n)]]
+  tibble(
+    threshold   = n,
+    baseline_n  = length(a),
+    consensus_n = length(b),
+    overlap_n   = length(intersect(a, b)),
+    jaccard     = length(intersect(a, b)) / length(union(a, b))
+  )
+})
+print(overlap_tbl)
+write_csv(overlap_tbl, file.path(cfg$out_dir, "sensitivity_top_overlap.csv"))
+
+# UpSet plot for top-50 sets
+upset_input <- fromList(list(
+  "Baseline top 50"  = set_list[["Baseline top 50"]],
+  "Consensus top 50" = set_list[["Consensus top 50"]],
+  "Baseline top 25"  = set_list[["Baseline top 25"]],
+  "Consensus top 25" = set_list[["Consensus top 25"]],
+  "Baseline top 10"  = set_list[["Baseline top 10"]],
+  "Consensus top 10" = set_list[["Consensus top 10"]]
+))
+
+pdf(file.path(cfg$out_dir, "Fig_S1c_top_overlap_upset.pdf"), width = 10, height = 5)
+upset(upset_input,
+      sets = c("Baseline top 10","Consensus top 10",
+               "Baseline top 25","Consensus top 25",
+               "Baseline top 50","Consensus top 50"),
+      keep.order = TRUE,
+      mainbar.y.label = "Metabolites in intersection",
+      sets.x.label    = "Set size",
+      text.scale       = 1.2)
+dev.off()
+
+message("Top overlap table:")
+print(overlap_tbl)
+```
+
+## Fig S1d — Purdue metabolite heatmap: mimic score × analysis
+
+```{r fig_s1d}
+# Subset to tested metabolites only
+purdue_dat <- rego_compare %>%
+  filter(is_purdue) %>%
+  dplyr::select(y, purdue_id, rho_orig, rho_cons,
+                rank_orig, rank_cons, pctile_orig, pctile_cons,
+                p_orig, p_cons, q_orig, q_cons) %>%
+  arrange(desc(rho_orig)) %>%
+  mutate(
+    p_orig_display = ifelse(p_orig == 0, 2.2e-16, p_orig),
+    p_cons_display = ifelse(p_cons == 0, 2.2e-16, p_cons)
+  )
+
+message(sprintf("Tested metabolites found: %d", nrow(purdue_dat)))
+
+# Clean row labels — consistent capitalization and hyphenation
+purdue_dat <- purdue_dat %>%
+  mutate(label = case_when(
+    purdue_id == "beta-guanidinopropionic acid" ~ "beta-guanidinopropionic acid",
+    purdue_id == "4-guanidinobutanoic acid"     ~ "4-guanidinobutanoic acid",
+    purdue_id == "inosine (HILn)"               ~ "inosine (HILn)",
+    purdue_id == "inosine (HILp)"               ~ "inosine (HILp)",
+    purdue_id == "isodeoxycholic acid"          ~ "isodeoxycholic acid",
+    purdue_id == "guanosine"                    ~ "guanosine",
+    purdue_id == "pyrocatechol"                 ~ "pyrocatechol",
+    TRUE ~ purdue_id
+  ))
+
+# Pivot to long format for ggplot
+hm_long <- purdue_dat %>%
+  dplyr::select(label, rho_orig, rho_cons, p_orig_display, p_cons_display) %>%
+  pivot_longer(
+    cols = c(rho_orig, rho_cons),
+    names_to = "analysis",
+    values_to = "rho"
+  ) %>%
+  mutate(
+    analysis = case_when(
+      analysis == "rho_orig" ~ "Baseline signature",
+      analysis == "rho_cons" ~ "Consensus signature"
+    ),
+    # Match significance to correct analysis column
+    p_val = ifelse(analysis == "Baseline signature", p_orig_display, p_cons_display),
+    sig_label = ifelse(p_val < 0.05, "*", ""),
+    # Factor ordering — rows ordered by baseline rho (top to bottom = highest to lowest)
+    label = factor(label, levels = rev(purdue_dat$label)),
+    analysis = factor(analysis, levels = c("Baseline signature", "Consensus signature"))
+  )
+
+# Fixed symmetric color scale
+scale_limit <- 0.25
+
+p_hm <- ggplot(hm_long, aes(x = analysis, y = label, fill = rho)) +
+  geom_tile(colour = "white", linewidth = 0.8) +
+  geom_text(aes(label = sprintf("%.3f%s", rho, sig_label)),
+            size = 3.8, colour = "black", fontface = "plain") +
+  scale_fill_gradientn(
+    colours  = rev(RColorBrewer::brewer.pal(9, "RdBu")),
+    limits   = c(-scale_limit, scale_limit),
+    oob      = scales::squish,
+    name     = "Mimic score\n(Spearman rho)"
+  ) +
+  scale_x_discrete(position = "top") +
+  labs(x = NULL, y = NULL,
+       caption = "* p < 0.05") +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x      = element_text(size = 11, face = "bold", hjust = 0.5),
+    axis.text.y      = element_text(size = 11),
+    legend.title     = element_text(size = 10),
+    legend.text      = element_text(size = 9),
+    legend.key.height = unit(1.2, "cm"),
+    legend.position  = "right",
+    panel.grid       = element_blank(),
+    plot.caption     = element_text(size = 9, hjust = 0, colour = "grey40"),
+    plot.margin      = margin(10, 10, 10, 10)
+  )
+
+ggsave(file.path(cfg$out_dir, "Fig_S1d_purdue_heatmap.pdf"),
+       p_hm, width = 7.5, height = 4)
+
+message("Heatmap saved.")
+
+# Summary table
+print(purdue_dat %>%
+  dplyr::select(label, rho_orig, rank_orig, pctile_orig, p_orig,
+                       rho_cons, rank_cons, pctile_cons, p_cons) %>%
+  mutate(direction_consistent = sign(rho_orig) == sign(rho_cons)) %>%
+  arrange(rank_orig))
+```
+
+# ── 7. Summary table for paper ────────────────────────────────────────────────
+
+This produces the table you need for the Methods/Results sensitivity section.
+
+```{r summary_table}
+summary_tbl <- rego_compare %>%
+  filter(is_purdue) %>%
+  mutate(
+    direction_orig = ifelse(rho_orig > 0, "mimic", "opposite"),
+    direction_cons = ifelse(rho_cons > 0, "mimic", "opposite"),
+    direction_consistent = direction_orig == direction_cons,
+    sig_orig = ifelse(p_orig < 0.05, "*", ""),
+    sig_cons = ifelse(p_cons < 0.05, "*", "")
+  ) %>%
+  dplyr::select(
+    Metabolite         = purdue_id,
+    `ρ (baseline)`     = rho_orig,
+    `Rank (baseline)`  = rank_orig,
+    `%ile (baseline)`  = pctile_orig,
+    `p (baseline)`     = p_orig,
+    `Sig (baseline)`   = sig_orig,
+    `ρ (consensus)`    = rho_cons,
+    `Rank (consensus)` = rank_cons,
+    `%ile (consensus)` = pctile_cons,
+    `p (consensus)`    = p_cons,
+    `Sig (consensus)`  = sig_cons,
+    `Direction consistent` = direction_consistent
+  ) %>%
+  arrange(`Rank (baseline)`)
+
+write_csv(summary_tbl, file.path(cfg$out_dir, "sensitivity_purdue_summary_table.csv"))
+
+message("\n=== PURDUE METABOLITE SENSITIVITY SUMMARY ===")
+print(summary_tbl)
+
+message(sprintf("\nOverall rank correlation (baseline vs consensus): ρ = %.3f", rho_overall))
+message(sprintf("Purdue metabolites with consistent direction: %d / %d",
+                sum(summary_tbl$`Direction consistent`), nrow(summary_tbl)))
+```
+
+# ── 8. Session info ───────────────────────────────────────────────────────────
+
+```{r session}
+sessionInfo()
+```

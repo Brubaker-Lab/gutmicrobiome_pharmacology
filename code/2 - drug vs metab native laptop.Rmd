@@ -1,0 +1,334 @@
+---
+title: "2 - drug vs metab native laptop"
+output: html_document
+date: "2025-08-22"
+---
+
+# Packages & Files
+
+```{r}
+library(arrow)
+library(data.table)
+library(tibble)
+library(dplyr)
+library(tidyverse)
+
+x <- arrow::read_parquet("~/Documents/gutmicrobiome_pharmacology/lincs_drug_gene_data_mean")
+xmeta <- arrow::read_parquet("~/Documents/gutmicrobiome_pharmacology/lincs_drug_meta")
+
+x <- data.frame(x, row.names = 1)
+
+gmr_corr <- read.csv("~/Documents/gutmicrobiome_pharmacology/correlation gene and metab rectum adult updated 3-26-2026.csv")
+pcorr_sex_gmr <- read.csv("~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf sex adult updated 3-26-2026.csv")
+pcorr_diag_gmr <- read.csv("~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf diagnosis adult updated 3-26-2026.csv")
+```
+
+# RECTUM FULL & DRUGS
+
+```{r}
+gmr_corr_u <- gmr_corr |>
+  dplyr::select(x, y, rho)
+
+gmr_corr_u1 <- gmr_corr_u %>%
+  pivot_wider(names_from = y, values_from = rho)
+
+gmr_corr_u2 <- column_to_rownames(gmr_corr_u1, var = "x")
+
+#intersect with common row names which are GENES
+common_genes <- intersect(rownames(x), rownames(gmr_corr_u2))
+metab_rectum_common <- gmr_corr_u2[common_genes, ]
+drugs_rectum_common <- x[common_genes, ]
+
+#convert row names back to column
+df_mr <- tibble::rownames_to_column(metab_rectum_common, "gene")
+df_dr <- tibble::rownames_to_column(drugs_rectum_common, "gene")
+```
+
+## correlate
+
+```{r}
+# DRUG x METABOLITE SPEARMAN CORRELATION (genes as observations)
+
+chunk_size <- 200
+n_drugs <- ncol(drug_ranked)
+chunks <- split(1:n_drugs, ceiling(seq_along(1:n_drugs) / chunk_size))
+
+cat("Total chunks to process:", length(chunks), "\n")  # will be ~168 chunks
+
+results_list <- list()
+
+for (i in seq_along(chunks)) {
+  cat("Processing chunk", i, "of", length(chunks), "\n")
+  
+  drug_chunk <- drug_ranked[, chunks[[i]], drop = FALSE]
+  combined_chunk <- cbind(drug_chunk, metab_ranked)
+  
+  rc <- Hmisc::rcorr(combined_chunk, type = "pearson")
+  
+  n_chunk_drugs <- ncol(drug_chunk)
+  n_metab <- ncol(metab_ranked)
+  
+  rho_mat <- rc$r[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  p_mat   <- rc$P[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  n_mat   <- rc$n[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  
+  rho_long <- as.data.frame(rho_mat) %>%
+    mutate(x = rownames(rho_mat)) %>%
+    pivot_longer(-x, names_to = "y", values_to = "rho")
+  
+  p_long <- as.data.frame(p_mat) %>%
+    mutate(x = rownames(p_mat)) %>%
+    pivot_longer(-x, names_to = "y", values_to = "p")
+  
+  n_long <- as.data.frame(n_mat) %>%
+    mutate(x = rownames(n_mat)) %>%
+    pivot_longer(-x, names_to = "y", values_to = "n")
+  
+  results_list[[i]] <- rho_long %>%
+    left_join(p_long, by = c("x", "y")) %>%
+    left_join(n_long, by = c("x", "y"))
+  
+  # clean up chunk objects each iteration
+  rm(drug_chunk, combined_chunk, rc, rho_mat, p_mat, n_mat,
+     rho_long, p_long, n_long)
+  gc()
+}
+
+# --- Combine all chunks and calculate FDR ---
+cat("Combining results...\n")
+dmr_corr <- bind_rows(results_list) %>%
+  mutate(message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+```
+
+## save corr file
+
+```{r}
+write_csv(dmr_corr, "~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum full adult updated 3-26-2026.csv")
+```
+
+# RECTUM SEX & DRUGS
+
+```{r}
+pcorr_sex_gmr1 <- pcorr_sex_gmr |>
+  dplyr::select(x, y, rho)
+
+pcorr_sex_gmr2 <- pcorr_sex_gmr1 %>%
+  pivot_wider(names_from = y, values_from = rho)
+
+pcorr_sex_gmr3 <- column_to_rownames(pcorr_sex_gmr2, var = "x")
+
+#intersect with common row names which are GENES
+common_genes <- intersect(rownames(x), rownames(pcorr_sex_gmr3))
+metab_sr_common <- pcorr_sex_gmr3[common_genes, ]
+drugs_sr_common <- x[common_genes, ]
+
+#convert row names back to column
+df_mrs <- tibble::rownames_to_column(metab_sr_common, "gene")
+df_drs <- tibble::rownames_to_column(drugs_sr_common, "gene")
+```
+
+## correlate
+
+```{r}
+# --- 1. Extract numeric matrices ---
+metab_mat_s <- as.matrix(df_mrs[, -1])
+drug_mat_s  <- as.matrix(df_drs[, -1])
+
+rownames(metab_mat_s) <- df_mrs$gene
+rownames(drug_mat_s)  <- df_drs$gene
+
+# --- 2. Rank-transform columns ---
+metab_ranked_s <- apply(metab_mat_s, 2, rank)
+drug_ranked_s  <- apply(drug_mat_s,  2, rank)
+
+# NO residualization needed — your input rhos already control for sex
+
+# --- 3. Chunked correlation ---
+chunk_size <- 2000
+n_drugs <- ncol(drug_ranked_s)
+chunks <- split(1:n_drugs, ceiling(seq_along(1:n_drugs) / chunk_size))
+
+cat("Total chunks to process:", length(chunks), "\n")
+
+output_file_s <- "~/Documents/correlation drug and metab rectum sex partial RAW.csv"
+
+write_csv(
+  data.frame(x=character(), y=character(), rho=numeric(),
+             p=numeric(), n=numeric(), message=character()),
+  output_file_s
+)
+
+for (i in seq_along(chunks)) {
+  cat("Processing chunk", i, "of", length(chunks), "\n")
+  
+  drug_chunk <- drug_ranked_s[, chunks[[i]], drop = FALSE]
+  combined_chunk <- cbind(drug_chunk, metab_ranked_s)
+  
+  rc <- Hmisc::rcorr(combined_chunk, type = "pearson")
+  
+  n_chunk_drugs <- ncol(drug_chunk)
+  n_metab <- ncol(metab_ranked_s)
+  
+  rho_mat <- rc$r[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  p_mat   <- rc$P[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  n_mat   <- rc$n[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  
+  chunk_result <- as.data.frame(rho_mat) %>%
+    mutate(x = rownames(rho_mat)) %>%
+    pivot_longer(-x, names_to = "y", values_to = "rho") %>%
+    left_join(
+      as.data.frame(p_mat) %>%
+        mutate(x = rownames(p_mat)) %>%
+        pivot_longer(-x, names_to = "y", values_to = "p"),
+      by = c("x", "y")
+    ) %>%
+    left_join(
+      as.data.frame(n_mat) %>%
+        mutate(x = rownames(n_mat)) %>%
+        pivot_longer(-x, names_to = "y", values_to = "n"),
+      by = c("x", "y")
+    ) %>%
+    mutate(message = ifelse(is.na(rho), "insufficient data", "ok"))
+  
+  write_csv(chunk_result, output_file_s, append = TRUE)
+  
+  rm(drug_chunk, combined_chunk, rc, rho_mat, p_mat, n_mat, chunk_result)
+}
+
+# --- FDR ---
+cat("Calculating FDR...\n")
+dmrs_corr <- read_csv(output_file_s) %>%
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+```
+
+## save corr file (sex)
+
+```{r}
+write_csv(dmrs_corr, "~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum cf sex adult updated 3-26-2026.csv")
+#C18n_TF6 = NA's (since df_mis had all NAs because the original genes data were all zero)
+```
+
+# RECTUM DIAGNOSIS & DRUGS
+
+```{r}
+pcorr_diag_gmr1 <- pcorr_diag_gmr |>
+  dplyr::select(x, y, rho)
+
+pcorr_diag_gmr2 <- pcorr_diag_gmr1 %>%
+  pivot_wider(names_from = y, values_from = rho)
+
+pcorr_diag_gmr3 <- column_to_rownames(pcorr_diag_gmr2, var = "x")
+
+#intersect with common row names which are GENES
+common_genes <- intersect(rownames(x), rownames(pcorr_diag_gmr3))
+metab_dr_common <- pcorr_diag_gmr3[common_genes, ]
+drugs_dr_common <- x[common_genes, ]
+
+#convert row names back to column
+df_mrd <- tibble::rownames_to_column(metab_dr_common, "gene")
+df_drd <- tibble::rownames_to_column(drugs_dr_common, "gene")
+```
+
+## correlate
+
+```{r}
+drug_mat_d  <- as.matrix(df_drd[, -1])
+metab_mat_d <- as.matrix(df_mrd[, -1])
+
+rownames(drug_mat_d)  <- df_drd$gene
+rownames(metab_mat_d) <- df_mrd$gene
+
+#sum(is.na(drug_mat_d))
+#sum(is.na(metab_mat_d))
+
+# --- 2. Rank-transform columns ---
+metab_ranked_d <- apply(metab_mat_d, 2, rank)
+drug_ranked_d  <- apply(drug_mat_d,  2, rank)
+
+# NO residualization needed — your input rhos already control for diagnosis
+
+# --- 3. Chunked correlation ---
+chunk_size <- 2000
+n_drugs <- ncol(drug_ranked_d)
+chunks <- split(1:n_drugs, ceiling(seq_along(1:n_drugs) / chunk_size))
+
+cat("Total chunks to process:", length(chunks), "\n")
+
+output_file_d <- "~/Documents/correlation drug and metab rectum diagnosis partial RAW.csv"
+
+write_csv(
+  data.frame(x=character(), y=character(), rho=numeric(),
+             p=numeric(), n=numeric(), message=character()),
+  output_file_d
+)
+
+for (i in seq_along(chunks)) {
+  cat("Processing chunk", i, "of", length(chunks), "\n")
+  
+  drug_chunk <- drug_ranked_d[, chunks[[i]], drop = FALSE]
+  combined_chunk <- cbind(drug_chunk, metab_ranked_d)
+  
+  rc <- Hmisc::rcorr(combined_chunk, type = "pearson")
+  
+  n_chunk_drugs <- ncol(drug_chunk)
+  n_metab <- ncol(metab_ranked_d)
+  
+  rho_mat <- rc$r[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  p_mat   <- rc$P[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  n_mat   <- rc$n[1:n_chunk_drugs, (n_chunk_drugs+1):(n_chunk_drugs+n_metab), drop = FALSE]
+  
+  chunk_result <- as.data.frame(rho_mat) %>%
+    mutate(x = rownames(rho_mat)) %>%
+    pivot_longer(-x, names_to = "y", values_to = "rho") %>%
+    left_join(
+      as.data.frame(p_mat) %>%
+        mutate(x = rownames(p_mat)) %>%
+        pivot_longer(-x, names_to = "y", values_to = "p"),
+      by = c("x", "y")
+    ) %>%
+    left_join(
+      as.data.frame(n_mat) %>%
+        mutate(x = rownames(n_mat)) %>%
+        pivot_longer(-x, names_to = "y", values_to = "n"),
+      by = c("x", "y")
+    ) %>%
+    mutate(message = ifelse(is.na(rho), "insufficient data", "ok"))
+  
+  write_csv(chunk_result, output_file_d, append = TRUE)
+  
+  rm(drug_chunk, combined_chunk, rc, rho_mat, p_mat, n_mat, chunk_result)
+}
+
+# --- FDR ---
+cat("Calculating FDR...\n")
+dmrd_corr <- read_csv(output_file_d) %>%
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+```
+
+## save corr file (diagnosis) 
+
+```{r}
+write_csv(dmrd_corr, "~/Documents/gutmicrobiome_pharmacology/correlation drug and metab rectum cf diagnosis adult updated 3-26-2026.csv")
+```

@@ -1,0 +1,345 @@
+---
+title: "5 - Fig3"
+output: html_document
+date: "2025-09-26"
+---
+
+# load packages and files
+
+```{r}
+library(data.table)
+library(tibble)
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggvenn)
+```
+
+```{r}
+rr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum FDR significance categorized 4-1-2026.csv")
+
+rd_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum diag FDR significance categorized 4-1-2026.csv")
+
+rs_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum sex FDR significance categorized 4-1-2026.csv")
+
+gmr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum FDR categorized 4-1-2026.csv")
+```
+
+# filter FDR < 0.01, mimics, absolute rho >0.15
+
+```{r}
+library(dplyr)
+
+# raw (rr_sig) uses column 'rho'
+rr_mimics <- rr_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho  >= 0.15) %>% 
+  pull(y) %>% 
+  unique()
+rr_opposites <- rr_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho  <= -0.15) %>% 
+  pull(y) %>% 
+  unique()
+
+# partial controlling disease - assume partial rho column is 'rho2'
+rd_mimics <- rd_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho2 >= 0.15) %>% 
+  pull(y) %>% 
+  unique()
+rd_opposites <- rd_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho2 <= -0.15) %>% 
+  pull(y) %>% 
+  unique()
+
+# partial controlling sex - assume partial rho column is 'rho3'
+rs_mimics <- rs_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho3 >= 0.15) %>% 
+  pull(y) %>% 
+  unique()
+rs_opposites <- rs_sig %>% 
+  filter(q_x < 0.01, q_y < 0.01, rho3 <= -0.15) %>% 
+  pull(y) %>% 
+  unique()
+```
+
+# venn diagram list
+
+```{r}
+venn_list_mimics <- list(
+    "Unadjusted"          = rr_mimics,
+    "Disease-adjusted"    = rd_mimics,
+    "Sex-adjusted"        = rs_mimics
+)
+venn_list_opposites <- list(
+    "Unadjusted"          = rr_opposites,
+    "Disease-adjusted"    = rd_opposites,
+    "Sex-adjusted"        = rs_opposites
+)
+```
+
+# plot venn diagram
+
+```{r}
+ggvenn(
+    venn_list_mimics,
+    fill_color = c("#E41A1C", "#377EB8", "#FFFFBF"),
+    stroke_size = 0.5,
+    set_name_size = 5,        # set name labels (~14pt)
+    text_size = 4.5           # intersection count text (~12.8pt)
+  ) +
+  theme_void()                # removes any residual title/axes
+
+ggvenn(
+    venn_list_opposites,
+    fill_color = c("#E41A1C", "#377EB8", "#FFFFBF"),
+    stroke_size = 0.5,
+    set_name_size = 5,
+    text_size = 4.5
+  ) +
+  theme_void()
+```
+
+```{r}
+# Figure 3a: mimics venn diagram
+p_venn_mimics <- ggvenn(
+  venn_list_mimics,
+  fill_color    = c("#E41A1C", "#377EB8", "#FFFFBF"),
+  stroke_size   = 0.5,
+  set_name_size = 5,
+  text_size     = 4.5
+) +
+  theme_void()
+
+# save
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3a_mimics_venn.svg",
+       plot = p_venn_mimics, device = svglite::svglite,
+       width = 8, height = 7, units = "in")
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3a_mimics_venn.tiff",
+       plot = p_venn_mimics, device = "tiff",
+       width = 8, height = 7, units = "in", dpi = 300)
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3a_mimics_venn.pdf",
+       plot = p_venn_mimics, device = "pdf",
+       width = 8, height = 7, units = "in")
+
+# Figure 3b: opposites venn diagram
+p_venn_opposites <- ggvenn(
+  venn_list_opposites,
+  fill_color    = c("#E41A1C", "#377EB8", "#FFFFBF"),
+  stroke_size   = 0.5,
+  set_name_size = 5,
+  text_size     = 4.5
+) +
+  theme_void()
+
+# save
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3b_opposites_venn.svg",
+       plot = p_venn_opposites, device = svglite::svglite,
+       width = 8, height = 7, units = "in")
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3b_opposites_venn.tiff",
+       plot = p_venn_opposites, device = "tiff",
+       width = 8, height = 7, units = "in", dpi = 300)
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure3b_opposites_venn.pdf",
+       plot = p_venn_opposites, device = "pdf",
+       width = 8, height = 7, units = "in")
+```
+
+# building table function
+
+```{r}
+pad_to_length <- function(x, n) {
+  c(x, rep(NA, n - length(x)))
+}
+
+make_overlap_table <- function(raw, dis, sex) {
+  # compute sets
+  raw_only       <- setdiff(raw, union(dis, sex))
+  dis_only       <- setdiff(dis, union(raw, sex))
+  sex_only       <- setdiff(sex, union(raw, dis))
+  raw_dis        <- setdiff(intersect(raw, dis), sex)
+  raw_sex        <- setdiff(intersect(raw, sex), dis)
+  dis_sex        <- setdiff(intersect(dis, sex), raw)
+  all_three      <- Reduce(intersect, list(raw, dis, sex))
+  
+  # max length
+  maxlen <- max(
+    length(raw_only), length(dis_only), length(sex_only),
+    length(raw_dis), length(raw_sex), length(dis_sex),
+    length(all_three)
+  )
+  
+  # build data frame
+  data.frame(
+    Raw_only        = pad_to_length(raw_only, maxlen),
+    Disease_only    = pad_to_length(dis_only, maxlen),
+    Sex_only        = pad_to_length(sex_only, maxlen),
+    Raw_Disease     = pad_to_length(raw_dis, maxlen),
+    Raw_Sex         = pad_to_length(raw_sex, maxlen),
+    Disease_Sex     = pad_to_length(dis_sex, maxlen),
+    Common_all3     = pad_to_length(all_three, maxlen),
+    stringsAsFactors = FALSE
+  )
+}
+```
+
+# mimics and opposites tables
+
+```{r}
+rename_overlap_cols <- function(tbl) {
+  tbl %>%
+    dplyr::rename(
+      "Unadjusted only"                    = Raw_only,
+      "Disease-adjusted only"              = Disease_only,
+      "Sex-adjusted only"                  = Sex_only,
+      "Unadjusted & Disease-adjusted"      = Raw_Disease,
+      "Unadjusted & Sex-adjusted"          = Raw_Sex,
+      "Disease-adjusted & Sex-adjusted"    = Disease_Sex,
+      "Common to all three analyses"       = Common_all3
+    )
+}
+
+# Format metabolite names as "name (method_id)"
+format_metab_name <- function(x) {
+  ifelse(
+    is.na(x),
+    NA,
+    paste0(
+      sub("_.*", "", x),                # metabolite name (before first underscore)
+      " (",
+      sub("^[^_]*_", "", x),            # method_id (after first underscore)
+      ")"
+    )
+  )
+}
+
+# Apply to all six vectors before building tables
+rr_mimics_fmt    <- format_metab_name(rr_mimics)
+rd_mimics_fmt    <- format_metab_name(rd_mimics)
+rs_mimics_fmt    <- format_metab_name(rs_mimics)
+rr_opposites_fmt <- format_metab_name(rr_opposites)
+rd_opposites_fmt <- format_metab_name(rd_opposites)
+rs_opposites_fmt <- format_metab_name(rs_opposites)
+
+# Build tables using formatted vectors
+mimics_tbl <- make_overlap_table(rr_mimics_fmt, rd_mimics_fmt, rs_mimics_fmt) %>%
+  rename_overlap_cols()
+
+opposites_tbl <- make_overlap_table(rr_opposites_fmt, rd_opposites_fmt, rs_opposites_fmt) %>%
+  rename_overlap_cols()
+```
+
+## save
+
+```{r}
+write.csv(mimics_tbl,    "~/Documents/gutmicrobiome_pharmacology/mimics_overlap_table 4-2-2026.csv",    row.names = FALSE)
+write.csv(opposites_tbl, "~/Documents/gutmicrobiome_pharmacology/opposites_overlap_table 4-2-2026.csv", row.names = FALSE)
+```
+
+# mimics and opposites tables with rho and FDR
+
+```{r}
+# Updated format pipeline with deduplication
+dedupe_and_format <- function(tbl) {
+  tbl %>%
+    group_by(y) %>%
+    slice_max(order_by = nchar(category), n = 1, with_ties = FALSE) %>%
+    ungroup() %>%
+    format_ref_table()
+}
+
+# Unadjusted
+mimics_ref_raw <- rr_sig %>%
+  inner_join(
+    mimics_metabs %>% filter(category %in% c("Unadjusted only",
+                                              "Unadjusted & Disease-adjusted",
+                                              "Unadjusted & Sex-adjusted",
+                                              "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho" = rho) %>%
+  dedupe_and_format()
+
+opposites_ref_raw <- rr_sig %>%
+  inner_join(
+    opposites_metabs %>% filter(category %in% c("Unadjusted only",
+                                                  "Unadjusted & Disease-adjusted",
+                                                  "Unadjusted & Sex-adjusted",
+                                                  "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho" = rho) %>%
+  dedupe_and_format()
+
+# Disease-adjusted
+mimics_ref_diag <- rd_sig %>%
+  inner_join(
+    mimics_metabs %>% filter(category %in% c("Disease-adjusted only",
+                                              "Unadjusted & Disease-adjusted",
+                                              "Disease-adjusted & Sex-adjusted",
+                                              "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho1, rho2, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho"       = rho1,
+                "Disease-adjusted rho" = rho2) %>%
+  dedupe_and_format()
+
+opposites_ref_diag <- rd_sig %>%
+  inner_join(
+    opposites_metabs %>% filter(category %in% c("Disease-adjusted only",
+                                                  "Unadjusted & Disease-adjusted",
+                                                  "Disease-adjusted & Sex-adjusted",
+                                                  "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho1, rho2, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho"       = rho1,
+                "Disease-adjusted rho" = rho2) %>%
+  dedupe_and_format()
+
+# Sex-adjusted
+mimics_ref_sex <- rs_sig %>%
+  inner_join(
+    mimics_metabs %>% filter(category %in% c("Sex-adjusted only",
+                                              "Unadjusted & Sex-adjusted",
+                                              "Disease-adjusted & Sex-adjusted",
+                                              "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho1, rho3, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho"   = rho1,
+                "Sex-adjusted rho" = rho3) %>%
+  dedupe_and_format()
+
+opposites_ref_sex <- rs_sig %>%
+  inner_join(
+    opposites_metabs %>% filter(category %in% c("Sex-adjusted only",
+                                                  "Unadjusted & Sex-adjusted",
+                                                  "Disease-adjusted & Sex-adjusted",
+                                                  "Common to all three analyses")),
+    by = "y"
+  ) %>%
+  dplyr::select(y, rho1, rho3, q_x, q_y, FDR_drug_sig, FDR_metab_sig, category) %>%
+  dplyr::rename("Unadjusted rho"   = rho1,
+                "Sex-adjusted rho" = rho3) %>%
+  dedupe_and_format()
+```
+
+## save
+
+```{r}
+# --- 4. Save ---
+write.csv(mimics_ref_raw,     "~/Documents/gutmicrobiome_pharmacology/mimics_metabolites_reference_raw_4-2-2026.csv",      row.names = FALSE)
+write.csv(mimics_ref_diag,    "~/Documents/gutmicrobiome_pharmacology/mimics_metabolites_reference_diag_4-2-2026.csv",     row.names = FALSE)
+write.csv(mimics_ref_sex,     "~/Documents/gutmicrobiome_pharmacology/mimics_metabolites_reference_sex_4-2-2026.csv",      row.names = FALSE)
+write.csv(opposites_ref_raw,  "~/Documents/gutmicrobiome_pharmacology/opposites_metabolites_reference_raw_4-2-2026.csv",   row.names = FALSE)
+write.csv(opposites_ref_diag, "~/Documents/gutmicrobiome_pharmacology/opposites_metabolites_reference_diag_4-2-2026.csv",  row.names = FALSE)
+write.csv(opposites_ref_sex,  "~/Documents/gutmicrobiome_pharmacology/opposites_metabolites_reference_sex_4-2-2026.csv",   row.names = FALSE)
+```
+
+# additional files to save
+
+```{r}
+write_csv(mimics_metabs,    "~/Documents/gutmicrobiome_pharmacology/mimics_metabs.csv")
+write_csv(opposites_metabs, "~/Documents/gutmicrobiome_pharmacology/opposites_metabs.csv")
+```

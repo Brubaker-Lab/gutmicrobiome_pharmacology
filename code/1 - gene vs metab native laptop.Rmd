@@ -1,0 +1,418 @@
+---
+title: "1 - gene vs metab native laptop"
+output: html_document
+date: "2026-03-23"
+---
+
+# load packages and files
+
+```{r}
+library(data.table)
+library(tidyverse)
+library(tibble)
+library(Hmisc)
+library(dplyr)
+library(tidyr)
+
+metadata <- read.csv("~/Documents/gutmicrobiome_pharmacology/hmp2_metadata_2018-08-20.csv")
+
+gmetab_all <- read.csv("~/Documents/gutmicrobiome_pharmacology/metabolite_labels_updated_RL.csv")
+
+#metabolites and transcriptomic files
+metab <- read.csv("~/Documents/gutmicrobiome_pharmacology/METABOLOMICS w metadata updated.csv")
+metab1 <- metab[,-1]
+
+hxtx <- read.csv("~/Documents/gutmicrobiome_pharmacology/HOST TRANSCRIPTOMICS host_tx_counts FILTERED less zeros.csv")
+hxtx1 <- hxtx[,-1]
+```
+
+# clean metadata
+
+```{r}
+temp <- metadata %>% 
+  filter(data_type == "host_transcriptomics" | data_type == "metabolomics") %>%
+  filter(site_name == "Cedars-Sinai" | site_name == "MGH") %>%
+  mutate(data_type = as.factor(data_type)) %>%
+  mutate(biopsy_location = as.factor(biopsy_location), 
+         is_inflamed = as.factor(is_inflamed),
+         diagnosis = as.factor(diagnosis),
+         sex = as.factor(sex))
+
+metadata_hxtx <- filter(temp, data_type =="host_transcriptomics")
+metadata_metab <- filter(temp, data_type =="metabolomics") 
+```
+
+# RECTUM CORR, INFLAMED STATUS YES
+
+## clean up host transcriptomics
+
+```{r}
+metadata_hxtx_rectum_yes <- metadata_hxtx %>%
+  filter(biopsy_location == "Rectum",
+         is_inflamed == "Yes",
+         IntervalName == "Screening Colonoscopy")
+
+# Match the External.IDs present in metadata_hxtx_rectum_yes
+hxtx_location8 <- hxtx1 %>%
+  dplyr::select(names(hxtx1)[1], all_of(metadata_hxtx_rectum_yes$External.ID))
+```
+
+## clean up metabolomics
+
+```{r}
+metadata_metab_weeks <- metadata_metab %>%
+  filter(diagnosis %in% c("UC", "nonIBD", "CD")) %>%
+  filter(IntervalName == "Stool Collection #1")
+
+# Match the External.IDs present in metadata_metab_weeks
+metab_location8 <- metab1 %>%
+  dplyr::select(names(metab1)[1], all_of(metadata_metab_weeks$External.ID))
+
+#REMOVING ROW 72 IN metab_location1 = metabolite C18n_TF7 = furosemide, as it has MAJORITY (162/164) zeros
+metab_location8 <- metab_location8[-72, ]
+```
+
+## replacing External.ID to Participant.ID
+
+```{r}
+matching <- metadata_hxtx_rectum_yes %>%
+  dplyr::select(External.ID, Participant.ID)
+setnames(hxtx_location8, matching$External.ID, matching$Participant.ID)
+
+matching2 <- metadata_metab_weeks %>%
+  dplyr::select(External.ID, Participant.ID)
+setnames(metab_location8, matching2$External.ID, matching2$Participant.ID)
+```
+
+## set up dataframes for correlations
+
+```{r}
+#transpose metab_location1
+t_metab_location8 = as.data.frame(x = t(metab_location8), stringsAsFactors = FALSE)
+t_metab_location8 <- t(metab_location8)
+colnames(t_metab_location8) <- t_metab_location8[1, ]
+t_metab_location8_1 <- t_metab_location8[-1,]
+
+#transpose hxtx_location1
+t_hxtx_location8 <- t(hxtx_location8)
+colnames(t_hxtx_location8) <- t_hxtx_location8[1, ]
+t_hxtx_location8_1 <- t_hxtx_location8[-1,]
+
+#convert into dataframes
+t_hxtx_location8_1 <- as.data.frame(t_hxtx_location8_1)
+t_metab_location8_1 <- as.data.frame(t_metab_location8_1)
+
+#intersect with common row names
+common_row_names <- intersect(rownames(t_hxtx_location8_1), rownames(t_metab_location8_1))
+hxtx_location8_1_common <- t_hxtx_location8_1[common_row_names, ]
+metab_location8_1_common <- t_metab_location8_1[common_row_names, ]
+
+df3 <- mutate_all(hxtx_location8_1_common, function(x) as.numeric(as.character(x)))
+df4 <- mutate_all(metab_location8_1_common, function(x) as.numeric(as.character(x)))
+
+df3 <- tibble::rownames_to_column(df3, "patient_id")
+df4 <- tibble::rownames_to_column(df4, "patient_id")
+```
+
+## rename metabolites in df4 with gmetab_all as map
+
+```{r}
+gmetab_all <- gmetab_all %>%
+  mutate(Metabolite_Compound = paste(Metabolite, Compound, sep = "_"))
+         
+name_map <- setNames(gmetab_all$Metabolite_Compound, gmetab_all$Compound)
+colnames(df4) <- ifelse(colnames(df4) %in% names(name_map),
+                        name_map[colnames(df4)],
+                        colnames(df4))
+```
+
+## save files to run in HPC if have to
+
+```{r}
+write_csv(df3, "~/Documents/gutmicrobiome_pharmacology/df3_gene.csv")
+write_csv(df4, "~/Documents/gutmicrobiome_pharmacology/df4_metab.csv")
+```
+
+## correlate
+
+```{r}
+# --- 1. Extract numeric matrices (drop patient_id column) ---
+genes_mat <- as.matrix(df3[, -1])   # 34 x ~10000
+metab_mat <- as.matrix(df4[, -1])   # 34 x ~650
+
+rownames(genes_mat) <- df3$patient_id
+rownames(metab_mat) <- df4$patient_id
+
+# --- 2. Rank-transform columns (= Spearman) ---
+genes_ranked <- apply(genes_mat, 2, rank)
+metab_ranked <- apply(metab_mat, 2, rank)
+
+# --- 3. Compute ALL correlations at once via matrix multiply ---
+# rcorr on combined ranked matrix, then extract the cross-block
+combined <- cbind(genes_ranked, metab_ranked)
+rc <- Hmisc::rcorr(combined, type = "pearson")  # pearson on ranks = spearman
+
+n_genes <- ncol(genes_ranked)
+n_metab <- ncol(metab_ranked)
+
+rho_mat <- rc$r[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+p_mat   <- rc$P[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+n_mat   <- rc$n[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+
+# --- 4. Pivot to long format ---
+rho_long <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho")
+
+p_long <- as.data.frame(p_mat) %>%
+  mutate(x = rownames(p_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "p")
+
+n_long <- as.data.frame(n_mat) %>%
+  mutate(x = rownames(n_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "n")
+
+gmr_corr <- rho_long %>%
+  left_join(p_long, by = c("x", "y")) %>%
+  left_join(n_long, by = c("x", "y")) %>%
+  mutate(message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  # --- 5. FDR corrections (matching coracle's q_x, q_y, q) ---
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%   # FDR per gene (across all its metabolites)
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%   # FDR per metabolite (across all its genes)
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%      # global FDR across all 6.5M pairs
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+```
+
+## save corr file
+
+```{r}
+write_csv(gmr_corr, "~/Documents/gutmicrobiome_pharmacology/correlation gene and metab rectum adult updated 3-26-2026.csv")
+```
+
+# Partial correlations for RECTUM
+
+## Diagnosis
+
+```{r}
+#replace diagnosis with category 0 and 1 where 0 = nonIBD and 1 = UC or CD 
+metadata_hxtx_rectum_yes_IBD <- metadata_hxtx_rectum_yes %>%
+  mutate(diagnosis = case_when(
+    diagnosis == "nonIBD" ~ "0",
+    diagnosis == "UC" ~ "1",
+    diagnosis == "CD" ~ "1",
+  ))
+
+mtd_hxtx_rectum_pcor <- metadata_hxtx_rectum_yes_IBD %>%
+  dplyr::select(Participant.ID, diagnosis)
+mtd_hxtx_rectum_pcor <- mtd_hxtx_rectum_pcor %>% 
+  mutate(Participant.ID2 = Participant.ID)
+mtd_hxtx_rectum_pcor <- mtd_hxtx_rectum_pcor %>%
+  dplyr::select(Participant.ID, Participant.ID2, diagnosis)
+mtd_hxtx_rectum_pcor <- data.frame(mtd_hxtx_rectum_pcor, row.names = 1)
+
+#intersect with common row names
+mtd_hxtx_rectum_pcor_common_names <- intersect(rownames(mtd_hxtx_rectum_pcor), rownames(hxtx_location8_1_common))
+mtd_hxtx_rectum_pcor_common <- mtd_hxtx_rectum_pcor[mtd_hxtx_rectum_pcor_common_names, ]
+
+df34_diag <- as.data.frame(mtd_hxtx_rectum_pcor_common)
+df34_diag <- tibble::rownames_to_column(df34_diag, "patient_id")
+df34_diag <- df34_diag[,-2]
+df34_diag$diagnosis <- as.numeric(as.character(df34_diag$diagnosis))
+```
+
+### correlate
+
+```{r}
+# --- 1. Align all dataframes by patient_id ---
+common_patients <- Reduce(intersect, list(df3$patient_id, 
+                                           df4$patient_id, 
+                                           df34_diag$patient_id))
+
+genes_mat <- as.matrix(df3[match(common_patients, df3$patient_id), -1])
+metab_mat <- as.matrix(df4[match(common_patients, df4$patient_id), -1])
+rownames(genes_mat) <- common_patients
+rownames(metab_mat) <- common_patients
+
+# --- 2. Build covariate matrix Z ---
+diag_aligned <- df34_diag[match(common_patients, df34_diag$patient_id), ]
+Z <- model.matrix(~ diagnosis, data = diag_aligned)  # intercept + diagnosis
+
+# --- 3. Rank-transform columns ---
+genes_ranked <- apply(genes_mat, 2, rank)
+metab_ranked <- apply(metab_mat, 2, rank)
+
+# --- 4. Residualize ranked data against covariate ---
+residualize <- function(mat, Z) {
+  (diag(nrow(mat)) - Z %*% solve(t(Z) %*% Z) %*% t(Z)) %*% mat
+}
+
+genes_resid <- residualize(genes_ranked, Z)
+metab_resid <- residualize(metab_ranked, Z)
+
+# --- 5. Correlate residuals ---
+combined <- cbind(genes_resid, metab_resid)
+rc <- Hmisc::rcorr(combined, type = "pearson")
+
+n_genes <- ncol(genes_resid)
+n_metab <- ncol(metab_resid)
+
+rho_mat <- rc$r[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+p_mat   <- rc$P[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+n_mat   <- rc$n[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+
+# --- 6. Pivot to long and add FDR ---
+rho_long <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho")
+
+p_long <- as.data.frame(p_mat) %>%
+  mutate(x = rownames(p_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "p")
+
+n_long <- as.data.frame(n_mat) %>%
+  mutate(x = rownames(n_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "n")
+
+pcorr_diag_gmr <- rho_long %>%
+  left_join(p_long, by = c("x", "y")) %>%
+  left_join(n_long, by = c("x", "y")) %>%
+  mutate(z = "diagnosis",                                      # <-- z column
+         message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, z, rho, p, n, message, q_x, q_y, q)
+```
+
+### save pcorr file
+
+```{r}
+write_csv(pcorr_diag_gmr, "~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf diagnosis adult updated 3-26-2026.csv")
+```
+
+## Sex
+
+```{r}
+#replace sex with category 0 and 1 where 0 = male and 1 = female
+metadata_hxtx_rectum_yes_SEX <- metadata_hxtx_rectum_yes %>%
+  mutate(sex = case_when(
+    sex == "Male" ~ "0",
+    sex == "Female" ~ "1",
+  ))
+
+mtd_hxtx_rectum_pcor2 <- metadata_hxtx_rectum_yes_SEX %>%
+  dplyr::select(Participant.ID, sex)
+mtd_hxtx_rectum_pcor2 <- mtd_hxtx_rectum_pcor2 %>% 
+  mutate(Participant.ID2 = Participant.ID)
+mtd_hxtx_rectum_pcor2 <- mtd_hxtx_rectum_pcor2 %>%
+  dplyr::select(Participant.ID, Participant.ID2, sex)
+mtd_hxtx_rectum_pcor2 <- data.frame(mtd_hxtx_rectum_pcor2, row.names = 1)
+
+#intersect with common row names
+mtd_hxtx_rectum_pcor_common_names2 <- intersect(rownames(mtd_hxtx_rectum_pcor2), rownames(hxtx_location8_1_common))
+mtd_hxtx_rectum_pcor_common2 <- mtd_hxtx_rectum_pcor2[mtd_hxtx_rectum_pcor_common_names2, ]
+
+df34_sex <- as.data.frame(mtd_hxtx_rectum_pcor_common2)
+df34_sex <- tibble::rownames_to_column(df34_sex, "patient_id")
+df34_sex <- df34_sex[,-2]
+df34_sex$sex <- as.numeric(as.character(df34_sex$sex))
+```
+
+### correlate
+
+```{r}
+# --- 1. Align all dataframes by patient_id ---
+common_patients <- Reduce(intersect, list(df3$patient_id, 
+                                           df4$patient_id, 
+                                           df34_sex$patient_id))
+
+genes_mat <- as.matrix(df3[match(common_patients, df3$patient_id), -1])
+metab_mat <- as.matrix(df4[match(common_patients, df4$patient_id), -1])
+rownames(genes_mat) <- common_patients
+rownames(metab_mat) <- common_patients
+
+# --- 2. Build covariate matrix Z ---
+sex_aligned <- df34_sex[match(common_patients, df34_sex$patient_id), ]
+Z <- model.matrix(~ sex, data = sex_aligned)  # intercept + sex
+
+# --- 3. Rank-transform columns ---
+genes_ranked <- apply(genes_mat, 2, rank)
+metab_ranked <- apply(metab_mat, 2, rank)
+
+# --- 4. Residualize ranked data against covariate ---
+residualize <- function(mat, Z) {
+  (diag(nrow(mat)) - Z %*% solve(t(Z) %*% Z) %*% t(Z)) %*% mat
+}
+
+genes_resid <- residualize(genes_ranked, Z)
+metab_resid <- residualize(metab_ranked, Z)
+
+# --- 5. Correlate residuals ---
+combined <- cbind(genes_resid, metab_resid)
+rc <- Hmisc::rcorr(combined, type = "pearson")
+
+n_genes <- ncol(genes_resid)
+n_metab <- ncol(metab_resid)
+
+rho_mat <- rc$r[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+p_mat   <- rc$P[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+n_mat   <- rc$n[1:n_genes, (n_genes+1):(n_genes+n_metab)]
+
+# --- 6. Pivot to long and add FDR ---
+rho_long <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho")
+
+p_long <- as.data.frame(p_mat) %>%
+  mutate(x = rownames(p_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "p")
+
+n_long <- as.data.frame(n_mat) %>%
+  mutate(x = rownames(n_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "n")
+
+pcorr_sex_gmr <- rho_long %>%
+  left_join(p_long, by = c("x", "y")) %>%
+  left_join(n_long, by = c("x", "y")) %>%
+  mutate(z = "sex",                                      # <-- z column
+         message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%
+  dplyr::select(x, y, z, rho, p, n, message, q_x, q_y, q)
+```
+
+### save pcorr file
+
+```{r}
+write_csv(pcorr_sex_gmr, "~/Documents/gutmicrobiome_pharmacology/partial correlation gene and metab rectum cf sex adult updated 3-26-2026.csv")
+```
+
+## for alex
+
+```{r}
+a1 <- metadata_hxtx_rectum_yes %>%
+  dplyr::select(External.ID, Participant.ID)
+
+a2 <- metadata_metab_weeks %>%
+  dplyr::select(External.ID, Participant.ID)
+
+common_ids <- intersect(a1$Participant.ID, a2$Participant.ID)
+a3 <- data.frame(Participant.ID = common_ids)
+
+write_csv(a1, "~/Documents/gutmicrobiome_pharmacology/1-RNAseq_ParticipantIDs.csv")
+write_csv(a2, "~/Documents/gutmicrobiome_pharmacology/2-metabolomics_ParticipantIDs.csv")
+write_csv(a3, "~/Documents/gutmicrobiome_pharmacology/3-intersecting_ParticipantIDs.csv")
+```

@@ -1,0 +1,489 @@
+---
+title: "9 - Microbe and regorafenib correlations"
+output: html_document
+date: "2026-06-18"
+---
+
+# load packages and files
+
+```{r}
+library(data.table)
+library(tidyverse)
+library(tibble)
+library(Hmisc)
+library(dplyr)
+library(tidyr)
+library(arrow)
+
+metadata <- read.csv("~/Documents/gutmicrobiome_pharmacology/hmp2_metadata_2018-08-20.csv")
+
+#16S and transcriptomic files
+mic <- read_csv("~/Documents/gutmicrobiome_pharmacology/taxonomic_profiles_16S.csv")
+mic_label <- mic %>%
+  dplyr::select(`#OTU ID`, taxonomy) %>%
+  rename(OTU_ID = `#OTU ID`)
+
+hxtx <- read_csv("~/Documents/gutmicrobiome_pharmacology/HOST TRANSCRIPTOMICS host_tx_counts FILTERED less zeros.csv")
+hxtx1 <- hxtx[,-1]
+
+x <- arrow::read_parquet("~/Documents/gutmicrobiome_pharmacology/lincs_drug_gene_data_mean")
+xmeta <- arrow::read_parquet("~/Documents/gutmicrobiome_pharmacology/lincs_drug_meta")
+
+x <- data.frame(x, row.names = 1)
+```
+
+# clean metadata
+
+```{r}
+temp <- metadata %>% 
+  filter(data_type == "host_transcriptomics" | data_type == "biopsy_16S") %>%
+  filter(site_name == "Cedars-Sinai" | site_name == "MGH") %>%
+  mutate(data_type = as.factor(data_type)) %>%
+  mutate(biopsy_location = as.factor(biopsy_location), 
+         is_inflamed = as.factor(is_inflamed),
+         diagnosis = as.factor(diagnosis),
+         sex = as.factor(sex))
+
+metadata_hxtx <- filter(temp, data_type =="host_transcriptomics")
+metadata_mic <- filter(temp, data_type =="biopsy_16S") 
+```
+
+# clean up host transcriptomics
+
+```{r}
+metadata_hxtx_rectum_yes <- metadata_hxtx %>%
+  filter(biopsy_location == "Rectum",
+         is_inflamed == "Yes",
+         IntervalName == "Screening Colonoscopy")
+
+# Match the External.IDs present in metadata_hxtx_rectum_yes
+hxtx_location8 <- hxtx1 %>%
+  dplyr::select(names(hxtx1)[1], all_of(metadata_hxtx_rectum_yes$External.ID))
+```
+
+# clean up taxonomic profiles
+
+```{r}
+metadata_mic_rectum_yes <- metadata_mic %>%
+  filter(biopsy_location == "Rectum",
+         is_inflamed == "Yes",
+         IntervalName == "Screening Colonoscopy")
+
+# Match the External.IDs present in metadata_mic_rectum_yes
+mic1 <- mic %>%
+  dplyr::select(names(mic)[1], all_of(metadata_mic_rectum_yes$External.ID))
+```
+
+## replacing External.ID to Participant.ID
+
+```{r}
+matching <- metadata_hxtx_rectum_yes %>%
+  dplyr::select(External.ID, Participant.ID)
+setnames(hxtx_location8, matching$External.ID, matching$Participant.ID)
+
+matching2 <- metadata_mic_rectum_yes %>%
+  dplyr::select(External.ID, Participant.ID)
+setnames(mic1, matching2$External.ID, matching2$Participant.ID)
+```
+
+## set up dataframes for correlations
+
+```{r}
+#transpose metab_location1
+t_mic1 = as.data.frame(x = t(mic1), stringsAsFactors = FALSE)
+t_mic1 <- t(mic1)
+colnames(t_mic1) <- t_mic1[1, ]
+t_mic1_1 <- t_mic1[-1,]
+
+#transpose hxtx_location1
+t_hxtx_location8 <- t(hxtx_location8)
+colnames(t_hxtx_location8) <- t_hxtx_location8[1, ]
+t_hxtx_location8_1 <- t_hxtx_location8[-1,]
+
+#convert into dataframes
+t_hxtx_location8_1 <- as.data.frame(t_hxtx_location8_1)
+t_mic1_1 <- as.data.frame(t_mic1_1)
+
+#intersect with common row names
+common_row_names <- intersect(rownames(t_hxtx_location8_1), rownames(t_mic1_1))
+hxtx_location8_1_common <- t_hxtx_location8_1[common_row_names, ]
+mic1_1_common <- t_mic1_1[common_row_names, ]
+
+dfhxtx <- mutate_all(hxtx_location8_1_common, function(x) as.numeric(as.character(x)))
+dfmic <- mutate_all(mic1_1_common, function(x) as.numeric(as.character(x)))
+
+dfhxtx <- tibble::rownames_to_column(dfhxtx, "patient_id")
+dfmic <- tibble::rownames_to_column(dfmic, "patient_id")
+```
+
+## clean up 16S
+
+```{r}
+library(compositions)
+
+# 1. Prevalence filter first
+prev_threshold <- 0.20
+mic_prev <- colMeans(dfmic[,-1] > 0)
+keep_otus <- names(mic_prev[mic_prev >= prev_threshold])
+dfmic_filt <- dfmic[, c("patient_id", keep_otus)]
+
+# 2. CLR transform (add small pseudocount for zeros)
+mic_mat_filt <- as.matrix(dfmic_filt[,-1])
+mic_mat_filt <- mic_mat_filt + 0.5  # pseudocount
+mic_clr <- as.data.frame(compositions::clr(mic_mat_filt))
+
+dfmic_clr <- cbind(patient_id = dfmic_filt$patient_id, mic_clr)
+```
+
+## save files to run in HPC if have to
+
+```{r}
+write_csv(dfhxtx, "~/Documents/gutmicrobiome_pharmacology/dfhxtx.csv")
+write_csv(dfmic, "~/Documents/gutmicrobiome_pharmacology/dfmic.csv")
+write_csv(dfmic_clr, "~/Documents/gutmicrobiome_pharmacology/dfmic_clr.csv")
+```
+
+# MICROBE X GENE CORRELATIONS
+
+```{r}
+# --- 1. Extract numeric matrices (drop patient_id column) ---
+genes_mat <- as.matrix(dfhxtx[, -1])   # 40 x ~10000
+mic_mat <- as.matrix(dfmic_clr[, -1])   # 40 x ~650
+
+rownames(genes_mat) <- dfhxtx$patient_id
+rownames(mic_mat) <- dfmic_clr$patient_id
+
+# --- 2. Rank-transform columns (= Spearman) ---
+genes_ranked <- apply(genes_mat, 2, rank)
+mic_ranked <- apply(mic_mat, 2, rank)
+
+# --- 3. Compute ALL correlations at once via matrix multiply ---
+# rcorr on combined ranked matrix, then extract the cross-block
+combined <- cbind(genes_ranked, mic_ranked)
+rc <- Hmisc::rcorr(combined, type = "pearson")  # pearson on ranks = spearman
+
+n_genes <- ncol(genes_ranked)
+n_mic <- ncol(mic_ranked)
+
+rho_mat <- rc$r[1:n_genes, (n_genes+1):(n_genes+n_mic)]
+p_mat   <- rc$P[1:n_genes, (n_genes+1):(n_genes+n_mic)]
+n_mat   <- rc$n[1:n_genes, (n_genes+1):(n_genes+n_mic)]
+
+# --- 4. Pivot to long format ---
+rho_long <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho")
+
+p_long <- as.data.frame(p_mat) %>%
+  mutate(x = rownames(p_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "p")
+
+n_long <- as.data.frame(n_mat) %>%
+  mutate(x = rownames(n_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "n")
+
+gmicr_corr <- rho_long %>%
+  left_join(p_long, by = c("x", "y")) %>%
+  left_join(n_long, by = c("x", "y")) %>%
+  mutate(message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  # --- 5. FDR corrections (matching coracle's q_x, q_y, q) ---
+  group_by(x) %>%
+  mutate(q_x = p.adjust(p, method = "BH")) %>%   # FDR per gene (across all its metabolites)
+  ungroup() %>%
+  group_by(y) %>%
+  mutate(q_y = p.adjust(p, method = "BH")) %>%   # FDR per metabolite (across all its genes)
+  ungroup() %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%      # global FDR across all 6.5M pairs
+  dplyr::select(x, y, rho, p, n, message, q_x, q_y, q)
+```
+
+# MICROBE x REGORAFENIB CORRELATION
+
+## prep
+
+```{r}
+gmicr_corr_u <- gmicr_corr |>
+  dplyr::select(x, y, rho)
+
+gmicr_corr_u1 <- gmicr_corr_u %>%
+  pivot_wider(names_from = y, values_from = rho)
+
+gmicr_corr_u2 <- column_to_rownames(gmicr_corr_u1, var = "x")
+
+rego_id <- xmeta %>%
+  filter(pert_name == "regorafenib")
+
+x_rego <- x[, colnames(x) %in% rego_id, drop = FALSE]
+
+#intersect with common row names which are GENES
+common_genes <- intersect(rownames(x_rego), rownames(gmicr_corr_u2))
+mic_rectum_common <- gmicr_corr_u2[common_genes, ]
+rego_common <- x_rego[common_genes, ]
+
+rego_common <- data.frame(regorafenib = x_rego[common_genes, ])
+rownames(rego_common) <- common_genes
+
+#convert row names back to column
+#df_micr <- tibble::rownames_to_column(mic_rectum_common, "gene")
+#df_rego <- tibble::rownames_to_column(rego_common, "gene")
+```
+
+## correlate
+
+```{r}
+#Rank transform (Spearman)
+mic_ranked  <- apply(mic_rectum_common, 2, rank)
+rego_ranked <- apply(rego_common, 2, rank)
+
+#Single rcorr call
+combined <- cbind(rego_ranked, mic_ranked)
+rc <- Hmisc::rcorr(combined, type = "pearson")
+
+n_rego <- ncol(rego_ranked)  # = 1
+n_mic  <- ncol(mic_ranked)
+
+rho_mat <- rc$r[1:n_rego, (n_rego+1):(n_rego+n_mic), drop = FALSE]
+p_mat   <- rc$P[1:n_rego, (n_rego+1):(n_rego+n_mic), drop = FALSE]
+n_mat   <- rc$n[1:n_rego, (n_rego+1):(n_rego+n_mic), drop = FALSE]
+
+#Pivot to long format
+rho_long <- as.data.frame(rho_mat) %>%
+  mutate(x = rownames(rho_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "rho")
+
+p_long <- as.data.frame(p_mat) %>%
+  mutate(x = rownames(p_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "p")
+
+n_long <- as.data.frame(n_mat) %>%
+  mutate(x = rownames(n_mat)) %>%
+  pivot_longer(-x, names_to = "y", values_to = "n")
+
+#Combine and FDR correct
+rego_mic_corr <- rho_long %>%
+  left_join(p_long, by = c("x", "y")) %>%
+  left_join(n_long, by = c("x", "y")) %>%
+  mutate(message = ifelse(is.na(rho), "insufficient data", "ok")) %>%
+  mutate(q = p.adjust(p, method = "BH")) %>%   # global FDR (only 122 pairs, very simple)
+  arrange(desc(abs(rho))) %>%
+  dplyr::select(x, y, rho, p, n, message, q)
+```
+
+# save files
+
+```{r}
+write_csv(gmicr_corr, "~/Documents/gutmicrobiome_pharmacology/microbe and gene correlations 6-18-2026.csv")
+write_csv(rego_mic_corr, "~/Documents/gutmicrobiome_pharmacology/microbe and regorafenib correlation 6-18-2026.csv")
+```
+
+# top microbes
+
+```{r}
+# Parse taxonomy string into levels
+mic_label_parsed <- mic_label %>%
+  mutate(
+    taxonomy = str_replace_all(taxonomy, "__", ""),  # remove the __ prefix
+    phylum  = str_extract(taxonomy, "(?<=; )[^;]+(?=; [^;]+; [^;]+; [^;]+; [^;]+$)"),
+    genus   = str_extract(taxonomy, "[^;]+$") %>% str_trim()  # last element = genus
+  )
+
+# Join back to your correlation results
+rego_mic_corr_labeled <- rego_mic_corr %>%
+  left_join(mic_label_parsed, by = c("y" = "OTU_ID")) %>%
+  arrange(desc(abs(rho)))
+
+mimics   <- rego_mic_corr_labeled %>% filter(rho > 0) %>% head(10)
+opposers <- rego_mic_corr_labeled %>% filter(rho < 0) %>% head(10)
+
+# See what genera you're working with
+mimics %>% dplyr::select(y, rho, q, genus)
+opposers %>% dplyr::select(y, rho, q, genus)
+```
+
+# query UniProt
+
+```{r}
+library(httr)
+library(jsonlite)
+
+# Function to query UniProt for beta-glucuronidase (EC 3.2.1.31) per genus
+check_hits <- function(genus) {
+  url <- paste0(
+    "https://rest.uniprot.org/uniprotkb/search?query=",
+    "ec:3.2.1.31+AND+taxonomy_name:", genus,
+    "&format=json&size=10&fields=accession,protein_name,organism_name,ec"
+  )
+  resp <- GET(url)
+  content <- fromJSON(rawToChar(resp$content), simplifyVector = FALSE)
+  
+  if (length(content$results) == 0) {
+    cat(genus, "- no hits\n")
+    return(data.frame(genus = genus, accession = NA, 
+                      organism = NA, protein = NA))
+  }
+  
+  cat(genus, "- hits:", length(content$results), "\n")
+  
+  map_dfr(content$results, function(r) {
+    data.frame(
+      genus     = genus,
+      accession = r$primaryAccession %||% "unknown",
+      organism  = r$organism$scientificName %||% "unknown",
+      protein   = r$proteinDescription$recommendedName$fullName$value %||% "unknown"
+    )
+  })
+}
+
+# Run for all genera
+glucuronidase_detailed <- map_dfr(genera, function(g) {
+  Sys.sleep(0.5)
+  check_hits(g)
+})
+
+glucuronidase_detailed
+
+# Summarize
+glucuronidase_summary <- glucuronidase_detailed %>%
+  group_by(genus) %>%
+  summarise(
+    hits = sum(!is.na(accession)),
+    has_glucuronidase = any(!is.na(accession)),
+    organisms = paste(unique(organism[!is.na(organism)]), collapse = "; ")
+  ) %>%
+  arrange(desc(hits))
+
+glucuronidase_summary
+
+# Clean up with manual corrections
+glucuronidase_final <- glucuronidase_summary %>%
+  mutate(
+    has_glucuronidase = case_when(
+      genus == "Haemophilus" ~ FALSE,  # hit was Histophilus somni, different genus
+      genus == "Veillonella" ~ FALSE,  # hit was V. criceti, protein unconfirmed
+      genus == "Parabacteroides" ~ TRUE, # known from literature despite no UniProt hit
+      TRUE ~ has_glucuronidase
+    ),
+    evidence = case_when(
+      genus == "Haemophilus" ~ "false positive - Histophilus somni",
+      genus == "Veillonella" ~ "unconfirmed - V. criceti only",
+      genus == "Parabacteroides" ~ "literature only - no UniProt annotation",
+      has_glucuronidase ~ "UniProt EC 3.2.1.31",
+      TRUE ~ "no evidence found"
+    )
+  ) %>%
+  # join back to correlation results
+  left_join(
+    rego_mic_corr_labeled %>% 
+      dplyr::select(y, genus, rho, q) %>%
+      group_by(genus) %>%
+      slice_max(abs(rho), n = 1),  # keep top OTU per genus
+    by = "genus"
+  ) %>%
+  mutate(direction = ifelse(rho > 0, "mimic", "opposer")) %>%
+  dplyr::select(genus, direction, rho, q, has_glucuronidase, evidence, hits) %>%
+  arrange(direction, desc(abs(rho)))
+
+glucuronidase_final
+
+# Fix q display before saving
+glucuronidase_final <- glucuronidase_final %>%
+  mutate(
+    p_display = "< 2.2e-16",
+    q_display = "< 2.2e-16"
+  ) %>%
+  dplyr::select(genus, direction, rho, p_display, q_display, has_glucuronidase, evidence, hits)
+
+glucuronidase_final
+```
+
+## save files
+
+```{r}
+write_csv(glucuronidase_final, "~/Documents/gutmicrobiome_pharmacology/glucuronidase_final_6-18-2026.csv")
+write_csv(rego_mic_corr_labeled, "~/Documents/gutmicrobiome_pharmacology/rego_mic_corr_labelled_6-18-2026.csv")
+```
+
+# Figure
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+
+# Prep data - join taxonomy to full correlation results
+plot_data <- rego_mic_corr_labeled %>%
+  arrange(rho) %>%
+  mutate(
+    rank = row_number(),
+    highlight = genus %in% glucuronidase_final$genus,
+    has_glucuronidase = genus %in% 
+      filter(glucuronidase_final, has_glucuronidase == TRUE)$genus,
+    direction = ifelse(rho > 0, "mimic", "opposer"),
+    label = ifelse(highlight, genus, NA)
+  )
+
+top_label <- plot_data %>%
+  filter(has_glucuronidase == TRUE) %>%
+  group_by(direction, genus) %>%
+  slice_max(abs(rho), n = 1) %>%
+  ungroup() %>%
+  filter(abs(rho) >= 0.15)  # drops Roseburia opposer and Bacteroides opposer
+
+top_label %>% dplyr::select(genus, direction, rho)
+
+p <- ggplot(plot_data, aes(x = rank, y = rho)) +
+  geom_segment(aes(xend = rank, yend = 0), 
+               color = "grey80", linewidth = 0.4) +
+  geom_point(data = filter(plot_data, !highlight),
+             aes(color = direction), size = 1.5, alpha = 0.4) +
+  geom_segment(data = filter(plot_data, highlight),
+               aes(xend = rank, yend = 0, color = direction),
+               linewidth = 0.8) +
+  geom_point(data = filter(plot_data, highlight & !has_glucuronidase),
+             aes(color = direction), shape = 16, size = 3) +
+  geom_point(data = filter(plot_data, highlight & has_glucuronidase),
+             aes(fill = direction), 
+             shape = 23, size = 4.5, 
+             color = "black",
+             stroke = 1.0) +
+geom_label_repel(data = filter(top_label, direction == "mimic"),
+                 aes(label = genus, color = direction),
+                 fontface = "italic", size = 2.5,
+                 nudge_x = -10,
+                 min.segment.length = 0,
+                 segment.color = "black",
+                 segment.size = 0.5,
+                 show.legend = FALSE) +
+geom_label_repel(data = filter(top_label, direction == "opposer"),
+                 aes(label = genus, color = direction),
+                 fontface = "italic", size = 2.5,
+                 nudge_x = 10,
+                 min.segment.length = 0,
+                 segment.color = "black",
+                 segment.size = 0.5,
+                 show.legend = FALSE) +
+  geom_hline(yintercept = 0, linewidth = 0.4, linetype = "dashed") +
+  scale_color_manual(values = c("mimic" = "#E07B54", "opposer" = "#5B8DB8"),
+                     name = "Direction") +
+  scale_fill_manual(values = c("mimic" = "#E07B54", "opposer" = "#5B8DB8"),
+                    guide = "none") +
+  labs(
+    x = "OTU rank",
+    y = "Spearman rho\n(microbe vs. regorafenib signature)",
+    caption = "Diamond = beta-glucuronidase activity confirmed (UniProt EC 3.2.1.31)"
+  ) +
+  theme_classic(base_size = 11) +
+  theme(
+    legend.position = "bottom",
+    plot.caption = element_text(size = 8, hjust = 0, face = "italic"),
+    axis.title = element_text(size = 10)
+  )
+
+p
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure_rego_mic_corr_6-18-2026.pdf",
+       width = 7, height = 4, dpi = 300)
+
+ggsave("~/Documents/gutmicrobiome_pharmacology/figure_rego_mic_corr_6-18-2026.svg",
+       width = 7, height = 4, dpi = 300)
+
+#title = "Gut microbiota correlation with regorafenib transcriptomic signature"
+```

@@ -1,0 +1,293 @@
+---
+title: "7 - Fig 4 heatmaps of top metabolites and pathways"
+output: html_document
+date: "2025-09-26"
+---
+
+# load packages 
+
+```{r}
+library(arrow)
+library(tidyverse)
+library(pheatmap)
+library(KEGGREST)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(fgsea)
+```
+
+# load files
+
+```{r}
+x <- arrow::read_parquet("lincs_drug_gene_data_mean")
+xmeta <- arrow::read_parquet("lincs_drug_meta")
+
+gmr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/gene vs metab correlations adult rectum FDR categorized 4-1-2026.csv")
+
+rr_sig <- read.csv("~/Documents/gutmicrobiome_pharmacology/regorafenib vs metab correlations adult rectum FDR significance categorized 4-1-2026.csv")
+
+mimics_metabs    <- read.csv("~/Documents/gutmicrobiome_pharmacology/mimics_metabs.csv")
+opposites_metabs <- read.csv("~/Documents/gutmicrobiome_pharmacology/opposites_metabs.csv")
+
+kegg_gene_sets <- readRDS("~/Documents/gutmicrobiome_pharmacology/kegg_gene_sets.rds")
+
+overlap_mimics <- mimics_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>%
+  unique() %>%
+  na.omit()
+
+overlap_opposites <- opposites_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>%
+  unique() %>%
+  na.omit()
+
+# shared function
+format_metab_name <- function(x) {
+  ifelse(is.na(x), NA,
+    paste0(sub("_.*", "", x), " (", sub("^[^_]*_", "", x), ")")
+  )
+}
+
+# clean pathway names function
+clean_pathway_names <- function(mat) {
+  rownames(mat) <- gsub(" - Homo sapiens \\(human\\)", "", rownames(mat))
+  mat
+}
+```
+
+# filter for regorafenib
+
+```{r}
+regorafenib <- x %>%
+  dplyr::select(gene, regorafenib) %>%
+  dplyr::rename(x = gene)
+```
+
+## regorafenib gene perturbation
+
+```{r}
+write_csv(regorafenib, "~/Documents/gutmicrobiome_pharmacology/regorafenib gene pertubation.csv")
+```
+
+# FDR scores for regorafenib
+
+```{r}
+reg_z <- regorafenib %>%
+  mutate(
+    z = as.numeric(scale(regorafenib)),
+    pval = 2 * pnorm(-abs(z)),
+    FDR = p.adjust(pval, method = "fdr")
+  )
+```
+
+## save FDR scores
+
+```{r}
+write_csv(reg_z, "~/Documents/gutmicrobiome_pharmacology/regorafenib gene pertubation with FDR.csv")
+```
+
+# filtering top mimics and opposites from raw spearman gene-metab
+
+```{r}
+overlap_mimics <- mimics_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>%
+  unique() %>%
+  na.omit()
+
+overlap_opposites <- opposites_metabs %>%
+  filter(category == "Common to all three analyses") %>%
+  pull(y) %>%
+  unique() %>%
+  na.omit()
+
+top_mimics <- rr_sig %>%
+  filter(y %in% overlap_mimics) %>%
+  dplyr::select(y, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig) %>%
+  mutate(Metabolite = format_metab_name(y)) %>%
+  dplyr::select(Metabolite, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig) %>%
+  dplyr::rename(
+    "Unadjusted rho"          = rho,
+    "FDR (drug)"              = q_x,
+    "FDR (metabolite)"        = q_y,
+    "Drug significance"       = FDR_drug_sig,
+    "Metabolite significance" = FDR_metab_sig
+  )
+
+top_opposites <- rr_sig %>%
+  filter(y %in% overlap_opposites) %>%
+  dplyr::select(y, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig) %>%
+  mutate(Metabolite = format_metab_name(y)) %>%
+  dplyr::select(Metabolite, rho, q_x, q_y, FDR_drug_sig, FDR_metab_sig) %>%
+  dplyr::rename(
+    "Unadjusted rho"          = rho,
+    "FDR (drug)"              = q_x,
+    "FDR (metabolite)"        = q_y,
+    "Drug significance"       = FDR_drug_sig,
+    "Metabolite significance" = FDR_metab_sig
+  )
+```
+
+## save top metabolites
+
+```{r}
+write_csv(top_mimics, "~/Documents/gutmicrobiome_pharmacology/top_mimics_regorafenib_metabolites_4-2-2026.csv")
+write_csv(top_opposites, "~/Documents/gutmicrobiome_pharmacology/top_opposites_regorafenib_metabolites_4-2-2026.csv")
+```
+
+# function over multiple metabolites
+
+```{r}
+# fgsea function - WITH formatted metabolite names
+run_fgsea_for_metabolite <- function(met_name, gmr_sig, reg_z, pathways) {
+  df <- gmr_sig %>%
+    filter(y == met_name) %>%
+    left_join(reg_z, by = "x") %>%
+    na.omit() %>%
+    mutate(combined_score = sign(rho1) * -log10(pval))
+  ranks <- setNames(df$combined_score, df$x) %>% sort(decreasing = TRUE)
+  fg <- fgsea(pathways = pathways, stats = ranks, minSize = 15, maxSize = 500, nPermSimple = 10000)
+  if (nrow(fg) == 0) return(NULL)
+  as_tibble(fg) %>%
+    mutate(metabolite = format_metab_name(met_name))  # formatted name here
+}
+```
+
+# run fgsea
+
+```{r}
+fgsea_mimics <- map_dfr(overlap_mimics, run_fgsea_for_metabolite, gmr_sig, reg_z, kegg_gene_sets)
+fgsea_opposites <- map_dfr(overlap_opposites, run_fgsea_for_metabolite, gmr_sig, reg_z, kegg_gene_sets)
+
+write_csv(fgsea_mimics, "~/Documents/gutmicrobiome_pharmacology/fgsea_top_mimics_regorafenib_metabolites.csv")
+write_csv(fgsea_opposites, "~/Documents/gutmicrobiome_pharmacology/fgsea_top_opposites_regorafenib_metabolites.csv")
+```
+
+# setting up heatmap
+
+## filter for padj <0.05
+
+```{r}
+# For mimics
+fgsea_mat_mimics <- fgsea_mimics %>%
+  filter(padj < 0.05) %>%
+  dplyr::select(pathway, metabolite, NES) %>%
+  pivot_wider(names_from = metabolite, values_from = NES, values_fill = 0) %>%
+  column_to_rownames("pathway") %>%
+  clean_pathway_names()
+
+# For opposites
+fgsea_mat_opposites <- fgsea_opposites %>%
+  filter(padj < 0.05) %>%
+  dplyr::select(pathway, metabolite, NES) %>%
+  pivot_wider(names_from = metabolite, values_from = NES, values_fill = 0) %>%
+  column_to_rownames("pathway") %>%
+  clean_pathway_names()
+
+# colorblind safe palette
+my_palette <- colorRampPalette(c("#2166AC", "white", "#D55E00"))(100)
+
+# convert structural zeros to NA before plotting
+fgsea_mat_mimics_plot <- as.matrix(fgsea_mat_mimics)
+fgsea_mat_mimics_plot[fgsea_mat_mimics_plot == 0] <- NA
+
+fgsea_mat_opposites_plot <- as.matrix(fgsea_mat_opposites)
+fgsea_mat_opposites_plot[fgsea_mat_opposites_plot == 0] <- NA
+
+# Figure 4 heatmap - mimics
+pheatmap(fgsea_mat_mimics_plot,
+         cluster_rows  = row_clust_m,
+         cluster_cols  = col_clust_m,
+         scale         = "none",        # no scaling — use raw NES values
+         color         = my_palette,
+         na_col        = "white",
+         fontsize      = 12,
+         fontsize_row  = 10,
+         fontsize_col  = 11,
+         main          = "")
+
+# Figure 5 heatmap - opposites
+pheatmap(fgsea_mat_opposites_plot,
+         cluster_rows  = row_clust_o,
+         cluster_cols  = col_clust_o,
+         scale         = "none",        # no scaling — use raw NES values
+         color         = my_palette,
+         na_col        = "white",
+         fontsize      = 12,
+         fontsize_row  = 10,
+         fontsize_col  = 11,
+         main          = "")
+```
+
+## save matrices
+
+```{r}
+write.csv(fgsea_mat_mimics, "~/Documents/gutmicrobiome_pharmacology/fgsea_matrices_top_mimics_regorafenib_metabolites-4-8-2026.csv")
+write.csv(fgsea_mat_opposites, "~/Documents/gutmicrobiome_pharmacology/fgsea_matrices_top_opposites_regorafenib_metabolites-4-8-2026.csv")
+```
+
+# get KEGG pathway IDs
+
+```{r}
+kegg_pathway_ids <- keggList("pathway", "hsa")
+```
+
+# get gene sets
+
+```{r}
+kegg_gene_sets <- lapply(seq_along(kegg_pathway_ids), function(i) {
+  pid <- names(kegg_pathway_ids)[i]
+  tryCatch({
+    result <- keggGet(pid)[[1]]
+    genes <- result$GENE
+    if (is.null(genes)) return(NULL)
+    # odd indices are entrez IDs, even are descriptions
+    entrez_ids <- genes[seq(1, length(genes), by = 2)]
+    # convert entrez to gene symbols to match your x column in gmr_sig
+    symbols <- mapIds(org.Hs.eg.db, 
+                      keys = entrez_ids, 
+                      column = "SYMBOL", 
+                      keytype = "ENTREZID",
+                      multiVals = "first")
+    symbols <- symbols[!is.na(symbols)]
+    if (length(symbols) == 0) return(NULL)
+    unname(symbols)
+  }, error = function(e) NULL)
+})
+names(kegg_gene_sets) <- kegg_pathway_ids
+kegg_gene_sets <- Filter(Negate(is.null), kegg_gene_sets)
+```
+
+```{r}
+saveRDS(kegg_gene_sets, "~/Documents/gutmicrobiome_pharmacology/kegg_gene_sets.rds")
+```
+
+```{r}
+# function over multiple metabolites
+run_fgsea_for_metabolite <- function(met_name, gmr_sig, reg_z, pathways) {
+  df <- gmr_sig %>%
+    filter(y == met_name) %>%
+    left_join(reg_z, by = "x") %>%
+    na.omit() %>%
+    mutate(combined_score = sign(rho1) * -log10(pval))
+  ranks <- setNames(df$combined_score, df$x) %>% sort(decreasing = TRUE)
+  fg <- fgsea(pathways = pathways, stats = ranks, minSize = 15, maxSize = 500, nPermSimple = 10000)
+  if (nrow(fg) == 0) return(NULL)
+  as_tibble(fg) %>%
+    mutate(metabolite = met_name,
+           metabolite = format_metab_name(met_name))  # format name here
+}
+
+# run fgsea
+fgsea_mimics <- map_dfr(overlap_mimics, run_fgsea_for_metabolite, gmr_sig, reg_z, kegg_gene_sets)
+fgsea_opposites <- map_dfr(overlap_opposites, run_fgsea_for_metabolite, gmr_sig, reg_z, kegg_gene_sets)
+```
+
+# save fgsea files
+
+```{r}
+write_csv(fgsea_mimics,    "~/Documents/gutmicrobiome_pharmacology/fgsea_top_mimics_regorafenib_metabolites-4-2-2026.csv")
+write_csv(fgsea_opposites, "~/Documents/gutmicrobiome_pharmacology/fgsea_top_opposites_regorafenib_metabolites-4-2-2026.csv")
+```

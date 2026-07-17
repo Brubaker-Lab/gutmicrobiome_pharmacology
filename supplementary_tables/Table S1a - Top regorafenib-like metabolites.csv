@@ -1,0 +1,25 @@
+Metabolite,Unadjusted rho,FDR (drug),FDR (metabolite),Drug significance,Metabolite significance
+10-heptadecenoate (C18n_QI23),0.16093656355728386,0,0,Drug Significant,Metabolite Significant
+glycodeoxycholate (C18n_QI57),0.22631742956326523,0,0,Drug Significant,Metabolite Significant
+crustecdysone (C18n_QI81),0.16829001674325933,0,0,Drug Significant,Metabolite Significant
+13-cis-retinoic acid (C18n_QI92),0.1855841754490582,0,0,Drug Significant,Metabolite Significant
+Lys - chenodeoxycholate (C18n_QI10785),0.18684106021358615,0,0,Drug Significant,Metabolite Significant
+Asn - deoxycholate (C18n_QI10374),0.16455557822053815,0,0,Drug Significant,Metabolite Significant
+Glu - deoxycholate (C18n_QI10801),0.19364654021254352,0,0,Drug Significant,Metabolite Significant
+isodeoxycholic acid (C18n_QI6769),0.18650871776041025,0,0,Drug Significant,Metabolite Significant
+C18:2 LPE (C8p_QI14),0.1911422499369569,0,0,Drug Significant,Metabolite Significant
+5-acetylamino-6-amino-3-methyluracil (HILn_QI19),0.16240748552315096,0,0,Drug Significant,Metabolite Significant
+cinnamoylglycine (HILn_QI41),0.1838735146343083,0,0,Drug Significant,Metabolite Significant
+guanosine (HILn_QI66),0.22020227016572885,0,0,Drug Significant,Metabolite Significant
+imidazolelactate (HILn_QI73),0.19399788904106893,0,0,Drug Significant,Metabolite Significant
+inosine (HILn_QI76),0.18506444070333508,0,0,Drug Significant,Metabolite Significant
+pantothenate (HILn_QI95),0.17696161682946915,0,0,Drug Significant,Metabolite Significant
+pyrocatechol (HILn_QI103),0.1738348772541653,0,0,Drug Significant,Metabolite Significant
+inosine (HILp_QI7107),0.16883153223123368,0,0,Drug Significant,Metabolite Significant
+1-methylguanosine (HILp_QI8513),0.17529259069276829,0,0,Drug Significant,Metabolite Significant
+2'-O-methyladenosine (HILp_QI7751),0.15416975362138594,0,0,Drug Significant,Metabolite Significant
+4-aminophenol (HILp_QI418),0.1638731374055066,0,0,Drug Significant,Metabolite Significant
+4-guanidinobutanoic acid (HILp_QI1750),0.1668480452701141,0,0,Drug Significant,Metabolite Significant
+5-acetylamino-6-amino-3-methyluracil (HILp_QI3985),0.1572528640461377,0,0,Drug Significant,Metabolite Significant
+8-hydroxy-deoxyguanosine (HILp_QI7860),0.2214189098362512,0,0,Drug Significant,Metabolite Significant
+beta-guanidinopropionic acid (HILp_TF26),0.1577090745120592,0,0,Drug Significant,Metabolite Significant

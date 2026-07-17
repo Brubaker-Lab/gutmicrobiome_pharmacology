@@ -4,7 +4,7 @@ Supplementary data, figures, and code for a computational microbiome pharmacolog
 # Supplementary material for:
 Gut Microbiome Metabolites Exhibit Regorafenib-Like Transcriptional Signatures in Colorectal Cancer: A Computational Microbiome Pharmacology Approach
 
-This repository contains supplementary tables, supplementary figures, processed analysis outputs, and code associated with the manuscript.
+This repository contains supplementary tables, supplementary figures, and code associated with the manuscript.
 
 ## Supplementary tables
 - Table S1a: Top regorafenib-like metabolites

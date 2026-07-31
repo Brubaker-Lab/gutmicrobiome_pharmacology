@@ -37,7 +37,13 @@ File: Table S5a - Kaplan-Meier/Cox results for mimic-associated genes.csv
 Title: Survival analysis results for genes associated with regorafenib-like metabolites.  
 Description: Kaplan-Meier and Cox proportional hazards results for genes associated with top-ranked metabolites.
 
-## Supplementary Table 54b
+## Supplementary Table S5b
 File: Table S5b - Kaplan-Meier/Cox results for opposite-associated genes.csv  
 Title: Survival analysis results for genes associated with regorafenib-opposing metabolites.  
 Description: Kaplan-Meier and Cox proportional hazards results for genes associated with top-ranked metabolites.
+
+## Supplementary Table S6
+File: Table S6 - Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells
+Title: Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells
+Description: JT p-values, BH-adjusted q-values, Spearman ρ, log-dose regression slopes with 95% confidence intervals, Emax, and normalized AUC are reported for the three prioritized metabolites. Regorafenib was analyzed separately as a positive control. Each concentration included four replicate wells.
+

@@ -43,7 +43,7 @@ Title: Survival analysis results for genes associated with regorafenib-opposing 
 Description: Kaplan-Meier and Cox proportional hazards results for genes associated with top-ranked metabolites.
 
 ## Supplementary Table S6
-File: Table S6 - Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells.csv
-Title: Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells
-Description: JT p-values, BH-adjusted q-values, Spearman ρ, log-dose regression slopes with 95% confidence intervals, Emax, and normalized AUC are reported for the three prioritized metabolites. Regorafenib was analyzed separately as a positive control. Each concentration included four replicate wells.
+File: Table S6 - Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells.csv. 
+Title: Concentration-dependent cytotoxicity of framework-prioritized metabolites in CRC cells. 
+Description: JT p-values, BH-adjusted q-values, Spearman ρ, log-dose regression slopes with 95% confidence intervals, Emax, and normalized AUC are reported for the three prioritized metabolites. Regorafenib was analyzed separately as a positive control. Each concentration included four replicate wells.  
 

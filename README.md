@@ -11,8 +11,8 @@ This repository contains supplementary tables, supplementary figures, and code a
 - Table S1b: Top regorafenib-opposing metabolites
 - Table S2a: KEGG pathway enrichment results for regorafenib-like metabolites
 - Table S2b: KEGG pathway enrichment results for regorafenib-opposing metabolites
-- Table S3: Consensus sensitivity results for experimentally tested metabolites
-- Table S4: β-glucuronidase annotation of regorafenib-associated taxa
+- Table S3: β-glucuronidase annotation of regorafenib-associated taxa
+- Table S4: Consensus sensitivity results for experimentally tested metabolites
 - Table S5a: Kaplan-Meier/Cox results for mimic-associated genes
 - Table S5b: Kaplan-Meier/Cox results for opposite-associated genes
 

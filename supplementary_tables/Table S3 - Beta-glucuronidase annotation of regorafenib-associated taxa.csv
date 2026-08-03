@@ -1,0 +1,15 @@
+genus,direction,rho,p_display,q_display,has_glucuronidase,evidence,hits
+Parabacteroides,mimic,0.2304064278188942,< 2.2e-16,< 2.2e-16,TRUE,literature only - no UniProt annotation,0
+Roseburia,mimic,0.20672535613088308,< 2.2e-16,< 2.2e-16,TRUE,UniProt EC 3.2.1.31,2
+Desulfovibrio,mimic,0.20508289927238743,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0
+Bacteroides,mimic,0.19548142526607962,< 2.2e-16,< 2.2e-16,TRUE,UniProt EC 3.2.1.31,10
+Bilophila,mimic,0.17804968639224225,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0
+Phascolarctobacterium,mimic,0.17206016428370802,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0
+Veillonella,opposer,-0.25307442726566115,< 2.2e-16,< 2.2e-16,FALSE,unconfirmed - V. criceti only,1
+Erysipelatoclostridium,opposer,-0.2381318511271154,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0
+Collinsella,opposer,-0.21782370143186874,< 2.2e-16,< 2.2e-16,TRUE,UniProt EC 3.2.1.31,2
+Fusobacterium,opposer,-0.21399032784044528,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0
+Haemophilus,opposer,-0.20817032007107,< 2.2e-16,< 2.2e-16,FALSE,false positive - Histophilus somni,1
+Bifidobacterium,opposer,-0.19809995833597846,< 2.2e-16,< 2.2e-16,TRUE,UniProt EC 3.2.1.31,10
+Actinomyces,opposer,-0.1912174846743421,< 2.2e-16,< 2.2e-16,TRUE,UniProt EC 3.2.1.31,3
+Anaerostipes,opposer,-0.18940491003999788,< 2.2e-16,< 2.2e-16,FALSE,no evidence found,0

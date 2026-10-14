@@ -15,9 +15,11 @@ Analysis scripts are provided in the `code/` directory. Public datasets used in 
 - Table S2a: KEGG pathway enrichment results for regorafenib-like metabolites
 - Table S2b: KEGG pathway enrichment results for regorafenib-opposing metabolites
 - Table S3: β-glucuronidase annotation of regorafenib-associated taxa
-- Table S4: Consensus sensitivity results for experimentally tested metabolites
-- Table S5a: Kaplan-Meier/Cox results for mimic-associated genes
-- Table S5b: Kaplan-Meier/Cox results for opposite-associated genes
+- Table S4: Overlap of top-ranked regorafenib-concordant metabolites between baseline and longitudinal metabolite profiles
+- Table S5: Longitudinal sensitivity results for experimentally tested metabolites
+- Table S6a: Survival analysis results for genes associated with regorafenib-concordant metabolites
+- Table S6b: Survival analysis results for genes associated with regorafenib-opposing metabolites
+- Table S7: Concentration-dependent cytotoxicity of framework-prioritised metabolites in CRC cells
 
 ## Supplementary figures
 - Figure S1a: Baseline versus longitudinal consensus regorafenib mimic scores

@@ -24,8 +24,8 @@ Analysis scripts are provided in the `code/` directory. Public datasets used in 
 See the README within the `supplementary_tables/` directory for file-level descriptions.
 
 ## Supplementary figures
-- Figure S1a: Baseline versus longitudinal consensus regorafenib mimic scores
-- Figure S1b: Regorafenib mimic scores for experimentally tested metabolites
+- Figure S1a: Comparison of baseline and longitudinal regorafenib transcriptional concordance scores
+- Figure S1b: Baseline and longitudinal concordance scores for experimentally tested metabolites
 - Figure S2: Kaplan-Meier survival analysis for HIST1H2AC
 
 ## Derived data

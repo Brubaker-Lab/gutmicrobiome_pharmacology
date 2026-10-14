@@ -19,7 +19,9 @@ Analysis scripts are provided in the `code/` directory. Public datasets used in 
 - Table S5: Longitudinal sensitivity results for experimentally tested metabolites
 - Table S6a: Survival analysis results for genes associated with regorafenib-concordant metabolites
 - Table S6b: Survival analysis results for genes associated with regorafenib-opposing metabolites
-- Table S7: Concentration-dependent cytotoxicity of framework-prioritised metabolites in CRC cells
+- Table S7: Concentration-dependent viability effects of framework-prioritised metabolites in CRC cells
+
+See the README within the `supplementary_tables/` directory for file-level descriptions.
 
 ## Supplementary figures
 - Figure S1a: Baseline versus longitudinal consensus regorafenib mimic scores
@@ -27,6 +29,9 @@ Analysis scripts are provided in the `code/` directory. Public datasets used in 
 - Figure S2: Kaplan-Meier survival analysis for HIST1H2AC
 
 ## Derived data
+
+Machine-readable derived datasets underlying the reported analyses are provided in the `derived_data/` directory, including:
+
 - regorafenib_metabolite_concordance_scores.csv
 - prioritised_metabolites.csv
 - pathway_enrichment_results_regorafenib-concordant.csv

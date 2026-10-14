@@ -36,6 +36,20 @@ Pathway enrichment was performed using KEGG gene sets. Reported statistics inclu
 
 ---
 
+### `regorafenib_microbe_concordance_scores.csv`
+
+Regorafenib–microbe transcriptional concordance results used to rank microbial taxa for the β-glucuronidase analysis.
+
+For each microbial OTU, the microbe-associated host gene-expression correlation profile was compared with the LINCS regorafenib transcriptional perturbation profile. The resulting Spearman correlation coefficient (`rho`) represents transcriptional concordance with regorafenib, with positive values indicating concordant host transcriptional patterns and negative values indicating opposing patterns.
+
+The file contains 122 OTUs and includes the OTU identifier, concordance coefficient, p-value, Benjamini-Hochberg-adjusted q-value, number of overlapping genes used in the comparison, and taxonomic annotations including phylum and genus.
+
+The highest-ranked concordant and opposing OTUs were used to identify genera carried forward for β-glucuronidase annotation in Supplementary Table S3.
+
+Associated p- and q-values are included for reference; because genes are treated as independent observations in these correlation calculations, they should not be interpreted as formal taxon-level significance tests.
+
+---
+
 ### `longitudinal_sensitivity_scores.csv`
 
 Results from the sensitivity analysis comparing regorafenib-metabolite transcriptional concordance scores derived using baseline stool metabolite measurements with scores derived using longitudinal metabolite profiles.

@@ -2,9 +2,12 @@
 Supplementary data, figures, and code for a computational microbiome pharmacology study identifying gut microbiome metabolites with regorafenib-like transcriptional signatures in colorectal cancer.
 
 # Supplementary material for:
-Gut Microbiome Metabolites Exhibit Regorafenib-Like Transcriptional Signatures in Colorectal Cancer: A Computational Microbiome Pharmacology Approach
+A Systems Biology Framework Links Gut Microbiome Metabolites to Regorafenib-Associated Transcriptional Programs in Colorectal Cancer
 
-This repository contains supplementary tables, supplementary figures, and code associated with the manuscript.
+This repository contains supplementary tables, supplementary figures, derived data, and code associated with the manuscript.
+
+## Code availability
+Analysis scripts are provided in the `code/` directory. Public datasets used in this study are available from IBDMDB and LINCS as described in the manuscript.
 
 ## Supplementary tables
 - Table S1a: Top regorafenib-like metabolites
@@ -21,5 +24,11 @@ This repository contains supplementary tables, supplementary figures, and code a
 - Figure S1b: Regorafenib mimic scores for experimentally tested metabolites
 - Figure S2: Kaplan-Meier survival analysis for HIST1H2AC
 
-## Code availability
-Analysis scripts are provided in the `code/` directory. Public datasets used in this study are available from IBDMDB and LINCS as described in the manuscript.
+## Derived data
+- regorafenib_metabolite_concordance_scores.csv
+- prioritised_metabolites.csv
+- pathway_enrichment_results_regorafenib-concordant.csv
+- pathway_enrichment_results_regorafenib-opposing.csv
+- longitudinal_sensitivity_scores.csv
+- survival_analysis_results.csv
+- cell_viability_results.xlsx

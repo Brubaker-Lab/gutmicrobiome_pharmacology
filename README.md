@@ -10,9 +10,9 @@ This repository contains supplementary tables, supplementary figures, derived da
 Analysis scripts are provided in the `code/` directory. Public datasets used in this study are available from IBDMDB and LINCS as described in the manuscript.
 
 ## Supplementary tables
-- Table S1a: Top regorafenib-like metabolites
+- Table S1a: Top regorafenib-concordant metabolites
 - Table S1b: Top regorafenib-opposing metabolites
-- Table S2a: KEGG pathway enrichment results for regorafenib-like metabolites
+- Table S2a: KEGG pathway enrichment results for regorafenib-concordant metabolites
 - Table S2b: KEGG pathway enrichment results for regorafenib-opposing metabolites
 - Table S3: β-glucuronidase annotation of regorafenib-associated taxa
 - Table S4: Overlap of top-ranked regorafenib-concordant metabolites between baseline and longitudinal metabolite profiles

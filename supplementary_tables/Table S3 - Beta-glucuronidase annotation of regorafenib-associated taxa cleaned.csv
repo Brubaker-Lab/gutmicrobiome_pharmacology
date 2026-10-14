@@ -1,0 +1,15 @@
+﻿Genus,Direction,Spearman rho,Beta-glucuronidase annotation,Evidence,Hits (n)
+Parabacteroides,Concordant,0.230,Yes,literature only - no UniProt annotation,0
+Roseburia,Concordant,0.207,Yes,UniProt EC 3.2.1.31,2
+Desulfovibrio,Concordant,0.205,No,no evidence found,0
+Bacteroides,Concordant,0.195,Yes,UniProt EC 3.2.1.31,10
+Bilophila,Concordant,0.178,No,no evidence found,0
+Phascolarctobacterium,Concordant,0.172,No,no evidence found,0
+Veillonella,Opposing,-0.253,No,unconfirmed - V. criceti only,1
+Erysipelatoclostridium,Opposing,-0.238,No,no evidence found,0
+Collinsella,Opposing,-0.218,Yes,UniProt EC 3.2.1.31,2
+Fusobacterium,Opposing,-0.214,No,no evidence found,0
+Haemophilus,Opposing,-0.208,No,false positive - Histophilus somni,1
+Bifidobacterium,Opposing,-0.198,Yes,UniProt EC 3.2.1.31,10
+Actinomyces,Opposing,-0.191,Yes,UniProt EC 3.2.1.31,3
+Anaerostipes,Opposing,-0.189,No,no evidence found,0

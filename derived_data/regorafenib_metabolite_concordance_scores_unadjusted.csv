@@ -1,0 +1,657 @@
+x,y,rho,p,q_x,q_y,FDR_drug_sig,FDR_metab_sig,combined_significance
+regorafenib,12.13-diHOME_C18n_QI06,0.10163307148763538,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,9.10-diHOME_C18n_QI07,0.010466231621687052,0.38319477828106185,0.4289688985535437,0.459636057026628,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,caproate_C18n_QI08,0.031342520900379235,0.009002356776766529,0.01256499158629541,0.01744148225940368,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,heptanoate_C18n_QI09,0.0050683045439270545,0.6728265845238717,0.6994837392197462,0.7527404239949909,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,hydrocinnamate_C18n_QI10,-0.0900871873133362,5.4400928206632677e-14,1.61479678296611e-13,2.8581966955663034e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,mandelate_C18n_QI11,0.1096253841488461,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxyoctanoate_C18n_TF1,0.12647508596163462,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-hydroxyoctanoate_C18n_QI12,-0.010782977119444448,0.3689632633890052,0.4151627800740779,0.4216597512451423,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,caprate_C18n_QI13,0.016248081923117948,0.17579728705986497,0.20816429659074265,0.22577932983924173,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,indoleacetate_C18n_QI14,0.1358534101981909,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-hydroxydecanoate_C18n_TF2,0.10393783815047104,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dodecanoate_C18n_QI15,0.0059748412686014395,0.6186233835323987,0.6524388096418866,0.684351608827376,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,undecanedionate_C18n_QI16,-0.008577422157795684,0.4748273338624398,0.5165617429747272,0.5438437951362144,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,myristoleate_C18n_QI17,0.09061470027670118,3.8635761256955454e-14,1.1626174029615953e-13,2.844889201123047e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,myristate_C18n_QI18,0.058771195834506955,9.544840786634978e-7,1.783879075792748e-6,4.968966618998274e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dodecanedioate_C18n_TF3,-0.001321229374267708,0.9123466020819256,0.9193538724512182,0.933432810089848,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,pentadecanoate_C18n_TF4,-0.11079695436389447,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hydroxymyristate_C18n_QI19,0.08099504041415696,1.3869572157432229e-11,3.5962210811365786e-11,5.2050011718704965e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,palmitoleate_C18n_QI20,-0.009507869417076795,0.4282601791802638,0.4721658446088287,0.5091509062056433,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,palmitate_C18n_QI21,-0.0651148482893249,5.6086040256531084e-8,1.1390849042812505e-7,1.3105465377141582e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,tetradecanedioate_C18n_QI22,-0.121537636783505,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,10-heptadecenoate_C18n_QI23,0.16093656355728386,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxyhexadecanoate_C18n_QI25,0.03106093951938721,0.00963984895103609,0.013419665544354226,0.016031742063350077,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-linolenate_C18n_QI26,0.04504766249794735,1.7328463626564705e-4,2.765808306332469e-4,3.575844794183439e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,linoleate_C18n_QI27,0.017876328626625828,0.13635648612986406,0.16442988033307135,0.17317211889466672,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,oleate_C18n_QI28,-0.013599405394506716,0.25717398465566266,0.2970178414333005,0.30843549729469283,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,stearate_C18n_QI29,-0.07352686935451283,8.556513275692622e-10,2.019090902465597e-9,2.286023294767783e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hexadecanedioate_C18n_QI30,-0.090016119824531185,5.684341886080803e-14,1.679697422193246e-13,1.4263495371951373e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,10-nonadecenoate_C18n_QI31,0.10231381553220208,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,nonadecanoate_C18n_QI32,-0.023010004105767323,0.05519378349386894,0.07099435680780006,0.07452402875785656,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,17-methylstearate_C18n_QI33,-0.07677013900104909,1.4976953011114347e-10,3.652372184123053e-10,5.992029581095868e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,eicosapentaenoate_C18n_QI34,0.005923018208333223,0.6216702690874301,0.6545998339026551,0.6707179812172809,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,arachidonate_C18n_QI35,-0.08485237073081275,1.417754802446325e-12,3.859116806658877e-12,7.116095549356749e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,eicosatrienoate_C18n_QI36,-0.005540371151109257,0.6443658644934753,0.6730955527192991,0.7106998221158873,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,eicosadienoate_C18n_QI37,-0.07257159397486225,1.4099936773703803e-9,3.256886804066794e-9,1.0963753197400465e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,eicosenoate_C18n_QI38,-0.007473286273424238,0.5335142119749681,0.5737464312386542,0.5858786772175105,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,arachidate_C18n_QI39,-0.06411988303459086,8.90819393806197e-8,1.787087224271759e-7,2.072041593111417e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phytanate_C18n_QI40,0.06684198689303596,2.4721709124264638e-8,5.2054240211710314e-8,9.685455980249155e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,docosahexaenoate_C18n_QI41,-0.02817014601545403,0.01890087394742146,0.025564893421666963,0.03119108368170008,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,docosapentaenoate_C18n_QI42,-0.09697518856696874,4.440892098500626e-16,1.5413890035007465e-15,3.9060087334429985e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,adrenate_C18n_QI43,-0.13605012306872516,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,13-docosenoate_C18n_QI44,0.007965065307500857,0.5069302001407803,0.548756124244805,0.5738661655838975,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,eicosanedioate_C18n_QI45,-0.02306319520253188,0.054633315029115614,0.07068925968264268,0.08406856212129926,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,oleanate_C18n_QI46,0.126691992425388,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,masilinate_C18n_QI47,0.1292291162778387,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lithocholate_C18n_QI48,0.13328906662887,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,chenodeoxycholate_C18n_QI49,0.01631397283932387,0.17405156136247446,0.20646984494355017,0.22153875100268136,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,deoxycholate_C18n_QI50,0.1344250131360513,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hyodeoxycholate/ursodeoxycholate_C18n_QI51,0.0938544143775023,4.6629367034256575e-15,1.5448921603268842e-14,5.0999352310676655e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ketodeoxycholate_C18n_QI52,0.04669330803716282,9.925455149284446e-5,1.6116580638442072e-4,2.561528286049682e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-muricholate_C18n_QI53,0.059779347166714555,6.195721895529971e-7,1.1679291849045002e-6,3.7766701735833e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cholate_C18n_QI54,0.07184247278945788,2.055635661690758e-9,4.602378819348591e-9,1.1639248836728645e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycolithocholate_C18n_QI55,0.1445223537451667,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycochenodeoxycholate_C18n_QI56,0.16611058449804575,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycodeoxycholate_C18n_QI57,0.22631742956326523,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycoursodeoxycholate_C18n_QI58,0.10894543128495504,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycocholate_C18n_QI59,0.15002577062735312,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurolithocholate_C18n_QI60,-0.07600236795354519,2.2774448993345686e-10,5.4926612278069e-10,1.5738352771028831e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurochenodeoxycholate_C18n_QI61,0.12575272004023513,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurodeoxycholate_C18n_QI62,0.02015998737407638,0.0929936165834384,0.11424501430060252,0.12035331934775036,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,taurohyodeoxycholate/tauroursodeoxycholate_C18n_QI63,0.01998795120882896,0.0958178651273669,0.11748882153935082,0.1314302694596612,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,tauro-alpha-muricholate/tauro-beta-muricholate_C18n_QI64,0.005683324441678918,0.6358466732441381,0.6663185585433781,0.702156457448557,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,taurocholate_C18n_QI65,0.13612288155351235,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,salicylate_C18n_QI66,-0.06388815488887707,9.912110554566313e-8,1.9824221109132625e-7,6.236647987319729e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,theophylline_C18n_TF5,0.09588056691386268,1.3322676295501878e-15,4.504987448375893e-15,9.055808230883423e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,saccharin_C18n_QI67,-0.03422653702795452,0.004338467932127887,0.006146943765606682,0.008114461370049258,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,azelate_C18n_QI68,0.02988424001493287,0.012760604124467,0.01751246089048191,0.02058891365626041,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sebacate_C18n_QI69,-0.03588611866589236,0.002782120229118057,0.0040199798905318175,0.005525266436820994,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxyibuprofen_C18n_TF6,0.13331561938901265,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,carboxyibuprofen_C18n_QI70,0.09669425784531216,6.661338147750939e-16,2.287873206766815e-15,2.7645046989412522e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hydrochlorothiazide_C18n_QI71,0.02015970307418872,0.0929982281044539,0.11424501430060252,0.12389561721179804,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,cetrizine_C18n_QI72,-0.0060560616106006115,0.6138612882347019,0.6504868657139026,0.6608499014225487,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,olmesartan_C18n_QI73,0.05152623692748411,1.7406742977010836e-5,2.981416029482796e-5,4.455314674217925e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,1.2.3.4-tetrahydro-beta-carboline-1.3-dicarboxylate_C18n_QI74,-0.16247145951744849,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-hydroxystyrene_C18n_QI77,0.14229997346943904,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,acetytyrosine_C18n_QI78,-0.02120548327936363,0.07723700353713991,0.096693653283137,0.11375470485444109,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,alpha-CEHC_C18n_QI79,0.0607092327208483,4.1336014700021906e-7,7.814531885652557e-7,1.3262497688178345e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,carnosol_C18n_QI80,0.11885353130277632,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,carnosol_isomer_C18n_QI4788,0.1402437093470418,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,crustecdysone_C18n_QI81,0.16829001674325933,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,oxypurinol_C18n_QI83,0.12448144238494332,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,palmitoylethanolamide_C18n_QI84,-0.009678137790720506,0.4200356681311867,0.4638821113333951,0.5143890659549404,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,phenyllactate_C18n_QI85,0.1413562312385142,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,p-hydroxyphenylacetate_C18n_QI86,0.08116319143077942,1.2584155939521224e-11,3.2889268112852277e-11,6.240812626006991e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,porphobilinogen_C18n_TF8,0.04746951601140971,7.583819037249029e-5,1.2406447103330083e-4,2.7652221072552207e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,urobilin_C18n_QI88,0.1112554387832089,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,nervonic acid_C18n_QI89,-0.026399461177006273,0.027815975416383587,0.03716350279663469,0.040114557387547094,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,acesulfame_C18n_QI90,0.07171959547499866,2.1896893187545174e-9,4.885837391506678e-9,1.3415640302850662e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,oxymetazoline_C18n_QI91,0.09163025235713795,1.9984014443252815e-14,6.302650709025889e-14,2.042722547243235e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,13-cis-retinoic acid_C18n_QI92,0.1855841754490582,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phenylacetylglutamine_C18n_QI2774,0.061956624762451534,2.3798118431450635e-7,4.564785289775326e-7,5.563159960887148e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,furoylglycine_C18n_QI931,-0.067756990037951,1.5885553761307847e-8,3.4166961532517856e-8,5.93372674626106e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,His - Cholate_C18n_QI11461,0.033340848744177795,0.00545958205083652,0.007702120054513456,0.009166325071260056,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Arg - Cholate_C18n_QI11830,-0.04397189351939874,2.470292019407516e-4,3.88611886026698e-4,5.676333029686303e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurohyodeoxycholate/tauroursodeoxycholate_C18n_QI10150,-0.17816796140045607,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Lys - Cholate_C18n_QI11220,-0.01698371235492135,0.15703585291450683,0.18798452465678192,0.20356678969383524,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Gln - ursodeoxycholate / Gln - hyodeoxycholate_C18n_QI10779,0.0202034382856502,0.09229097014117182,0.11424501430060252,0.12119930841404072,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Asn - Cholate_C18n_QI10829,0.03446791826412389,0.0040714656131943805,0.005806264004903291,0.006345835373090782,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Citrulline - Cholate_C18n_QI11844,0.0971174446788263,4.440892098500626e-16,1.5413890035007465e-15,7.257273035871718e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Gln - Cholate_C18n_QI11215,-0.12692644759174376,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dehydroepiandrosterone sulfate_C18n_QI5930,0.006284998858776417,0.6005261511429909,0.6395213557626656,0.6553552732315626,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,His - chenodeoxycholate_C18n_QI11040,-0.09791846159053896,4.440892098500626e-16,1.5413890035007465e-15,1.780118511304254e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Asp - Cholate_C18n_QI10864,0.14491860096893555,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,His - deoxycholate_C18n_QI11041,0.07832930943977667,6.314282430253115e-11,1.563082744998507e-10,5.707284726703161e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Lys - chenodeoxycholate_C18n_QI10785,0.18684106021358615,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Glu - Cholate_C18n_QI11229,0.0736211721122875,8.142069241046102e-10,1.928230116291062e-9,3.539466741233122e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Arg - deoxycholate_C18n_QI11521,0.06676477459801551,2.5655049418205067e-8,5.376904925988027e-8,8.32915262732894e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Thr - Cholate_C18n_QI10457,0.04767817298197545,7.04979388119753e-5,1.1561661965163947e-4,2.0027566129564203e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Lys - deoxycholate_C18n_QI10784,0.011856264424616614,0.3232274524883132,0.3674821643541308,0.3780588726643053,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Ala - Cholate_C18n_QI9513,0.021012311406817436,0.07997209927874183,0.09973706678109248,0.11593314767512822,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,tyrosocholate_C18n_QI12005,0.102866602422294,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Citrulline - chenodeoxycholate_C18n_QI11526,0.06321803920746351,1.347048459443556e-7,2.6221477430117884e-7,7.895931819407544e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Asn - chenodeoxycholate_C18n_QI10373,0.11079495064305708,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Tyr - ursodeoxycholate / Tyr - hyodeoxycholate_C18n_QI11692,-0.04817217459321099,5.923742221458639e-5,9.813067922416332e-5,1.1434667063012112e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Asn - deoxycholate_C18n_QI10374,0.16455557822053815,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Citrulline - deoxycholate_C18n_QI11527,0.14433961900132383,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Gln - chenodeoxycholate_C18n_QI10778,0.01913086297212441,0.11092563439458147,0.13475410400526935,0.1403868611580361,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Asp - chenodeoxycholate_C18n_QI10399,0.10321894699148008,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pregnenolone sulfate_C18n_QI6880,0.08725451596048521,3.250733016102459e-13,9.191727838634537e-13,2.259441013819332e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Glu - chenodeoxycholate_C18n_QI10802,0.08654196391619494,5.053735208093714e-13,1.4107448070253088e-12,2.000948023294139e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,caprylate_C18n_QI592,0.002778445963272148,0.8169353032978988,0.8295813606244916,0.8580298218082723,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Met - Cholate_C18n_QI11294,0.10918686510834195,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Thr - chenodeoxycholate_C18n_QI9994,0.003408031763025957,0.7764538659862494,0.7946236132402178,0.8103396112092935,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Asp - deoxycholate_C18n_QI10398,0.1314489701884582,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Val - Cholate_C18n_QI10405,0.006105049636818073,0.6109968675720097,0.6485662542511947,0.6561054604989597,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Glu - deoxycholate_C18n_QI10801,0.19364654021254352,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Thr - deoxycholate_C18n_QI9995,0.05807118443161439,1.2832811675522748e-6,2.378057756820035e-6,5.083948113263634e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Trp - Cholate_C18n_QI12361,-0.009727631558523743,0.4176624792541946,0.46281517971410746,0.4817053975168778,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Ala - chenodeoxycholate_C18n_QI8994,0.04686656987811802,9.35009073437243e-5,1.521999881327125e-4,1.8798091107239065e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Tyr - chenodeoxycholate_C18n_QI11693,0.08057419583235759,1.7676970998081742e-11,4.4946096801324115e-11,9.714238609168275e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Ile - Cholate / Leu - Cholate_C18n_QI10806,-0.05628129020743106,2.6944765805225757e-6,4.8294443629038516e-6,7.010897438935802e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,isodeoxycholic acid_C18n_QI6769,0.18650871776041025,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Phe - Cholate_C18n_QI11694,0.13853644374500557,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Ala - deoxycholate_C18n_QI8995,0.13443279359674618,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Val - chenodeoxycholate_C18n_QI9918,0.07218104975944704,1.726291554149384e-9,3.93210854000693e-9,7.1609882786501565e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Met - chenodeoxycholate_C18n_QI10866,0.05003703069143067,3.0262568121219857e-5,5.090319150646212e-5,7.182256313518867e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Trp - chenodeoxycholate_C18n_QI12103,0.033636883467173424,0.005058690495905571,0.007151941735590635,0.009918705764001593,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Val - deoxycholate_C18n_QI9921,0.015018031792713117,0.2108221770183194,0.2452116101489672,0.2774002085623072,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Trp - deoxycholate_C18n_QI12102,0.06683897389075984,2.4757504490935392e-8,5.2054240211710314e-8,2.84677410469178e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Phe - chenodeoxycholate_C18n_QI11299,0.004749597381581263,0.6923130045740544,0.7152083952765035,0.7345045514756909,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,Phe - deoxycholate_C18n_QI11298,0.03921291153548784,0.001081930322652802,0.001624133390526861,0.0028162207089255887,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,Isoallolithocholate [2M-H]-_C18n_QI13593,0.0020669520008480507,0.8632727004491629,0.8739303881090292,0.8879565119360607,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,13-HODE_C18n_QI3732,0.1247649626289986,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,isolithocholate_C18n_QI6230,0.1313358624623786,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,isolithocholate [2M-H]-_C18n_QI13594,0.13274207808152258,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lithocholate  [2M-H]-_C18n_QI13595,0.12115343611632425,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-oxo lithocholic acid_C18n_QI6169,0.03881154204877968,0.001217159583063454,0.0018188079418898083,0.0023320794269701753,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-oxolithocholate_C18n_QI6172,-0.00784319950832824,0.5134524008978847,0.553988116758244,0.5660419225798292,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,11-methyl laurate_C18n_QI1629,0.10903636278366476,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,tridecanoic acid_C18n_QI1630,0.0230299085547048,0.054983494106672914,0.07086281362274545,0.08495702085491393,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,14-pentadecenoic acid_C18n_QI2118,0.091425843367005,2.2870594307278225e-14,7.076938615837037e-14,3.164864489828011e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:0 LPC_C8p_QI02,0.016848996188169138,0.1603531070266433,0.1909104141732813,0.21039965802273553,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16:1 LPC_C8p_QI03,0.15703637708936238,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 LPC_C8p_QI04,-0.00878508436928491,0.4641995329354755,0.5083721095253289,0.5289179024821146,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:2 LPC_C8p_QI05,0.13725840944639167,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 LPC_C8p_QI06,0.031054189342474687,0.009655613013620725,0.013419665544354226,0.018239103932346245,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 LPC_C8p_QI07,-0.0990229896729399,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:5 LPC_C8p_QI08,0.150793946336415,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:4 LPC_C8p_QI09,0.06901544461991671,8.565611775424031e-9,1.866791137766832e-8,3.782807440095584e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:3 LPC_C8p_QI10,0.034778433421216955,0.0037499406864931473,0.005359392353680838,0.00692723657636011,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:6 LPC_C8p_QI11,0.0463304701476028,1.124037470758843e-4,1.8072759333769632e-4,4.3741643479298546e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:1 LPE_C8p_QI12,0.1694056232996823,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 LPE_C8p_QI13,0.04051900834955225,7.32131455520868e-4,0.001122145408461891,0.0014355929252433991,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:2 LPE_C8p_QI14,0.1911422499369569,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 LPE_C8p_QI15,0.03778966891397728,0.001634961996062945,0.0024101911672298687,0.003437184839551926,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 LPE_C8p_QI16,-0.1005614392715392,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:4 LPE_C8p_QI17,-0.03497382507003899,0.003559631599053814,0.005109658148464841,0.005443789808675881,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:0 LPE_C8p_QI18,0.08815756272379788,1.849631559025511e-13,5.298507872142948e-13,1.257248042720982e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:0 LPE_C8p_QI19,-0.04638414557356513,1.1036005481557254e-4,1.7875603940497675e-4,3.328534543759804e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C30:0 PC_C8p_QI20,0.13467032942927484,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:1 PC_C8p_QI21,0.07987559339405072,2.6369573191686868e-11,6.653246159133302e-11,4.2109852170507944e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:0 PC_C8p_QI22,-0.09259383364148906,1.0658141036401504e-14,3.4612576831086074e-14,1.7588550131731537e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:3 PC_C8p_QI23,-0.07099120673709183,3.177552887478896e-9,6.994881524114616e-9,1.4795260458204466e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:2 PC_C8p_QI24,0.14682943574825014,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:1 PC_C8p_QI25,0.07240814557294255,1.5348249338131834e-9,3.5081712772872763e-9,5.5331097587112836e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:0 PC_C8p_QI26,-0.1436432322813353,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:4 PC-A_C8p_QI27,0.08811482803389338,1.900701818158268e-13,5.421132142225322e-13,1.431555265373227e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:4 PC-B_C8p_QI28,0.06967021886585167,6.184783796214788e-9,1.3524060567723004e-8,2.6037157094226368e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:3 PC_C8p_QI29,0.0034775389117034814,0.7720194810637526,0.7913199680903463,0.8234629379130484,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C36:2 PC_C8p_QI30,0.07105189381521587,3.080917743147893e-9,6.804990032003427e-9,2.0546993896789608e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:1 PC_C8p_QI31,0.032911840877214237,0.006091501270153676,0.008575160586310755,0.014728713131991335,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C38:6 PC_C8p_QI32,0.05814046414485252,1.2464167684633765e-6,2.3162872524418552e-6,3.969888804967389e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C38:4 PC_C8p_QI33,-0.02017851219960552,0.09269352770205108,0.11424501430060252,0.14393242616051458,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C38:3 PC_C8p_QI34,-0.03916358818919794,0.0010977651031656157,0.001644141341727497,0.002873242167271287,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C38:2 PC_C8p_QI35,-0.045104936393642145,1.7000762613550435e-4,2.72012201816807e-4,3.373744156001896e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:4 PC plasmalogen_C8p_QI36,0.09296210160838073,8.437694987151191e-15,2.7537949808811843e-14,4.201216862378376e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:2 PC plasmalogen_C8p_QI37,0.06589057727490613,3.891859323701397e-8,7.966308558195047e-8,2.1224246293952806e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:1 PC plasmalogen_C8p_QI38,-0.08485417567577289,1.4162004902118497e-12,3.859116806658877e-12,1.1725707311638229e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:5 PC plasmalogen_C8p_QI39,0.08949295304479882,7.949196856316122e-14,2.3176325056637226e-13,6.601212683523612e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:4 PC plasmalogen_C8p_QI40,-0.07851687170205313,5.6846971574486815e-11,1.4125611118508846e-10,3.832266047213448e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:2 PC plasmalogen_C8p_QI41,-0.05199179301732914,1.4598394484366397e-5,2.520143889932725e-5,3.913912035431109e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:1 PC plasmalogen_C8p_QI42,-0.10323725804983906,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C38:4 PC plasmalogen_C8p_QI43,-0.08985318980367452,6.306066779870889e-14,1.855058209683993e-13,7.596899883000429e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:0 PE_C8p_QI44,0.05018765128886827,2.863557825616425e-5,4.829033248340295e-5,6.742304091302473e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:0 PE_C8p_QI45,0.03659326048533166,0.0022898372773232367,0.00332330365912399,0.004206941191490221,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sphingosine_C8p_QI46,0.11581310303141404,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,palmithoylethanolamide_C8p_QI47,0.03838782804071504,0.001376725632237008,0.00203408111429612,0.0033967252546285237,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,linoleoylethanolamide_C8p_QI48,0.11311166336568922,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C2 Ceramide (d18:1)_C8p_QI49,0.10185016879345211,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 Ceramide (d18:1)_C8p_QI50,0.01702761443228269,0.15596612027676016,0.1870452923245972,0.2309725703093646,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C22:0 Ceramide (d18:1)_C8p_QI51,0.016954121063123342,0.1577600152461287,0.188507413481713,0.2315168705942205,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C24:0 Ceramide (d18:1)_C8p_QI52,0.00836595288374766,0.4857858195804705,0.5276084398092528,0.577685203938707,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C24:1 Ceramide (d18:1)_C8p_QI53,0.021989972781682403,0.06690215883380857,0.08483479626816755,0.10621081244836204,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16:1 SM_C8p_QI54,-0.10025705580689752,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 SM_C8p_QI55,-0.1265730037390951,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 SM_C8p_QI56,-0.11040881677698756,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 SM_C8p_QI57,-0.1142096050831126,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:0 SM_C8p_QI58,-0.1492655392170481,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:1 SM_C8p_QI59,-0.1058119714365914,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:0 SM_C8p_QI60,-0.1161203597017346,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C24:1 SM_C8p_QI61,-0.13440083831208752,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C24:0 SM_C8p_QI62,-0.09949929739047984,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:0 CE_C8p_QI63,0.06588716891867269,3.89814793777532e-8,7.966308558195047e-8,2.019020696181794e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:1 CE_C8p_QI64,-0.046343421815587045,1.1190737033350828e-4,1.803715846161706e-4,2.9363340381378716e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 CE_C8p_QI66,-0.02299133197927312,0.05539166234216841,0.07110945302634536,0.08290366889547492,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:3 CE_C8p_QI68,-0.007438956469761934,0.535395935211304,0.5738884534291102,0.5955872843287038,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:2 CE_C8p_QI70,-0.04046170404100941,7.449591332051586e-4,0.0011391449682577716,0.0014772121055571367,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 CE_C8p_QI72,-0.005139307104497075,0.6685145317627366,0.6972107040323612,0.7196186057311961,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:0 CE_C8p_QI74,0.08302732105534524,4.225064742513496e-12,1.126683931336932e-11,1.0339253480241147e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:5 CE_C8p_QI76,-0.09442051106412898,3.1086244689504387e-15,1.0351561683408566e-14,2.0206359747004412e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:4 CE_C8p_QI78,-0.06274755865826716,1.667703712904256e-7,3.236726732737254e-7,6.299401579524463e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:3 CE_C8p_QI80,0.08899763939823119,1.0880185641326535e-13,3.158142380845224e-13,4.21544461903748e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:6 CE_C8p_QI82,-0.06322184665802322,1.3447144331379945e-7,2.6221477430117884e-7,6.451672174639937e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C22:5 CE_C8p_QI84,-0.00903483579880723,0.45159492042806626,0.4953950966568753,0.5244232444427677,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C22:4 CE_C8p_QI86,0.02341892975610987,0.05100575950984254,0.0663884488858268,0.07546534474310625,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16:1 MAG_C8p_QI89,0.029350196477843187,0.014450789899047578,0.019708353791632455,0.022290519227715525,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 MAG_C8p_QI91,-0.010103706137707525,0.39988956620934424,0.4446229753107286,0.44638989783938865,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C22:1 MAG_C8p_QI93,0.10767790963814523,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C30:0 DAG_C8p_QI95,-0.040154289977550946,8.174099806803614e-4,0.0012412521928849931,0.002196605449962366,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:2 DAG_C8p_QI96,0.10022038152305196,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:1 DAG_C8p_QI98,0.06512384095631017,5.5850273295021686e-8,1.1378192323457833e-7,1.769460945251705e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C32:0 DAG_C8p_QI100,-0.005842472887657309,0.6264187332609745,0.6577548873469502,0.7247105233398348,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C34:3 DAG_C8p_QI101,0.10855639670145097,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:2 DAG_C8p_QI103,0.08467793006627618,1.5751844273381719e-12,4.269921422867111e-12,7.491100010493311e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:1 DAG_C8p_QI105,0.07335053966730257,9.38734423527876e-10,2.1993206494081668e-9,3.1071360354756283e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C34:0 DAG_C8p_QI107,-0.01153859851510364,0.3363621377376078,0.3804371764756392,0.4392316931926112,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C36:4 DAG_C8p_QI116,0.09475049236809294,2.6645352591003757e-15,8.963769897281264e-15,1.3006787762678123e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:3 DAG_C8p_QI108,0.08097095967481928,1.4063861186741631e-11,3.632241314371067e-11,5.943794616519901e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:2 DAG_C8p_QI110,0.07483399287936306,4.276139442538351e-10,1.0200536270200575e-9,1.4343017782753923e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:1 DAG_C8p_QI112,0.05628860106144065,2.686443498545188e-6,4.828238178207242e-6,6.8281878438323456e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C36:0 DAG_C8p_QI114,0.003823669292934018,0.7500505472789385,0.7714560456168698,0.7851985772869623,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C38:5 DAG_C8p_QI118,-0.14048396656895962,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C42:0 TAG_C8p_QI121,0.028437313552496273,0.01779997706166858,0.024125588744740887,0.02624013195337193,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C44:2 TAG_C8p_QI123,0.04796893369228511,6.36468224466391e-5,1.0516956051636085e-4,1.757887042650742e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C44:1 TAG_C8p_QI125,0.0060402101965367,0.6147894157661884,0.6504868657139026,0.6715096902027946,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C44:0 TAG_C8p_QI127,7.818668887834534e-4,0.948061123659348,0.9495085452221866,0.9581562849700838,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C45:0 TAG_C8p_QI129,-0.07200296406596654,1.8925319089646564e-9,4.28103769752005e-9,1.2929479383754269e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C46:3 TAG_C8p_QI130,0.051698190576891144,1.6314285631979786e-5,2.8016155430834396e-5,3.326114581000539e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C46:2 TAG_C8p_QI132,-0.0247761415844474,0.03896487798600967,0.05132722883297659,0.05500529118322503,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C46:1 TAG_C8p_QI134,0.044826944510235486,1.8647711671793132e-4,2.961960982250919e-4,4.0526808826686774e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C46:0 TAG_C8p_QI136,0.02064257475080954,0.0854264252205943,0.10633725795960124,0.12068970065540104,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C48:4 TAG_C8p_QI138,0.035707127030776116,0.0029211870508643045,0.0042116455063010635,0.00472938677405627,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C48:3 TAG_C8p_QI140,0.06600641771140975,3.6838785355541865e-8,7.575624825465661e-8,9.921019150054913e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C48:2 TAG_C8p_QI142,0.04360275741755837,2.7849736427154603e-4,4.3602451303611985e-4,5.588743320886146e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C48:1 TAG_C8p_QI144,-0.028040866216471148,0.019454639953709663,0.02625976092517189,0.03189968512052564,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C48:0 TAG_C8p_QI146,-0.10924167284747494,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C50:5 TAG_C8p_QI149,0.037666869345905754,0.0016932061381282892,0.002490455665049681,0.00500088194751867,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C50:4 TAG_C8p_QI151,-0.023034405482032845,0.05493607692304692,0.07086281362274545,0.07830465164336727,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C50:3 TAG_C8p_QI153,0.021379993120068837,0.0748321181907361,0.09422239833612836,0.1103530696581172,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C50:2 TAG_C8p_QI155,-0.04116978866949997,6.001576919369978e-4,9.307410068810178e-4,0.0014883893040589893,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C50:1 TAG_C8p_QI157,-0.09132611870384735,2.4424906541753444e-14,7.522412531169135e-14,3.8710020513979897e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C50:0 TAG_C8p_QI159,-0.04081331172851365,6.694225493344419e-4,0.0010332733937962208,0.001549030870185118,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C51:3 TAG_C8p_QI161,0.038593677342499855,0.0012969391084320936,0.001920523826481836,0.0025658515635759234,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C51:2 TAG_C8p_QI163,0.06602663520733014,3.6487019183795155e-8,7.526881944833216e-8,1.177304674499504e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C51:1 TAG_C8p_QI165,-0.14848529272940655,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C51:0 TAG_C8p_QI167,-0.015773324263347176,0.18876318033886097,0.2223135481190176,0.23729764269111348,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C52:7 TAG_C8p_QI169,0.05734730724181588,1.7367681999225226e-6,3.1824579305842872e-6,6.607821849076756e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C52:6 TAG_C8p_QI170,0.061613004884030605,2.773673688505341e-7,5.289331219940417e-7,1.2262192402643545e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C52:5 TAG_C8p_QI172,0.003819910891968567,0.7502880443651874,0.7714560456168698,0.7954779314490369,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C52:4 TAG_C8p_QI174,-0.05257290332752627,1.1696071114508657e-5,2.0351784220471292e-5,4.3523789276373496e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C52:3 TAG_C8p_QI176,-0.051348709387542706,1.8607544937765397e-5,3.170532332253013e-5,6.238224928796444e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C52:2 TAG_C8p_QI178,0.0029390731172991643,0.8065560382576562,0.8215850327593516,0.8546843387712173,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C52:1 TAG_C8p_QI180,-0.1263353095036246,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C52:0 TAG_C8p_QI182,0.019286333052102044,0.10805368455726504,0.13150875152053038,0.15483178725006605,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C53:3 TAG_C8p_QI184,-0.029543149560591488,0.013818605317745591,0.01892485404684991,0.02814739739744978,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C54:6 TAG_C8p_QI187,-0.04635907981057989,1.1131003309561294e-4,1.7985069386877362e-4,3.2450375722164847e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C54:5 TAG_C8p_QI189,-0.015259958660908074,0.20356233665190548,0.2380336770831551,0.2784623467513544,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C54:4 TAG_C8p_QI191,-0.0153016891961621,0.20232869393456696,0.237437608624465,0.2770639789496053,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C54:3 TAG_C8p_QI193,0.01300736435238638,0.2784698706641149,0.3199233540379323,0.3608576585930946,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C54:2 TAG_C8p_QI195,-0.021983022869425363,0.06698845193126646,0.08483479626816755,0.11542873975273714,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C54:1 TAG_C8p_QI197,-0.14668668288926198,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C55:3 TAG_C8p_QI198,0.034414968730689555,0.004128724788784011,0.0058751485063824535,0.007834690171600246,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C55:2 TAG_C8p_QI199,-0.09100345405776374,3.0198066269804264e-14,9.256977323827849e-14,3.0233159374229834e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C56:7 TAG_C8p_QI200,0.013520561057272833,0.2599429326540377,0.29968816137266907,0.3390853979206822,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C56:6 TAG_C8p_QI201,0.02611571838146001,0.029538845377394814,0.03938512716985976,0.044068898620624686,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C56:4 TAG_C8p_QI203,0.003664629671053889,0.760120858797203,0.7803431664647342,0.8232906977443418,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C56:3 TAG_C8p_QI205,0.06708294192632751,2.2016035883254403e-8,4.7044037587670654e-8,3.290555114063455e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C56:2 TAG_C8p_QI207,0.02418681146636705,0.043859080708541054,0.057658430751108075,0.07659950372836423,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C56:1 TAG_C8p_QI209,-0.04103635990739272,6.252628907530422e-4,9.67387868712254e-4,0.0019147108882985296,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C58:10 TAG_C8p_QI211,0.08349217779847579,3.206324095117452e-12,8.655755581880859e-12,2.236903722422161e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cholesterol_C8p_QI212,-0.07536219736967661,3.2200819788386065e-10,7.70939335079608e-10,2.882033415210398e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5alpha-cholestan-3beta-ol_C8p_QI213,0.12119562576717136,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,beta-sitosterol_C8p_QI214,-0.20322437576449492,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,piperine_C8p_QI215,0.10053323842089854,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C16:1 CE_C8p_QI65,-0.0566540863133847,2.312878695454046e-6,4.1912939895520835e-6,5.55828705304059e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C16:0 CE_C8p_QI67,-0.01114406438207174,0.35314621312775873,0.39804796531238784,0.4164306887614349,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C18:3 CE_C8p_QI69,0.012532664698716663,0.29638902881686735,0.33873031864784836,0.3645352873276933,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C18:2 CE_C8p_QI71,-0.06604972395344312,3.6089279120687934e-8,7.46831769816129e-8,1.37152323173396e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C18:1 CE_C8p_QI73,-0.02572975620047783,0.03202914758529429,0.04261890632039159,0.050831199741075195,Drug Significant,Metabolite Not Significant,Drug Significant & Metabolite Not Significant
+regorafenib,NH4_C18:0 CE_C8p_QI75,0.07192293842363412,1.9722188326909414e-9,4.430738199470061e-9,2.7529946223341487e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C20:5 CE_C8p_QI77,0.007498353462567886,0.5321423155175546,0.5732107700813068,0.5763474198657185,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C20:4 CE_C8p_QI79,-0.10069587831804463,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C20:3 CE_C8p_QI81,0.09443932688269512,3.1086244689504387e-15,1.0351561683408566e-14,1.4321496439361822e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C22:6 CE_C8p_QI83,0.021209840074299872,0.07717620616306098,0.096693653283137,0.106911987749348,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C22:5 CE_C8p_QI85,0.0762641354303381,1.9750867608081535e-10,4.781021826900918e-10,1.0473633219127707e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C22:4 CE_C8p_QI87,0.07246369748839694,1.4912355794649555e-9,3.4204564340175203e-9,5.342149934368594e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C16:1 MAG_C8p_QI90,-0.015344698891455604,0.201062945963844,0.2363750762585693,0.25112501101963475,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C18:0 MAG_C8p_QI92,-0.017391312960955113,0.1473156935586002,0.17699467944036945,0.18180569285125467,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C22:1 MAG_C8p_QI94,-0.004767340714802058,0.6912226231844871,0.7152083952765035,0.7298647825240222,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C32:2 DAG_C8p_QI97,0.11250632477938403,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C32:1 DAG_C8p_QI99,0.07574023108874804,2.6253665907916e-10,6.308573199850878e-10,1.0184700621638031e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C34:3 DAG_C8p_QI102,0.100837745330051,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C34:2 DAG_C8p_QI104,0.08684163653328417,4.2010839251815923e-13,1.177739767059455e-12,2.4353384886503852e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C34:1 DAG_C8p_QI106,0.058976790417850325,8.744568296137345e-7,1.6436781668384235e-6,2.159564499683342e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C36:4 DAG_C8p_QI117,0.08732917402666764,3.1041835768519377e-13,8.815343837293816e-13,1.3926754439664609e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C36:3 DAG_C8p_QI109,0.08156193269136801,9.984235660454031e-12,2.6293022870049755e-11,4.5684370687129926e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C36:2 DAG_C8p_QI111,0.060767125999591234,4.029966873542179e-7,7.662777591430926e-7,1.097975995007449e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C36:1 DAG_C8p_QI113,0.04778306674384849,6.794964018164151e-5,1.1171670165202211e-4,1.4025309991786295e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C36:0 DAG_C8p_QI115,-0.007439541919105247,0.5353638169077062,0.5738884534291102,0.5845282840243726,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C38:5 DAG_C8p_QI119,-0.14054415155410835,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C38:4 DAG_C8p_QI120,0.029365244591318604,0.014400585644657848,0.019680800381032395,0.02520815239527243,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C42:0 TAG_C8p_QI122,-0.05784648453461674,1.4102010186256564e-6,2.6058925865307906e-6,3.2446308309801705e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C44:2 TAG_C8p_QI124,-0.02029594322655711,0.09080926823752432,0.112823636295106,0.12613587182242258,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C44:1 TAG_C8p_QI126,-0.013898321807288732,0.24686246642734533,0.2861162155058985,0.29377105650961166,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C44:0 TAG_C8p_QI128,-0.10272055709649398,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C46:3 TAG_C8p_QI131,-0.022351463990552056,0.06253831576641389,0.07950607585807658,0.08081634120906693,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C46:2 TAG_C8p_QI133,-0.05050410556935967,2.5483991617170076e-5,4.319767054486711e-5,5.037278705408268e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C46:1 TAG_C8p_QI135,-0.010493400461451462,0.3819610489171104,0.4283187146831186,0.4485515809501937,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C46:0 TAG_C8p_QI137,-0.11484698545597366,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C48:4 TAG_C8p_QI139,0.01953764009695412,0.10353615632637458,0.12624483001877643,0.1322240114434427,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C48:3 TAG_C8p_QI141,0.0727153240012245,1.3084406891294975e-9,3.0329932581941704e-9,3.5969807489823263e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C48:2 TAG_C8p_QI143,0.015826664952218163,0.1872722032967149,0.22095425424936144,0.22718655251900363,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C48:1 TAG_C8p_QI145,-0.0301971988253751,0.011853580291207422,0.01633602661981527,0.022183949434873177,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C48:0 TAG_C8p_QI147,-0.025078802248852065,0.03663705095368175,0.04845545448712747,0.050426786079749014,Drug Significant,Metabolite Not Significant,Drug Significant & Metabolite Not Significant
+regorafenib,NH4_C49:1 TAG_C8p_QI148,-0.09239343658268442,1.2212453270876722e-14,3.9271418361250644e-14,6.723352735510192e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C50:5 TAG_C8p_QI150,0.03859452102885061,0.00129662106361339,0.001920523826481836,0.0024142516551037014,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C50:4 TAG_C8p_QI152,-0.011752283083597872,0.32748952173400525,0.3716836094420544,0.3817283760881472,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C50:3 TAG_C8p_QI154,-0.0022621694211354872,0.8505047891167861,0.8623356130766796,0.8766799432119039,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C50:2 TAG_C8p_QI156,-0.04817326992236064,5.9214461681111885e-5,9.813067922416332e-5,1.723446550609562e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C50:1 TAG_C8p_QI158,-0.1219398927914195,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C50:0 TAG_C8p_QI160,-0.08325109339667625,3.700151296470722e-12,9.947947747888495e-12,1.3779803082478359e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C51:3 TAG_C8p_QI162,0.0028952358669421174,0.809385380477937,0.823188852082987,0.8494046538817529,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C51:2 TAG_C8p_QI164,0.00993118363493045,0.4079856933363346,0.4528572162921074,0.508680099094831,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C51:1 TAG_C8p_QI166,-0.030210018913357273,0.011817675210513467,0.016320831448624916,0.025130510721395063,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C51:0 TAG_C8p_QI168,0.056655233740921865,2.3117884797585475e-6,4.1912939895520835e-6,4.848550632422437e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C52:6 TAG_C8p_QI171,0.03863112748477904,0.0012828906180391009,0.0019083361574459188,0.0032656899670805177,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C52:5 TAG_C8p_QI173,-0.008693659422247611,0.4688621188226674,0.5126225832461163,0.5570434282008833,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C52:4 TAG_C8p_QI175,-0.09359933293186296,5.3290705182007514e-15,1.7567187235877854e-14,5.770268783146214e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C52:3 TAG_C8p_QI177,-0.05779430609323431,1.4413553937053791e-6,2.648541003559464e-6,4.982314801759983e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C52:2 TAG_C8p_QI179,-0.013605646873030529,0.25695566653276347,0.2970178414333005,0.34243429477369186,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C52:1 TAG_C8p_QI181,-0.1315329397453864,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C52:0 TAG_C8p_QI183,0.022531551956864723,0.06045376627676413,0.0770051857816646,0.08963304220267417,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C53:3 TAG_C8p_QI185,-0.06703163587310394,2.2566918111976978e-8,4.806460480992498e-8,1.987485928294402e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C53:2 TAG_C8p_QI186,-0.0195854398069502,0.1026941370174379,0.12545131076990554,0.16949552044254537,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C54:6 TAG_C8p_QI188,-0.10364669221456271,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C54:5 TAG_C8p_QI190,-0.008629789612778922,0.4721347294382068,0.5153417346280593,0.5628543748515613,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C54:4 TAG_C8p_QI192,-0.04072257210563084,6.882034325297326e-4,0.001059768666055175,0.0018415854674710488,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C54:3 TAG_C8p_QI194,0.007061297926476046,0.5563147952310519,0.5953385084364927,0.6543310510735879,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C54:2 TAG_C8p_QI196,-0.03973353424855343,9.271981151424136e-4,0.001398257387433157,0.002945624949949882,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C56:6 TAG_C8p_QI202,0.02719502465139908,0.023439712403032775,0.03144468575948773,0.04594008615933607,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C56:4 TAG_C8p_QI204,-0.008255945093113734,0.4915401439772651,0.5329757594199767,0.5917114147645061,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,NH4_C56:3 TAG_C8p_QI206,0.044853596172037005,1.8483543537373137e-4,2.943010815659412e-4,9.753864917735198e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C56:2 TAG_C8p_QI208,-0.04225188307191632,4.286009080622932e-4,6.694337992592008e-4,0.0015709132660614148,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NH4_C56:1 TAG_C8p_QI210,-0.021637944771550184,0.07138965522664154,0.09023432336931957,0.10054581765425592,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,1-3-7-trimethylurate_HILn_QI2,0.11480128819838824,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-aminoadipate_HILn_TF1,-0.16698885874612335,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-aminobutyrate_HILn_QI3,0.02846844206616379,0.017675435669194606,0.02400638881778812,0.026383978099838713,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxy-3-methylbutyrate_HILn_QI5,0.05274222572460128,1.0959864682913434e-5,1.9121466042529823e-5,2.5711527264432932e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxy-3-methylpentanoate_HILn_QI6,0.06714333130575063,2.1384335191498852e-8,4.584354210987988e-8,8.851697401739187e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-hydroxyglutarate_HILn_QI7,0.0966688775140622,6.661338147750939e-16,2.287873206766815e-15,3.682973513679181e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-hydroxymethylglutarate_HILn_QI9,-0.02570191024523822,0.032215576408010094,0.042780198630879805,0.05543314118655207,Drug Significant,Metabolite Not Significant,Drug Significant & Metabolite Not Significant
+regorafenib,3-methyladipate/pimelate_HILn_QI10,0.12197915909420196,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-methylglutaconate_HILn_QI11,-0.030382148202491573,0.011344849973128568,0.015700889414287638,0.01849469308778757,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-hydroxybenzaldehyde_HILn_QI13,0.10574871513007604,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-hydroxybenzeneacetonitrile_HILn_QI14,0.14254713485178358,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-methylcatechol_HILn_QI16,0.12731391334408962,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-nitrophenol_HILn_QI17,-0.07285458533374407,1.216861722497242e-9,2.8307137941779815e-9,8.903256203311296e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-pyridoxate_HILn_QI18,0.07030504190599116,4.497584971119295e-9,9.867611174094506e-9,1.3193151514286466e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5-acetylamino-6-amino-3-methyluracil_HILn_QI19,0.16240748552315096,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5-dodecenoate_HILn_QI20,0.07338051230724352,9.240772591567747e-10,2.172740795723456e-9,4.330275011214571e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,acesulfame_HILn_QI21,0.0012584206847961604,0.916497851660315,0.92212053786682,0.9343795156552654,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,acetylalanine_HILn_QI22,0.11895239080764292,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,adenine_HILn_QI23,-0.010383849388149444,0.3869506262308402,0.4324354528235624,0.4630205523960967,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,adipate_HILn_QI24,0.06341174937313647,1.2331356735728605e-7,2.429240245837227e-7,6.700974526342316e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alanine_HILn_QI25,0.032592419703597574,0.0066039867144087605,0.00925687026635074,0.010073883120740031,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-glycerophosphate_HILn_TF2,-0.04044540049667882,7.486466639501366e-4,0.0011421214222123014,0.0013849674739599515,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-ketoglutarate_HILn_TF3,0.14932926233975008,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-ketoisovalerate_HILn_QI28,-0.010104279980099721,0.39986279914992506,0.4446229753107286,0.4530888367947637,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,arginine_HILn_TF4,0.08220162016869018,6.871836433219869e-12,1.825070728822767e-11,6.746031966885127e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ascorbate_HILn_QI30,-0.049891610059422685,3.191644399880289e-5,5.341119199799668e-5,1.3999485664696845e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,asparagine_HILn_QI31,0.12458680949207016,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,aspartate_HILn_QI32,-0.06324622340593407,1.329863523746866e-7,2.604150661426699e-7,2.928628467875136e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,azelate_HILn_QI33,0.05233513542157028,1.2809937453006626e-5,2.217234556509854e-5,3.8729513946150416e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,butyrate_HILn_QI36,0.12460791059429405,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,caproate_HILn_QI37,0.05028214906672506,2.765763635581564e-5,4.676136456034809e-5,9.495901531974756e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,caprylate_HILn_QI38,0.005838184997483502,0.6266719582192741,0.6577548873469502,0.7076544708008803,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,cholate_HILn_QI40,0.1271315909195306,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cinnamoylglycine_HILn_QI41,0.1838735146343083,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,citrate_HILn_QI42,0.06354013041845263,1.1628358831394793e-7,2.304593170209965e-7,4.90954044202103e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,citrulline_HILn_TF5,-0.05477774976986105,4.94108349569089e-6,8.80801840536202e-6,1.1789196447359624e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,corticosterone_HILn_QI44,0.13942374336651578,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cystine_HILn_QI45,-0.08823650568217012,1.758593271006248e-13,5.059812218333766e-13,1.0935956933655178e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dCMP_HILn_TF6,-0.0232923093757918,0.052273133563285334,0.06776912177374542,0.08618340638364469,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,diaminopimelate_HILn_TF7,0.08048530025068949,1.8603341089828973e-11,4.7118887084663336e-11,7.117440870839941e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dihydroorotate_HILn_QI47,0.0316107150013199,0.00843044970197937,0.011791844359271783,0.01671316258772745,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,docosapentaenoate_HILn_QI48,-0.08700453259607112,3.7969627442180354e-13,1.0690161202605285e-12,1.1597650112998342e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,dTMP_HILn_QI49,-0.1301852613688886,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,eicosapentaenoate_HILn_QI50,0.003085639595580952,0.7971149117795655,0.813230765361423,0.8270470284063127,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,epiandrosterone_HILn_TF8,-0.14324413651423584,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,erythronate_HILn_QI51,-0.013460443673756045,0.2620680219410121,0.3016081094619367,0.308760203001475,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,ethyl glucuronide_HILn_QI52,0.11351500383128496,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,fructose/glucose/galactose_HILn_QI53,-0.12557376003728157,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,fucose_HILn_QI54,0.023447782970196337,0.050720588239663966,0.06614852064655977,0.0750566414562638,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,fumarate/maleate_HILn_QI55,0.04713630059657044,8.51664850631817e-5,1.3897814477971938e-4,1.9895075656245855e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,gabapentin_HILn_QI56,0.09712605567703224,4.440892098500626e-16,1.5413890035007465e-15,5.2134707762935904e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,gemfibrozil_HILn_QI57,0.07875001429866568,4.987232848918666e-11,1.243963782848154e-10,2.1621424063331387e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,gentisate_HILn_QI58,0.0815557507102284,1.0020206886451888e-11,2.6293022870049755e-11,3.493141016579134e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glutamate_HILn_QI59,-0.007881222723460625,0.5114127388296201,0.5526964689822583,0.5681630992936021,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,glycerate_HILn_QI61,0.10764557048693812,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycocholate_HILn_QI63,0.14586720233124637,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,guanine_HILn_QI65,0.048419624132228806,5.425899419364555e-5,9.033984820058752e-5,9.7750560102536e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,guanosine_HILn_QI66,0.22020227016572885,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,heptadecanoate_HILn_QI67,-0.17705440049818724,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,homovanillate_HILn_QI69,0.0047862250182975526,0.6900628287513559,0.7152083952765035,0.7365595331093718,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,hydrochlorothiazide_HILn_QI70,0.02015970307418872,0.0929982281044539,0.11424501430060252,0.12389561721179804,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,hydrocinnamate_HILn_QI71,-0.09204939300066048,1.5099033134902132e-14,4.785007602171882e-14,1.457794293964301e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hypoxanthine_HILn_QI72,0.08078457846798125,1.5660805985362458e-11,4.028819108391284e-11,4.9273098633036166e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,imidazolelactate_HILn_QI73,0.19399788904106893,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,indole-3-propionate_HILn_QI74,-0.11438125829594777,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,indoxyl sulfate_HILn_TF10,0.1335438102111534,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,inosine_HILn_QI76,0.18506444070333508,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lactate_HILn_QI77,-0.09043525197181336,4.3520742565306136e-14,1.297709414674583e-13,4.206712973106217e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lactose_HILn_QI78,0.06643008106784434,3.0111504401020284e-8,6.250995850338387e-8,7.708903050669618e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,leucine_HILn_QI79,-0.0067670029310186045,0.5728876631979141,0.611080174077775,0.6082236103196738,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,linoleoyl ethanolamide_HILn_QI81,0.0849209100551843,1.3602452497707418e-12,3.733560183471157e-12,1.7318256971219078e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lithocholate_HILn_QI82,0.12443166291537676,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,malate_HILn_QI84,0.01401270278405693,0.2429943959326044,0.28213154642794425,0.30045886390680365,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,malonate_HILn_QI85,0.02682443460779504,0.025397804638898513,0.03400195886350495,0.03999160362088064,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,methionine_HILn_QI86,8.661759583148204e-4,0.942469771293886,0.9453519418483016,0.949734324446742,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,N6-acetyllysine_HILn_TF12,0.07693899319893124,1.3650680585897135e-10,3.3413606210255665e-10,3.429153024340619e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylglutamate_HILn_QI90,0.0012181512656476495,0.9191606061374822,0.9233833960584812,0.9333840241065452,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,nicotinate_HILn_QI91,0.10414655620614235,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,norepinephrine_HILn_QI92,0.09641088659419064,8.881784197001252e-16,3.018886234835659e-15,8.667414093379177e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,orotate_HILn_QI93,-0.06790759991150704,1.4762087552355752e-8,3.1855031034030835e-8,6.395762471587374e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,oxalate_HILn_TF13,0.06356041236190367,1.152090520761817e-7,2.2902163079386427e-7,4.5379940688248886e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pantothenate_HILn_QI95,0.17696161682946915,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pentose monophosphate_HILn_TF14,0.04218362765237882,4.378996896627907e-4,6.82333008120643e-4,8.967508790747916e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phenylacetate_HILn_QI97,0.08532471423004909,1.0647038806155253e-12,2.934645990268002e-12,4.386094370377762e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phenylacetylglutamine_HILn_QI98,-0.09081053175075084,3.419486915845482e-14,1.0433411240905285e-13,1.190583843372978e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phenylalanine_HILn_QI99,0.01014334995748787,0.3980429020232985,0.4440750743661289,0.4412062373014254,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,proline_HILn_QI101,0.06380447749437795,1.0300863895196245e-7,2.053910855698704e-7,6.528932767679657e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,propionate_HILn_QI28433,0.07130293937233673,2.7106832334311552e-9,6.007460138955532e-9,1.6925524244574126e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pseudouridine_HILn_QI102,0.09793175993333694,4.440892098500626e-16,1.5413890035007465e-15,1.4133705940847072e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pyrocatechol_HILn_QI103,0.1738348772541653,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,riboflavin_HILn_QI105,0.12299181997056775,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ribothymidine_HILn_QI106,0.1148273044111619,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,saccharin_HILn_QI107,-0.06341211910879924,1.2329274290401318e-7,2.429240245837227e-7,6.038648496839559e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,salicylate_HILn_QI108,-0.09217002150819152,1.4210854715202004e-14,4.5474735088646414e-14,9.976400074719435e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sebacate_HILn_QI109,-0.006251391097291303,0.6024755223133416,0.640557443496843,0.6641918520263137,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,serine_HILn_QI110,-0.03684154299220176,0.0021368638909575743,0.0031081656595746535,0.0031813403878183065,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,shikimate_HILn_QI111,0.07215028892111501,1.7539527608079195e-9,3.981290695813133e-9,7.653384261089e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sorbitol_HILn_QI112,0.09144658713937888,2.264854970235319e-14,7.04144483637142e-14,1.9724432904338131e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,suberate_HILn_TF16,0.012240610096449191,0.3077888035274847,0.3511468784591826,0.38061818217592785,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,succinate_HILn_QI114,0.021043369222509652,0.07952712038749299,0.09937103042703886,0.108289026054686,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,tartarate_HILn_TF17,-0.0864687279212508,5.286882043264995e-13,1.4633732575450788e-12,2.5781415061198925e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurine_HILn_QI116,-0.17105893195642907,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,tetrahydro-1-methyl-beta-carboline-3-carboxylate_HILn_QI119,-0.0360221636297015,0.002680493995250721,0.0038816866686191462,0.005113377490854993,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,threonine_HILn_QI120,-0.02405454351196138,0.045026128212016125,0.05907428021416516,0.05798960755119326,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,thymine_HILn_QI121,0.04066067422651637,7.012944494122486e-4,0.0010773984983944616,0.0011054558857988338,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,tryptophan_HILn_QI123,0.04996105882611693,3.111616705364639e-5,5.220512937900776e-5,5.6612990568877737e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,tyrosine_HILn_QI124,0.023455293062711612,0.05064658150505341,0.06614852064655977,0.06334640553878158,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,UMP_HILn_QI125,-0.04370994684082962,2.6899272583813527e-4,4.221512635163079e-4,7.003399144080207e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,uracil_HILn_QI126,0.07146970221545293,2.489087602697282e-9,5.535055821591244e-9,5.81375421362711e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,urate_HILn_TF18,0.09357580605224924,5.551115123125783e-15,1.8207657603852567e-14,1.0396427927642317e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,uridine_HILn_QI128,0.08309353840001629,4.062528091708373e-12,1.0877626237390582e-11,2.327709436447981e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,valerate/isovalerate_HILn_QI22769,0.03708475473444244,0.0019961527212806196,0.0029120567315238095,0.003472545059661776,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,xanthine_HILn_QI130,0.1053919380936322,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,xanthurenate_HILn_TF19,0.12564908203047512,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,xylose_HILn_QI132,-0.016167710062182115,0.17794430767236813,0.21032696546499727,0.22971340505951116,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,trimethylbenzene_HILp_QI715,-0.11117861980597749,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,bilirubin_HILp_QI19549,-0.005628895757918227,0.6390847126140129,0.6686436546647407,0.6776899876635071,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,cytidine_HILp_TF11,0.10484436990009688,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hippurate_HILp_QI3107,0.09622003941085512,8.881784197001252e-16,3.018886234835659e-15,6.061732017774631e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hypoxanthine_HILp_QI1303,0.11125998213626666,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,inosine_HILp_QI7107,0.16883153223123368,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pantothenate_HILp_QI4902,0.14040604327846998,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glycine_HILp_QI29,-0.11853783822248148,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alanine_HILp_QI168,-0.052431590094512,1.2346395580342673e-5,2.1426548943663472e-5,2.4029806239004432e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,serine_HILp_QI352,-0.06700232929368122,2.2887566286655673e-8,4.858978473801333e-8,5.662317499928899e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,methionine_HILp_QI1890,-0.05343611595143106,8.37960295463347e-6,1.473731779688889e-5,1.4609842751944888e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,aspartate_HILp_TF38,-0.08166947490924722,9.378275933613622e-12,2.4807052469558617e-11,5.126089036822582e-11,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glutamate_HILp_QI1810,-0.08650686970904813,5.164757510556228e-13,1.43562751140885e-12,6.136162927764452e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,glutamine_HILp_QI1788,0.0068127424259625795,0.570296588388364,0.6093071042064605,0.6336667753202562,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,histidine_HILp_QI2162,-0.0763109279928949,1.9253354466286507e-10,4.677852048105165e-10,1.2526984057179715e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,arginine_HILp_QI2979,0.04453538426021329,2.053543083722076e-4,3.246082561257064e-4,5.177233741275458e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,lysine_HILp_QI1794,0.019049760645701515,0.11244754603160456,0.1363504439865667,0.1465241457869258,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,valine_HILp_TF58,0.009236474425943162,0.44156128325879385,0.4860137614392093,0.502336884817912,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,leucine_HILp_TF54,-0.05468475778392084,5.1273435723864225e-6,9.115277462020304e-6,9.528408002688685e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,isoleucine_HILp_TF53,-0.02766504130044269,0.021145719107922956,0.02848376126241778,0.02753352256654408,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phenylalanine_HILp_TF55,-0.023339067531022283,0.051802087097458926,0.06729142403155061,0.06619878002386742,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,tyrosine_HILp_TF57,-0.02367932205507271,0.048480172292342694,0.06347902799157047,0.06181962536910023,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,tryptophan_HILp_TF56,-0.012865894121781626,0.28373131182290323,0.32539814782486803,0.3201816466023284,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,proline_HILp_QI578,0.034965650819980244,0.0035674137682879525,0.005109658148464841,0.008042585634096181,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,hydroxyproline_HILp_QI1106,0.040197637375682896,8.068124886504435e-4,0.001228002302911116,0.0014358860536133405,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ornithine_HILp_QI1169,0.12376113182283552,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,citrulline_HILp_QI3009,0.06071121071405962,4.130018633752286e-7,7.814531885652557e-7,2.633602127072368e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,taurine_HILp_QI868,-0.1686328396814849,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5-hydroxytryptophan_HILp_QI4915,-0.18817053782251847,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,serotonin_HILp_QI3039,0.015264767537728176,0.20341989766111543,0.2380336770831551,0.2410830737748084,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,dimethylglycine_HILp_QI322,-0.09690947869954132,4.440892098500626e-16,1.5413890035007465e-15,1.9589015835305573e-15,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ADMA/SDMA_HILp_TF48,0.058490416786328527,1.075239927983418e-6,2.0038562294236426e-6,2.775156424974255e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,NMMA_HILp_QI3588,-0.07192294230436218,1.972214835888053e-9,4.430738199470061e-9,6.141283250324625e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,aminoisobutyric acid/GABA_HILp_TF28,-0.025600704624445497,0.0329009984632469,0.04360213129674741,0.05042148546645833,Drug Significant,Metabolite Not Significant,Drug Significant & Metabolite Not Significant
+regorafenib,kynurenic acid_HILp_QI3608,0.030986311579782932,0.009815413432212594,0.013612920108946007,0.015014253398994351,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,1-methylhistamine_HILp_QI892,-0.10845576885164857,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,histamine_HILp_QI484,-0.11610289763799794,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-carbamoyl-beta-alanine_HILp_QI1144,0.10186398235126189,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,niacinamide_HILp_QI755,0.0915937400828676,2.042810365310288e-14,6.41188325188301e-14,1.1850204672662356e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,betaine_HILp_QI615,-0.05135412136489766,1.85698000154666e-5,3.170532332253013e-5,4.380584923960277e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,choline_HILp_QI331,-0.003962185999096445,0.7413142357584697,0.7646260041785473,0.7949767644584859,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,alpha-glycerophosphocholine_HILp_QI6656,0.001441894727850167,0.9043782030552237,0.912726309544964,0.923929799454283,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,acetylcholine_HILp_QI1757,-0.06209014570121732,2.2418342071617306e-7,4.312736773894707e-7,6.75296787573459e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,spermidine_HILp_TF51,0.1578067689785042,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,creatine_HILp_QI1110,-0.003380120196895555,0.778236616024456,0.795207507962684,0.8183004338050228,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,creatinine_HILp_QI522,0.03953348998727095,9.84051981812506e-4,0.0014805919726353302,0.0018679752845716603,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,trimethylamine-N-oxide_HILp_QI30,0.04780508804440895,6.742583715313444e-5,1.1113404314687484e-4,1.3059553251329703e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,adenosine_HILp_QI7060,0.06176661024800432,2.5903944145255764e-7,4.954223719908974e-7,7.333557628382613e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cytosine_HILp_QI473,0.1174599964928398,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-deoxyadenosine_HILp_TF9,0.012665363403198304,0.29130391740065664,0.33349977280075177,0.3346961775722279,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,2-deoxycytidine_HILp_TF14,0.09048993459236616,4.1966430330830924e-14,1.2570766345673552e-13,4.254767932062728e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cotinine_HILp_QI3040,-0.0096780560367677,0.4200395947134705,0.4638821113333951,0.4760316505136404,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,pipecolic acid_HILp_QI1037,-0.19361746266746352,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5-aminolevulinic acid_HILp_TF34,0.044811543978298854,1.874319910590838e-4,2.969936863158429e-4,3.664335777722656e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,1-methylnicotinamide_HILp_QI1320,-0.04951915829394148,3.6552787640253825e-5,6.101432237151784e-5,1.298928727577883e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,butyrobetaine_HILp_QI1759,-0.10479502389207974,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,putrescine_HILp_QI163,-0.009183843880472276,0.44416782412334976,0.4880638067419053,0.503240422280237,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,methionine sulfoxide_HILp_QI2598,-0.045731496081914166,1.3776635157292105e-4,2.209651017893306e-4,2.972904076106984e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,beta-alanine_HILp_TF37,-0.01671728696062761,0.16364724825825938,0.1944793385098155,0.2205088299458266,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,anserine_HILp_QI5874,0.1587052348620771,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,carnitine_HILp_QI2466,0.02127604023152432,0.07625719666346487,0.09583279887209376,0.10000255847530368,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C2 carnitine_HILp_QI4241,-0.09909173065254204,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C3 carnitine_HILp_QI4845,-0.10789836502843494,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C3-DC-CH3 carnitine_HILp_QI6844,0.07928340271125192,3.6913583301156905e-11,9.277896799064724e-11,2.5045627732947707e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C4 carnitine_HILp_TF39,-0.10099124137332478,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C5 carnitine_HILp_QI6120,0.015131884886435036,0.2073826333567388,0.24163944490589817,0.28236208202589724,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C8 carnitine_HILp_TF25,0.03727874855728046,0.0018900687022720408,0.002767600599755488,0.004477818243381632,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C9 carnitine_HILp_QI8757,0.11165392563861946,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C10 carnitine_HILp_QI9350,0.01693567668393994,0.15821266661867117,0.18870456236699687,0.2064142968089439,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C10:2 carnitine_HILp_QI9164,0.0997924828234203,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C12 carnitine_HILp_QI10330,-0.06443837504627854,7.687571068615284e-8,1.546946816261235e-7,1.9645170393550726e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C12:1 carnitine_HILp_QI10262,0.03433571518627116,0.004215794701118103,0.00598606347171748,0.0065653064270158575,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14 carnitine_HILp_QI11212,-0.05358190148902346,7.916823594911193e-6,1.396085021038103e-5,1.6816118091125376e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:1 carnitine_HILp_QI11143,-0.07287705893062153,1.2026806217591002e-9,2.807681451508789e-9,3.3999887429940267e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:2 carnitine_HILp_QI11066,0.005118140909409764,0.6697988393938945,0.6974413311784045,0.7087607459308221,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16 carnitine_HILp_QI11887,0.0227496443313916,0.058006730670908,0.07417624818735993,0.08318969369181484,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16-OH carnitine_HILp_TF24,-0.06645873297447238,2.9702345027970978e-8,6.18563121852348e-8,9.560006615526362e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18 carnitine_HILp_QI12539,-0.07461305598034398,4.812044096524913e-10,1.1437322200436027e-9,5.580941304768402e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 carnitine_HILp_QI12494,-0.017881360594259276,0.13624617742878886,0.16442988033307135,0.1763380321814282,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:1-OH carnitine_HILp_TF23,-0.05670395187426886,2.2659519114398563e-6,4.129067927512627e-6,4.808546597136849e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:2 carnitine_HILp_QI12459,-0.037564712546978685,0.001743106851319176,0.002558116542428142,0.002939207422336294,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20 carnitine_HILp_QI13219,-0.03871214052102713,0.0012529797963241052,0.0018680789690650296,0.0025956512840923365,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:4 carnitine_HILp_QI13031,-0.07902827464056972,4.2637893216124205e-11,1.0675747309075376e-10,2.2819219085195242e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,1-methylguanine_HILp_QI2602,0.05369451093752008,7.576186144664376e-6,1.3432373272702249e-5,2.5225674192307836e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,1-methylguanosine_HILp_QI8513,0.17529259069276829,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,21-deoxycortisol_HILp_QI10472,0.044266336753944285,2.24352869070632e-4,3.537872166113812e-4,4.894826005132575e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,2-aminoheptanoic acid_HILp_QI1756,0.008599851342497628,0.4736730501405919,0.5161619948375885,0.5259497958839306,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,2'-O-methyladenosine_HILp_QI7751,0.15416975362138594,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-methylhistidine_HILp_QI2793,0.15498047114373922,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,3-methylxanthine_HILp_QI2638,-0.010522221623921552,0.3806549539199715,0.4275850167320228,0.43445973900255186,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,3'-O-methyladenosine_HILp_TF8,0.0923919060280358,1.2212453270876722e-14,3.9271418361250644e-14,7.064845341738758e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-aminophenol_HILp_QI418,0.1638731374055066,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-guanidinobutanoic acid_HILp_QI1750,0.1668480452701141,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,4-hydroxy-3-methylacetophenone_HILp_QI1929,-0.057808586375981824,1.4327638642175344e-6,2.6401491430525355e-6,3.1982084157484017e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,5-acetylamino-6-amino-3-methyluracil_HILp_QI3985,0.1572528640461377,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,7-methylguanine_HILp_QI2601,-0.0632987657979257,1.2983909036812238e-7,2.550133032379888e-7,7.944752499141401e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,7-methylxanthine_HILp_TF4,-0.012192193871001915,0.30970630278759925,0.3527210670636547,0.3596896670363134,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,8-hydroxy-deoxyguanosine_HILp_QI7860,0.2214189098362512,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,acetaminophen_HILp_QI1989,0.03998931292327757,8.589353008834344e-4,0.0012982985193076796,0.0015166789559797412,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,acetyl-galactosamine_HILp_QI4966,-6.90029817346461e-4,0.9541546329063136,0.9541546329063136,0.9621732957109296,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,agmatine_HILp_TF45,0.05659344878675573,2.37120026236326e-6,4.274498596856802e-6,7.328668716322617e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alloisoleucine_HILp_QI1127,-0.07805005526820512,7.379785671446369e-11,1.8199772182213604e-10,5.20363942864484e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alpha-hydroxymetoprolol_HILp_TF21,0.09146913410215587,2.220446049250313e-14,6.936250515753361e-14,1.6375058562063494e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,atenolol_HILp_QI7038,0.10330545322774665,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,beta-guanidinopropionic acid_HILp_TF26,0.1577090745120592,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,biliverdin_HILp_QI19408,0.11792701035477313,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,biotin_HILp_TF5,-0.10492234891727212,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,cadaverine_HILp_TF46,-0.06798109551444133,1.4242251378249192e-8,3.0834709254559316e-8,8.426226519770993e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,caffeine_HILp_QI3770,-0.004756473087361137,0.6918903958834586,0.7152083952765035,0.7291977857995083,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,cortisol_HILp_QI10949,0.13683497466537817,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,alanylalanine_HILp_TF36,-0.1378726277521548,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,diacetylspermine_HILp_QI8054,0.04198230333464127,4.664355187067315e-4,7.250751191270518e-4,8.332057521945596e-4,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,ectoine_HILp_TF43,-0.13249548164031186,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,gabapentin_HILp_QI2874,-0.08828549718175378,1.7053025658242404e-13,4.928099044848906e-13,1.6026982072483539e-12,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,guanidoacetic acid_HILp_TF33,0.062138894431780535,2.1934105776111326e-7,4.2319921732732434e-7,7.235778301144471e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,histidinol_HILp_TF44,0.0059886288326288966,0.6178138571257485,0.6524388096418866,0.6685968945652728,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,homoarginine_HILp_TF47,-0.05290105610946597,1.0309649141504453e-5,1.803501289820512e-5,2.221898021202104e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,homocitrulline_HILp_QI3629,-0.0015754009151437468,0.8955730694780455,0.9052325632936792,0.922819013138064,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,hydroxycotinine_HILp_QI3716,-0.02260387629356188,0.059632963722255905,0.07610744008132271,0.0868515961859649,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,imidazole propionate_HILp_QI1508,0.06675699600523664,2.5750950705116793e-8,5.379816453043508e-8,7.750660151762243e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,imidazoleacetic acid_HILp_TF40,-0.1225955355162455,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,linoleoyl ethanolamide_HILp_QI9633,0.09078410576519907,3.4638958368304884e-14,1.0519979948892597e-13,6.267282510590608e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,urobilin_HILp_TF20,0.09207482352483684,1.5099033134902132e-14,4.785007602171882e-14,2.647768341855828e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,metformin_HILp_QI1048,-0.05182209778953779,1.556791965895421e-5,2.6804607076834545e-5,3.1203634947276884e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,methylimidazole acetic acid_HILp_TF42,-0.01770401628841581,0.14017558323904034,0.16872510569689994,0.1932288266697512,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,metronidazole_HILp_QI2850,0.09072416208735289,3.597122599785507e-14,1.087425080856817e-13,5.733383407504424e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,"N1,N12-diacetylspermine_HILp_TF50",0.035575170152086576,0.003027740467300255,0.004355696812607384,0.004970879646265393,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N1-acetylspermidine_HILp_QI3549,0.1561984058102138,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N1-acetylspermine_HILp_TF52,0.136786630173939,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N1-methyl-2-pyridone-5-carboxamide_HILp_QI2014,-0.029217369585843655,0.014900668163034592,0.02027974754139148,0.023274024899344485,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,"N2,N2-dimethylguanosine_HILp_QI9142",0.019797727028374037,0.09902017960767796,0.12118887653477002,0.1307980427204895,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,N6-acetyllysine_HILp_TF41,-0.06452368363223591,7.389166234439416e-8,1.4914747845514634e-7,4.21938470956713e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetyalanine_HILp_QI1105,-0.08058091760542556,1.7608803304369758e-11,4.4946096801324115e-11,1.7597804349301591e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylaspartic acid_HILp_QI2994,-0.058932942853925106,8.909628932407543e-7,1.6699190227598138e-6,4.252196342328992e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylglutamine_HILp_TF22,0.13496832618080637,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylhistamine_HILp_TF27,-0.11148110670146556,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylhistidine_HILp_QI3939,-0.02489497057413277,0.03803637752614475,0.05020495705664176,0.06731901856831739,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,N-acetylornithine_HILp_QI2965,-0.13231824971213796,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-acetylputrescine_HILp_QI1093,0.05517568376853574,4.214712858274794e-6,7.533655681275926e-6,1.012296356602865e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-alpha-acetylarginine_HILp_QI4793,0.05659280657001163,2.371825440938835e-6,4.274498596856802e-6,5.542384881883166e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,"N6,N6-dimethyllysine_HILp_QI2981",-0.10373650784457028,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,"N6,N6,N6-trimethyllysine_HILp_QI3593",0.06872451457628627,9.889865371093265e-9,2.148262146833504e-8,4.40760825843431e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,nicotinuric acid_HILp_TF16,-0.13597646628094742,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,N-methylproline_HILp_QI1038,-0.0533734915043836,8.586235942242837e-6,1.5060349674094387e-5,1.697792734365684e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,phytosphingosine_HILp_TF13,-0.0970051268380074,4.440892098500626e-16,1.5413890035007465e-15,1.029741432833144e-14,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,piperine_HILp_QI7976,0.04014628789047504,8.193803788705267e-4,0.0012413707356560403,0.0017985471581414272,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,proline betaine_HILp_QI1646,0.07800926060834615,7.54947215853008e-11,1.854851586515255e-10,4.66877811622404e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pterin_HILp_TF7,-0.030143268277738937,0.012005684397776497,0.01651096219065279,0.018549571879007288,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,pyridoxine_HILp_TF15,0.021575861611054552,0.07220608921497518,0.09109075870196869,0.0939092820133913,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,quinine_HILp_QI9662,-0.027621245934970028,0.02135087793681545,0.02870118017735847,0.03031858956929387,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,S-adenosylmethionine_HILp_TF49,0.06693657484340677,2.3623168088349192e-8,4.998967182566796e-8,7.15832273268799e-8,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,S-methylcysteine-S-oxide_HILp_QI1968,-0.08068592258117888,1.6576517936073287e-11,4.24773272111878e-11,1.8581288602913015e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sphinganine_HILp_QI8763,0.01133445788818474,0.34498151177999015,0.38951440916983393,0.4321787402794888,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,sulfapyridine_HILp_TF1,0.02015970307418872,0.0929982281044539,0.11424501430060252,0.12389561721179804,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,threosphingosine_HILp_QI8646,0.0725339384823298,1.437844510121522e-9,3.3095649075077843e-9,6.231957907065662e-9,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,trigonelline_HILp_QI1363,-0.05701333265777781,1.994600026256066e-6,3.6447287387854578e-6,5.242632111568299e-6,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,urobilin_HILp_QI20478,0.10548243479682404,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:0 LPC_HILp_QI13472,-0.02286519240671527,0.0567439725973844,0.07270321489039876,0.08264155766361155,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C16:1 LPC_HILp_QI14033,-0.08099682608367727,1.3855139258112104e-11,3.5962210811365786e-11,1.8057363224721043e-10,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 LPC_HILp_TF30,-0.11605461719550082,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:3 LPC_HILp_TF32,-0.06271486636826722,1.69253819404247e-7,3.275236151303423e-7,7.729725537805213e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:2 LPC_HILp_TF29,0.10951328022446254,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 LPC_HILp_QI15155,-0.03708217435740176,0.0019975998920513938,0.0029120567315238095,0.004559293442907056,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 LPC_HILp_QI15372,-0.1513574511803165,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C20:1 LPC_HILp_QI16955,-0.14426168818300608,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:1 LPC plasmalogen_HILp_QI13719,-0.08962977299424954,7.283063041541028e-14,2.1328970335941578e-13,8.009938956881735e-13,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:1 LPC plasmalogen_HILp_QI14421,-0.13227105429711228,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 LPE_HILp_QI13155,0.011636782198867764,0.3322663225052571,0.37645372636174207,0.37643106753394256,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C18:0 LPE-A_HILp_TF17,-0.1115212496513862,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C18:0 LPE-B_HILp_TF35,-0.018582587751292946,0.12153700907173937,0.1471001438211458,0.18685900072007303,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C22:6 LPE_HILp_TF19,0.015190797334500268,0.20561893077978155,0.24001070923760975,0.25826506374840674,Drug Not Significant,Metabolite Not Significant,Drug Not Significant & Metabolite Not Significant
+regorafenib,C36:2 PC_HILp_QI25304,-0.05101360878809066,2.1092382194165538e-5,3.584612103464403e-5,5.273330972109293e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sphingosine-isomer1_HILp_TF2,0.053585386631573306,7.906065149443364e-6,1.396085021038103e-5,4.882419678991865e-5,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sphingosine-isomer2_HILp_TF3,0.0326215745661734,0.006555652223662944,0.009208796271355228,0.013980536912907094,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,sphingosine-isomer3_HILp_TF12,0.06472218610631432,6.737585378502331e-8,1.364153088980719e-7,2.376901838852371e-7,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C14:0 SM_HILp_QI23736,-0.1440030261602701,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant
+regorafenib,C16:0 SM_HILp_QI24373,-0.1278679365844481,0,0,0,Drug Significant,Metabolite Significant,Drug Significant & Metabolite Significant

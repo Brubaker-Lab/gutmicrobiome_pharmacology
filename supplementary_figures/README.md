@@ -6,7 +6,7 @@ This folder contains supplementary figures associated with the manuscript:
 
 ## Supplementary Figure S1a
 
-**File:** `Figure S1a - Baseline versus longitudinal regorafenib transcriptional concordance scores.pdf`
+**File:** `Figure S1a - Baseline versus longitudinal regorafenib transcriptional concordance scores.tiff`
 
 **Title:** Baseline versus longitudinal regorafenib transcriptional concordance scores.
 
@@ -14,7 +14,7 @@ This folder contains supplementary figures associated with the manuscript:
 
 ## Supplementary Figure S1b
 
-**File:** `Figure S1b - Regorafenib transcriptional concordance scores for experimentally tested metabolites.pdf`
+**File:** `Figure S1b - Regorafenib transcriptional concordance scores for experimentally tested metabolites.tiff`
 
 **Title:** Regorafenib transcriptional concordance scores for experimentally tested metabolites across baseline and longitudinal metabolite profiles.
 
@@ -22,7 +22,7 @@ This folder contains supplementary figures associated with the manuscript:
 
 ## Supplementary Figure S2
 
-**File:** `Figure S2 - Kaplan-Meier survival analysis for HIST1H2AC.pdf`
+**File:** `Figure S2 - Kaplan-Meier survival analysis for HIST1H2AC.tiff`
 
 **Title:** Kaplan-Meier survival analysis for HIST1H2AC in TCGA COADREAD.
 

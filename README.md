@@ -34,3 +34,7 @@ Analysis scripts are provided in the `code/` directory. Public datasets used in 
 - longitudinal_sensitivity_scores.csv
 - survival_analysis_results.csv
 - cell_viability_results.xlsx
+
+These files contain analysis outputs derived from the publicly available source datasets and are provided to facilitate reproducibility and reuse.
+
+Large intermediate gene-metabolite correlation matrices are not included in the repository because of file size. These matrices can be regenerated from the publicly available source data using the analysis code provided in this repository.
